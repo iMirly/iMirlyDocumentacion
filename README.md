@@ -1,3 +1,4 @@
 https://appimirly.github.io/iMirlyDocumentacion/index.html
 
-<img width="1904" height="919" alt="image" src="https://github.com/user-attachments/assets/935d5678-7659-47c8-8d85-6a8320e5fd1c" />
+<img width="1900" height="908" alt="image" src="https://github.com/user-attachments/assets/9ca82db8-4a3c-44a3-8bf5-62ea086916ef" />
+
