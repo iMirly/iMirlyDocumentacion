@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio Rápido - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ESTILOS ADICIONALES PARA INICIO RÁPIDO */
+        
+        /* Prerrequisitos Grid */
+        .prereq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .prereq-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            transition: all var(--transition-base);
+        }
+        
+        .prereq-card:hover {
+            border-color: var(--color-purple);
+            transform: translateY(-2px);
+        }
+        
+        .prereq-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+        
+        .prereq-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+        
+        .prereq-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+        
+        /* Info, Warning, Success Boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info-box p {
+            margin: 0;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .warning-box {
+            background-color: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-left: 3px solid #eab308;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .warning-box p {
+            margin: 0;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+        
+        .success-box {
+            background-color: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-left: 3px solid #22c55e;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success-box p {
+            margin: 0;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+        
+        /* Code Blocks mejorados con sintaxis resaltada y botón de copiar */
+        .code-block {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            margin: var(--spacing-md) 0;
+            overflow: hidden;
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .code-block.small {
+            margin: var(--spacing-sm) 0;
+        }
+        
+        /* Header del bloque de código con lenguaje y botón copiar */
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--color-border);
+        }
+        
+        .code-lang {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family);
+        }
+        
+        .copy-btn:hover {
+            background-color: rgba(120, 100, 215, 0.2);
+            border-color: var(--color-purple);
+            color: var(--color-text-primary);
+        }
+        
+        .copy-btn.copied {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+        
+        .code-block pre {
+            margin: 0;
+            padding: var(--spacing-lg);
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+        
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: #e4e4e7;
+            background: transparent;
+            padding: 0;
+        }
+        
+        /* Sintaxis resaltada */
+        .code-keyword { color: #c678dd; } /* púrpura - keywords */
+        .code-string { color: #98c379; } /* verde - strings */
+        .code-comment { color: #5c6370; font-style: italic; } /* gris - comentarios */
+        .code-function { color: #61afef; } /* azul - funciones */
+        .code-number { color: #d19a66; } /* naranja - números */
+        .code-operator { color: #56b6c2; } /* cyan - operadores */
+        .code-class { color: #e5c07b; } /* amarillo - clases */
+        .code-property { color: #e06c75; } /* rojo - propiedades */
+        
+        /* Tabs Container */
+        .tabs-container {
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-sm);
+        }
+        
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--color-text-muted);
+            padding: var(--spacing-sm) var(--spacing-md);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all var(--transition-fast);
+            font-family: var(--font-family);
+        }
+        
+        .tab-btn:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-hover);
+        }
+        
+        .tab-btn.active {
+            color: var(--color-purple);
+            background-color: rgba(120, 100, 215, 0.1);
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Feature List */
+        .feature-list {
+            list-style: none;
+            margin: var(--spacing-md) 0;
+            padding-left: 0;
+        }
+        
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+        
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+        
+        /* User Features */
+        .user-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .user-feature-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+        
+        .user-feature-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-purple);
+        }
+        
+        .user-feature-card .feature-list li::before {
+            color: var(--color-purple-light);
+        }
+        
+        /* Troubleshoot Grid */
+        .troubleshoot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .troubleshoot-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+        
+        .troubleshoot-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            color: #ef4444;
+        }
+        
+        .troubleshoot-header h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+        
+        .troubleshoot-card .issue {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-sm);
+        }
+        
+        .troubleshoot-card .solution {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-sm);
+        }
+        
+        .solution-list {
+            list-style: none;
+            padding-left: 0;
+            margin: var(--spacing-sm) 0;
+        }
+        
+        .solution-list li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .solution-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--color-purple);
+        }
+        
+        /* Quick Ref Grid */
+        .quick-ref-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .quick-ref-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+        
+        .quick-ref-card h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+        
+        .ref-list {
+            list-style: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        
+        .ref-list li {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xs);
+            line-height: 1.5;
+        }
+        
+        .ref-list li strong {
+            color: var(--color-purple-light);
+            font-weight: 500;
+        }
+        
+        /* Code inline */
+        code {
+            background-color: rgba(120, 100, 215, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+        
+        /* Mejoras en steps container */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+        
+        .step {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            transition: all var(--transition-fast);
+        }
+        
+        .step:hover {
+            border-color: var(--color-border-light);
+        }
+        
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+        
+        .step-content h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+        
+        .step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Next Steps Grid */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .next-step-card {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-lg);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all var(--transition-base);
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            transform: translateY(-2px);
+        }
+
+        .next-step-icon {
+            width: 48px;
+            height: 48px;
+            background-color: rgba(120, 100, 215, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                                <!-- <a href="pages/introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>-->
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- CONTENEDOR PARA EL MENÚ DINÁMICO -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Comenzar</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Inicio Rápido</span>
+                </div>
+
+                <header class="page-header">
+                    <h1 id="inicio-rapido">Inicio Rápido</h1>
+                    <p class="page-description">
+                        Configura iMirly en tu máquina local en minutos. Esta guía te llevará desde clonar el repositorio hasta ejecutar tanto el backend como la aplicación Android.
+                    </p>
+                </header>
+
+                <!-- Prerrequisitos -->
+                <section class="content-section">
+                    <h2 id="prerrequisitos">Prerrequisitos</h2>
+                    <p>Antes de comenzar, asegúrate de tener instaladas las siguientes herramientas:</p>
+                    
+                    <div class="prereq-grid">
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>PostgreSQL</h4>
+                                <p>Versión 15 o superior</p>
+                            </div>
+                        </div>
+
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>Java JDK</h4>
+                                <p>Versión 21 o superior</p>
+                            </div>
+                        </div>
+
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>Android Studio</h4>
+                                <p>Koala (2024.1.1) o más reciente</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>Nota:</strong> El backend requiere Java 21, mientras que la app Android se compila contra SDK 36 con un SDK mínimo de 26 (Android 8.0).</p>
+                    </div>
+                </section>
+
+                <!-- Configuración Paso a Paso -->
+                <section class="content-section">
+                    <h2 id="configuracion-paso-a-paso">Configuración Paso a Paso</h2>
+
+                    <h3 id="paso-1-clonar">Paso 1: Clonar el Repositorio</h3>
+                    <p>Clona el repositorio de iMirly en tu máquina local:</p>
+                    
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-keyword">git</span> clone https://github.com/Anyeel/imirly.git 
+<span class="code-keyword">cd</span> imirly</code></pre>
+                    </div>
+
+                    <p>La estructura del proyecto incluye dos directorios principales:</p>
+                    
+                    <div class="code-block" data-lang="yaml">
+                        <div class="code-header">
+                            <span class="code-lang">yaml</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code>imirly/
+├── <span class="code-property">backend/</span>          <span class="code-comment"># Spring Boot API</span>
+├── <span class="code-property">frontend/</span>         <span class="code-comment"># Aplicación Android</span>
+└── <span class="code-property">docker-compose.yml</span> <span class="code-comment"># Configuración de contenedor PostgreSQL</span></code></pre>
+                    </div>
+
+                    <h3 id="paso-2-postgresql">Paso 2: Configurar la Base de Datos PostgreSQL</h3>
+                    <p>Tienes dos opciones para ejecutar PostgreSQL:</p>
+
+                    <div class="tabs-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="docker">Opción A: Docker Compose (Recomendado)</button>
+                            <button class="tab-btn" data-tab="local">Opción B: Instalación Local</button>
+                        </div>
+
+                        <div class="tab-content active" id="docker">
+                            <p>El proyecto incluye un archivo docker-compose.yml para una configuración sencilla:</p>
+                            <div class="code-block" data-lang="yaml">
+                                <div class="code-header">
+                                    <span class="code-lang">yaml</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-keyword">version</span>: <span class="code-string">'3.8'</span>
+<span class="code-property">services</span>:
+  <span class="code-property">db</span>:
+    <span class="code-property">image</span>: <span class="code-string">postgres:15</span>
+    <span class="code-property">container_name</span>: <span class="code-string">imirly_db_container</span>
+    <span class="code-property">restart</span>: <span class="code-string">always</span>
+    <span class="code-property">environment</span>:
+      <span class="code-property">POSTGRES_USER</span>: <span class="code-string">user_imirly</span>
+      <span class="code-property">POSTGRES_PASSWORD</span>: <span class="code-string">password_imirly</span>
+      <span class="code-property">POSTGRES_DB</span>: <span class="code-string">imirly_db</span>
+    <span class="code-property">ports</span>:
+      - <span class="code-string">"5432:5432"</span>
+    <span class="code-property">volumes</span>:
+      - <span class="code-string">./postgres_data:/var/lib/postgresql/data</span></code></pre>
+                            </div>
+                            <p>Inicia el contenedor de la base de datos:</p>
+                            <div class="code-block" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-keyword">docker-compose</span> up -d</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="local">
+                            <p>Si prefieres una instalación local, crea la base de datos manualmente:</p>
+                            <div class="code-block" data-lang="sql">
+                                <div class="code-header">
+                                    <span class="code-lang">sql</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-keyword">CREATE DATABASE</span> imirly_db;
+<span class="code-keyword">CREATE USER</span> user_imirly <span class="code-keyword">WITH PASSWORD</span> <span class="code-string">'password_imirly'</span>;
+<span class="code-keyword">GRANT ALL PRIVILEGES ON DATABASE</span> imirly_db <span class="code-keyword">TO</span> user_imirly;</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 id="paso-3-configuracion">Paso 3: Configurar Propiedades del Backend</h3>
+                    <p>Navega al archivo de configuración del backend y verifica los ajustes de conexión a la base de datos:</p>
+                    
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-keyword">cd</span> backend/src/main/resources</code></pre>
+                    </div>
+
+                    <p>El archivo <code>application.properties</code> debe contener:</p>
+                    
+                    <div class="code-block" data-lang="properties">
+                        <div class="code-header">
+                            <span class="code-lang">properties</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-property">spring.application.name</span>=<span class="code-string">iMirly</span>
+<span class="code-property">spring.datasource.url</span>=<span class="code-string">jdbc:postgresql://localhost:5432/imirly_db</span>
+<span class="code-property">spring.datasource.username</span>=<span class="code-string">user_imirly</span>
+<span class="code-property">spring.datasource.password</span>=<span class="code-string">password_imirly</span>
+<span class="code-property">spring.jpa.hibernate.ddl-auto</span>=<span class="code-string">update</span>
+<span class="code-property">spring.jpa.show-sql</span>=<span class="code-string">true</span></code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <p><strong>⚠️ Importante:</strong> Si usaste credenciales diferentes al configurar PostgreSQL, actualiza los campos <code>username</code> y <code>password</code> según corresponda.</p>
+                    </div>
+
+                    <h3 id="paso-4-backend">Paso 4: Iniciar el Backend Spring Boot</h3>
+                    <p>Desde el directorio <code>backend/</code>, inicia el servidor usando Maven:</p>
+
+                    <div class="tabs-container">
+                        <div class="tab-buttons">
+                            <button class="tab-btn active" data-tab="wrapper">Usando Maven Wrapper (Recomendado)</button>
+                            <button class="tab-btn" data-tab="maven">Usando tu instalación local de Maven</button>
+                        </div>
+
+                        <div class="tab-content active" id="wrapper">
+                            <div class="code-block" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-keyword">cd</span> backend
+./mvnw spring-boot:run</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="maven">
+                            <div class="code-block" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-keyword">cd</span> backend
+mvn spring-boot:run</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>La aplicación se iniciará en <code>http://localhost:8080</code>.</p>
+
+                    <div class="success-box">
+                        <p><strong>✅ Seeder Automático:</strong> En el primer inicio, el componente <code>DatabaseSeeder</code> pobla automáticamente la base de datos con categorías y subcategorías de servicios. Verás la confirmación en la consola:</p>
+                    </div>
+
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code>=========================================================
+🚀 EJECUTANDO SEEDER: Poblando BD vacía... 🚀
+=========================================================
+✅ BASE DE DATOS INICIALIZADA EXITOSAMENTE! ✅</code></pre>
+                    </div>
+
+                    <h4 id="que-se-seedea">¿Qué se inicializa?</h4>
+                    <p>El seeder crea automáticamente:</p>
+                    <ul class="feature-list">
+                        <li><strong>7 categorías principales:</strong> Hogar, Belleza y Estética, Educación, Cuidado, Deportes y Salud, Mascotas, Eventos y Otros</li>
+                        <li><strong>50+ subcategorías</strong> en todos los tipos de servicios</li>
+                        <li><strong>Mapeo de iconos</strong> para la UI de la app Android</li>
+                    </ul>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// Ejemplo de DatabaseSeeder.java</span>
+<span class="code-class">CategoriaEntity</span> hogar = <span class="code-function">crearCategoria</span>(<span class="code-string">"Hogar"</span>, <span class="code-string">"hogar"</span>);
+<span class="code-function">crearSubcategoria</span>(<span class="code-string">"Electricista"</span>, <span class="code-string">"hogar_electricista"</span>, hogar);
+<span class="code-function">crearSubcategoria</span>(<span class="code-string">"Fontanería"</span>, <span class="code-string">"hogar_fontaneria"</span>, hogar);
+<span class="code-function">crearSubcategoria</span>(<span class="code-string">"Limpieza"</span>, <span class="code-string">"hogar_limpieza"</span>, hogar);
+<span class="code-comment">// ... más subcategorías</span></code></pre>
+                    </div>
+
+                    <h3 id="paso-5-verificar">Paso 5: Verificar que el Backend está funcionando</h3>
+                    <p>Prueba los endpoints de la API para confirmar que el backend está operativo:</p>
+                    
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment"># Health check (requiere Spring Actuator)</span>
+<span class="code-function">curl</span> http://localhost:8080/actuator/health
+
+<span class="code-comment"># Probar conexión a base de datos - obtener categorías</span>
+<span class="code-function">curl</span> http://localhost:8080/api/v1/catalog/categorias</code></pre>
+                    </div>
+
+                    <p>Respuesta esperada para categorías:</p>
+                    
+                    <div class="code-block" data-lang="json">
+                        <div class="code-header">
+                            <span class="code-lang">json</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code>[
+  {
+    <span class="code-property">"id"</span>: <span class="code-string">"..."</span>,
+    <span class="code-property">"nombre"</span>: <span class="code-string">"Hogar"</span>,
+    <span class="code-property">"icono"</span>: <span class="code-string">"hogar"</span>
+  },
+  {
+    <span class="code-property">"id"</span>: <span class="code-string">"..."</span>,
+    <span class="code-property">"nombre"</span>: <span class="code-string">"Estética y Belleza"</span>,
+    <span class="code-property">"icono"</span>: <span class="code-string">"belleza"</span>
+  }
+  <span class="code-comment">// ... más categorías</span>
+]</code></pre>
+                    </div>
+
+                    <h3 id="paso-6-android">Paso 6: Configurar la Aplicación Android</h3>
+                    <p>Abre Android Studio e importa el directorio <code>frontend/</code> como un proyecto.</p>
+
+                    <h4 id="actualizar-url">Actualizar URL Base de la API (si es necesario)</h4>
+                    <p>La app Android viene preconfigurada para conectarse al backend local. Verifica el archivo <code>RetrofitClient.kt</code>:</p>
+                    
+                    <div class="code-block" data-lang="kotlin">
+                        <div class="code-header">
+                            <span class="code-lang">kotlin</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// frontend/app/src/main/java/com/imirly/app/network/RetrofitClient.kt</span>
+<span class="code-keyword">object</span> <span class="code-class">RetrofitClient</span> {
+    <span class="code-keyword">private const val</span> <span class="code-property">BASE_URL</span> = <span class="code-string">"http://10.0.2.2:8080"</span>
+    
+    <span class="code-comment">// 10.0.2.2 es la IP especial para que el emulador Android llegue a la máquina host</span>
+    <span class="code-comment">// Para dispositivos físicos, reemplaza con la IP local de tu computadora (ej: "http://192.168.1.100:8080")</span>
+}</code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <p><strong>⚠️ Importante:</strong> La IP <code>10.0.2.2</code> solo funciona para emuladores Android. Si pruebas en un dispositivo físico, reemplázala con la dirección IP de tu red local.</p>
+                    </div>
+
+                    <h4 id="sincronizar-gradle">Sincronizar Dependencias Gradle</h4>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Abrir Proyecto</h4>
+                                <p>Android Studio detectará los archivos build.gradle.kts y te pedirá sincronizar</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Sincronizar Gradle</h4>
+                                <p>Haz clic en "Sync Now" en la barra de notificaciones, o ve a File → Sync Project with Gradle Files</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Esperar Dependencias</h4>
+                                <p>Gradle descargará todas las dependencias necesarias incluyendo Retrofit, Jetpack Compose y Navigation</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Dependencias clave en <code>app/build.gradle.kts</code>:</p>
+                    
+                    <div class="code-block" data-lang="kotlin">
+                        <div class="code-header">
+                            <span class="code-lang">kotlin</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-property">dependencies</span> {
+    <span class="code-comment">// Jetpack Compose para UI</span>
+    <span class="code-function">implementation</span>(platform(libs.androidx.compose.bom))
+    <span class="code-function">implementation</span>(libs.androidx.compose.material3)
+    
+    <span class="code-comment">// Retrofit para comunicación con API</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"com.squareup.retrofit2:retrofit:2.9.0"</span>)
+    <span class="code-function">implementation</span>(<span class="code-string">"com.squareup.retrofit2:converter-gson:2.9.0"</span>)
+    
+    <span class="code-comment">// Navigation</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"androidx.navigation:navigation-compose:2.8.0"</span>)
+    
+    <span class="code-comment">// ViewModel para gestión de estado</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4"</span>)
+}</code></pre>
+                    </div>
+
+                    <h3 id="paso-7-ejecutar">Paso 7: Ejecutar la Aplicación Android</h3>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Seleccionar Dispositivo/Emulador</h4>
+                                <p>Crea un Android Virtual Device (AVD) o conecta un dispositivo físico con depuración USB habilitada</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Compilar y Ejecutar</h4>
+                                <p>Haz clic en el botón verde "Run" (▶️) o presiona Shift + F10</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Esperar la Compilación</h4>
+                                <p>Gradle compilará el código Kotlin e instalará el APK en tu dispositivo/emulador</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>La App se Lanza</h4>
+                                <p>La aplicación se abrirá en la pantalla de onboarding</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 id="paso-8-cuenta">Paso 8: Crear tu Primera Cuenta</h3>
+                    <p>Una vez que la app esté ejecutándose, prueba el flujo completo:</p>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Navegar a Registro</h4>
+                                <p>Desde la pantalla de onboarding, toca "Crear Cuenta"</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Completar Formulario de Registro</h4>
+                                <p>Ingresa los datos: Nombre, Email, Contraseña, Tipo de Usuario (Cliente o Profesional), Documento de Identidad</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Enviar Registro</h4>
+                                <p>La app envía una petición POST a <code>/api/v1/auth/register</code></p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Recibir Token JWT</h4>
+                                <p>Tras el registro exitoso, recibirás un token JWT que se almacena automáticamente</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>Flujo de registro desde <code>AuthController.java</code>:</p>
+                    
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-property">@PostMapping</span>(<span class="code-string">"/register"</span>)
+<span class="code-keyword">public</span> <span class="code-class">ResponseEntity</span>&lt;?&gt; <span class="code-function">registerUser</span>(<span class="code-property">@RequestBody</span> <span class="code-class">RegisterUserRequest</span> request) {
+    <span class="code-keyword">try</span> {
+        <span class="code-class">RegisterUserCommand</span> command = <span class="code-keyword">new</span> <span class="code-class">RegisterUserCommand</span>(
+            request.<span class="code-function">getNombre</span>(),
+            request.<span class="code-function">getEmail</span>(),
+            request.<span class="code-function">getRawPassword</span>(),
+            <span class="code-class">UserType</span>.<span class="code-function">valueOf</span>(request.<span class="code-function">getTipoUsuario</span>().<span class="code-function">toUpperCase</span>()),
+            request.<span class="code-function">getDocumentoIdentidad</span>()
+        );
+        
+        <span class="code-class">User</span> newUser = registerUserUseCase.<span class="code-function">registerUser</span>(command);
+        <span class="code-keyword">return</span> <span class="code-class">ResponseEntity</span>.<span class="code-function">status</span>(<span class="code-class">HttpStatus</span>.<span class="code-property">CREATED</span>)
+            .<span class="code-function">body</span>(<span class="code-string">"Usuario registrado con ID: "</span> + newUser.<span class="code-function">getId</span>());
+    } <span class="code-keyword">catch</span> (<span class="code-class">IllegalArgumentException</span> e) {
+        <span class="code-keyword">return</span> <span class="code-class">ResponseEntity</span>.<span class="code-function">status</span>(<span class="code-class">HttpStatus</span>.<span class="code-property">BAD_REQUEST</span>).<span class="code-function">body</span>(e.<span class="code-function">getMessage</span>());
+    }
+}</code></pre>
+                    </div>
+
+                    <h3 id="paso-9-explorar">Paso 9: Explorar Funcionalidades Principales</h3>
+                    <p>Con la autenticación completa, explora la plataforma:</p>
+
+                    <div class="user-features">
+                        <div class="user-feature-card">
+                            <h4>Para Proveedores de Servicios (Profesional)</h4>
+                            <ul class="feature-list">
+                                <li><strong>Crear un Anuncio de Servicio:</strong> Navega a la pantalla "Publicar", selecciona categoría y subcategoría, ingresa detalles del servicio, precio y ubicación, envía para crear un anuncio activo</li>
+                                <li><strong>Gestionar tus Anuncios:</strong> Ver todos tus servicios publicados, pausar/reactivar anuncios, editar precios y descripciones</li>
+                            </ul>
+                        </div>
+
+                        <div class="user-feature-card">
+                            <h4>Para Clientes</h4>
+                            <ul class="feature-list">
+                                <li><strong>Explorar Servicios:</strong> Explora categorías en la pantalla de inicio, ver subcategorías y anuncios activos, ver valoraciones y detalles del proveedor</li>
+                                <li><strong>Solicitar un Servicio:</strong> Selecciona un anuncio, envía una solicitud de servicio con detalles, recibe propuestas de presupuesto vía chat</li>
+                                <li><strong>Aceptar Propuestas:</strong> Revisar precios propuestos, aceptar para retener fondos en garantía, seguir la finalización del servicio</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Solución de Problemas -->
+                <section class="content-section">
+                    <h2 id="solucion-problemas">Solución de Problemas</h2>
+
+                    <div class="troubleshoot-grid">
+                        <div class="troubleshoot-card">
+                            <div class="troubleshoot-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <h4>El Backend no Inicia</h4>
+                            </div>
+                            <p class="issue"><strong>Problema:</strong> Error de conexión a PostgreSQL</p>
+                            <div class="code-block small" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code>Caused by: org.postgresql.util.PSQLException: Connection refused</code></pre>
+                            </div>
+                            <p class="solution"><strong>Solución:</strong> Verifica que PostgreSQL esté ejecutándose:</p>
+                            <div class="code-block small" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-comment"># Para Docker</span>
+<span class="code-function">docker</span> ps | <span class="code-function">grep</span> imirly_db
+
+<span class="code-comment"># Para instalación local</span>
+<span class="code-function">sudo</span> systemctl status postgresql</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="troubleshoot-card">
+                            <div class="troubleshoot-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <h4>La App Android no Conecta al Backend</h4>
+                            </div>
+                            <p class="issue"><strong>Problema:</strong> Error de red o respuestas 404</p>
+                            <p class="solution"><strong>Soluciones:</strong></p>
+                            <ul class="solution-list">
+                                <li>Verifica que el backend esté ejecutándose en el puerto 8080</li>
+                                <li>Revisa el BASE_URL en RetrofitClient.kt</li>
+                                <li>Para dispositivos físicos, asegúrate de estar en la misma red WiFi</li>
+                                <li>Desactiva cualquier VPN que pueda bloquear conexiones locales</li>
+                            </ul>
+                        </div>
+
+                        <div class="troubleshoot-card">
+                            <div class="troubleshoot-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                <h4>Base de Datos Ya Inicializada</h4>
+                            </div>
+                            <p class="issue">Si ves:</p>
+                            <div class="code-block small" data-lang="bash">
+                                <div class="code-header">
+                                    <span class="code-lang">bash</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code>✅ La base de datos ya tiene categorías. Saltando Seed.</code></pre>
+                            </div>
+                            <p class="solution">Esto es normal - el seeder solo se ejecuta una vez. Para volver a ejecutarlo:</p>
+                            <div class="code-block small" data-lang="sql">
+                                <div class="code-header">
+                                    <span class="code-lang">sql</span>
+                                    <button class="copy-btn" onclick="copyCode(this)">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-comment">-- Conecta a la base de datos y trunca las tablas</span>
+<span class="code-keyword">TRUNCATE TABLE</span> usuarios, categoria <span class="code-keyword">CASCADE</span>;</code></pre>
+                            </div>
+                            <p class="solution">Luego reinicia el backend.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Referencia Rápida -->
+                <section class="content-section">
+                    <h2 id="referencia-rapida">Referencia Rápida</h2>
+
+                    <div class="quick-ref-grid">
+                        <div class="quick-ref-card">
+                            <h4>Puertos Predeterminados</h4>
+                            <ul class="ref-list">
+                                <li><strong>Backend API:</strong> http://localhost:8080</li>
+                                <li><strong>PostgreSQL:</strong> localhost:5432</li>
+                            </ul>
+                        </div>
+
+                        <div class="quick-ref-card">
+                            <h4>Credenciales de Base de Datos</h4>
+                            <ul class="ref-list">
+                                <li><strong>Database:</strong> imirly_db</li>
+                                <li><strong>Username:</strong> user_imirly</li>
+                                <li><strong>Password:</strong> password_imirly</li>
+                            </ul>
+                        </div>
+
+                        <div class="quick-ref-card">
+                            <h4>Endpoints Clave de la API</h4>
+                            <ul class="ref-list">
+                                <li><strong>Auth:</strong> /api/v1/auth/register, /api/v1/auth/login</li>
+                                <li><strong>Catálogo:</strong> /api/v1/catalog/categorias, /api/v1/catalog/subcategorias</li>
+                                <li><strong>Anuncios:</strong> /api/v1/anuncios</li>
+                                <li><strong>Contratos:</strong> /api/v1/solicitudes</li>
+                                <li><strong>Mensajes:</strong> /api/v1/mensajes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Siguientes Pasos -->
+                <section class="content-section">
+                    <h2 id="siguientes-pasos">Siguientes Pasos</h2>
+                    <p>Ahora que iMirly está ejecutándose localmente, profundiza en la arquitectura:</p>
+                    
+                    <div class="next-steps-grid">
+                        <a href="arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Visión General de la Arquitectura</h4>
+                                <p>Aprende sobre el patrón de arquitectura hexagonal, organización de módulos y cómo los puertos y adaptadores separan la lógica de dominio de la infraestructura</p>
+                            </div>
+                        </a>
+
+                        <a href="android-overview.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Visión General de la App Android</h4>
+                                <p>Explora la estructura de la aplicación móvil, componentes de Jetpack Compose y navegación</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="pagination">
+                        <a href="introduccion.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Introducción</span>
+                        </a>
+                        <a href="arquitectura.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Arquitectura →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho (Table of Contents) -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav" id="toc-nav"></nav>
+            </div>
+        </aside>
+    </div>
+
+    <script src="../js/menu-loader.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // Tabs functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons and contents
+                    tabBtns.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding content
+                    this.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+
+        // Función para copiar código al portapapeles
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const codeElement = codeBlock.querySelector('code');
+            
+            // Obtener el texto sin los spans de sintaxis
+            let codeText = '';
+            codeElement.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    codeText += node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    codeText += node.textContent;
+                }
+            });
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(codeText.trim()).then(() => {
+                // Cambiar el estado del botón
+                const originalHTML = button.innerHTML;
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    ¡Copiado!
+                `;
+                
+                // Restaurar después de 2 segundos
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

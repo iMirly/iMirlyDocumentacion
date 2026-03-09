@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Tareas - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA GESTIÓN DE TAREAS */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Badges */
+        .kotlin-badge {
+            display: inline-block;
+            background-color: rgba(127, 82, 255, 0.1);
+            color: #7f52ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .http-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .success-box {
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .success-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .success-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* State flow diagram */
+        .state-flow {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+            overflow-x: auto;
+        }
+
+        .state-container {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            min-width: 800px;
+            padding: var(--spacing-md) 0;
+        }
+
+        .state-box {
+            background-color: var(--color-bg-hover);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            text-align: center;
+            min-width: 120px;
+            position: relative;
+        }
+
+        .state-box.active {
+            border-color: var(--color-purple);
+            background-color: rgba(108, 92, 231, 0.1);
+        }
+
+        .state-box.success {
+            border-color: #2ECC71;
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+
+        .state-box.warning {
+            border-color: #FFB800;
+            background-color: rgba(255, 184, 0, 0.1);
+        }
+
+        .state-box.danger {
+            border-color: #FF4757;
+            background-color: rgba(255, 71, 87, 0.1);
+        }
+
+        .state-name {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .state-desc {
+            font-size: 0.6875rem;
+            color: var(--color-text-muted);
+        }
+
+        .state-arrow {
+            color: var(--color-text-muted);
+            font-size: 1.25rem;
+        }
+
+        /* User flow steps */
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-step-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .flow-step-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .flow-step-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* State enum table */
+        .states-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .state-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            border-left: 3px solid var(--color-purple);
+        }
+
+        .state-card code {
+            background-color: var(--color-bg-hover);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--color-purple-light);
+            display: block;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .state-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Chat preview */
+        .chat-preview {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .chat-bubble {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: var(--spacing-md);
+            font-size: 0.875rem;
+        }
+
+        .chat-bubble.special {
+            background-color: rgba(46, 204, 113, 0.1);
+            border: 1px solid #2ECC71;
+            color: var(--color-text-primary);
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.system {
+            background-color: rgba(255, 184, 0, 0.1);
+            border: 1px solid #FFB800;
+            color: var(--color-text-primary);
+            margin: 0 auto;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .bubble-title {
+            font-weight: 700;
+            color: #2ECC71;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .approval-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        .approval-btn {
+            padding: 10px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: opacity 0.2s;
+        }
+
+        .approval-btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-approve {
+            background-color: #2ECC71;
+            color: white;
+        }
+
+        .btn-reject {
+            background-color: transparent;
+            border: 1px solid #FF4757;
+            color: #FF4757;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Características</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Gestión de Tareas</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Gestión de Tareas</h1>
+                    <p class="page-description">
+                        Ciclo de vida completo del servicio desde la solicitud hasta la aprobación con flujos de trabajo controlados por estado e integración de depósito en garantía
+                    </p>
+                </header>
+
+                <!-- Descripción General -->
+                <section class="content-section" id="descripcion-general">
+                    <h2>Descripción General</h2>
+                    <p>El sistema de gestión de tareas de iMirly gestiona todo el ciclo de vida de la prestación de servicios mediante una máquina de estados que garantiza la correcta progresión del flujo de trabajo. Los contratos pasan por etapas bien definidas, desde la solicitud inicial hasta su finalización, con el dinero depositado en garantía como garantía.</p>
+                </section>
+
+                <!-- Estados del Ciclo de Vida -->
+                <section class="content-section" id="estados-ciclo-vida">
+                    <h2>Estados del Ciclo de Vida del Servicio</h2>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">EstadoSolicitud.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public enum EstadoSolicitud {
+    PENDIENTE,          // Client sent initial request
+    ACEPTADO,           // Provider accepted the request
+    EN_CURSO,           // Work in progress
+    COMPLETADO,         // Work completed and payment released
+    RECHAZADO,          // Request rejected by provider
+    PENDIENTE_PAGO,     // Budget sent, awaiting client payment
+    PAGADO,             // Client paid, money in escrow
+    REVISION_PENDIENTE  // Provider marked work done, awaiting approval
+}</code></pre>
+                    </div>
+
+                    <div class="states-grid">
+                        <div class="state-card">
+                            <code>PENDIENTE</code>
+                            <p>El cliente envía la solicitud inicial</p>
+                        </div>
+                        <div class="state-card">
+                            <code>ACEPTADO</code>
+                            <p>El proveedor aceptó la solicitud</p>
+                        </div>
+                        <div class="state-card">
+                            <code>PENDIENTE_PAGO</code>
+                            <p>Presupuesto enviado, esperando pago del cliente</p>
+                        </div>
+                        <div class="state-card">
+                            <code>PAGADO</code>
+                            <p>Cliente pagó, dinero en depósito en garantía</p>
+                        </div>
+                        <div class="state-card">
+                            <code>EN_CURSO</code>
+                            <p>Trabajo en progreso</p>
+                        </div>
+                        <div class="state-card">
+                            <code>REVISION_PENDIENTE</code>
+                            <p>Proveedor marcó trabajo como terminado, esperando aprobación</p>
+                        </div>
+                        <div class="state-card">
+                            <code>COMPLETADO</code>
+                            <p>Trabajo completado y pago liberado</p>
+                        </div>
+                        <div class="state-card" style="border-left-color: #FF4757;">
+                            <code>RECHAZADO</code>
+                            <p>Solicitud rechazada por el proveedor</p>
+                        </div>
+                    </div>
+
+                    <div class="state-flow">
+                        <div class="state-container">
+                            <div class="state-box">
+                                <div class="state-name">PENDIENTE</div>
+                                <div class="state-desc">Solicitud enviada</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box success">
+                                <div class="state-name">ACEPTADO</div>
+                                <div class="state-desc">Aceptado</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box warning">
+                                <div class="state-name">PENDIENTE_PAGO</div>
+                                <div class="state-desc">Presupuesto</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box active">
+                                <div class="state-name">PAGADO</div>
+                                <div class="state-desc">En escrow</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box">
+                                <div class="state-name">EN_CURSO</div>
+                                <div class="state-desc">En progreso</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box warning">
+                                <div class="state-name">REVISION_PENDIENTE</div>
+                                <div class="state-desc">Revisión</div>
+                            </div>
+                            <span class="state-arrow">→</span>
+                            <div class="state-box success">
+                                <div class="state-name">COMPLETADO</div>
+                                <div class="state-desc">Finalizado</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Flujo de Usuario -->
+                <section class="content-section" id="flujo-usuario">
+                    <h2>Flujo de Usuario Completo</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">1</div>
+                            <h4>Servicio de Solicitudes de Clientes</h4>
+                            <p>El cliente explora las listas de servicios, selecciona un proveedor y envía una solicitud de contrato con detalles sobre lo que necesita.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">2</div>
+                            <h4>Solicitud de Reseñas de Proveedores</h4>
+                            <p>El proveedor recibe la solicitud en su bandeja de entrada y puede aceptarla o rechazarla.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">3</div>
+                            <h4>Negociación Presupuestaria</h4>
+                            <p>El proveedor envía una propuesta de presupuesto por chat. El cliente puede aceptarla y pagarla o rechazarla y solicitar una revisión.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">4</div>
+                            <h4>Pago a Depósito en Garantía</h4>
+                            <p>Al ser aceptado, se deduce el saldo del cliente y el dinero se retiene en depósito en garantía (estado PAGADO).</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">5</div>
+                            <h4>Ejecución de Obra</h4>
+                            <p>El proveedor completa el trabajo mientras el dinero permanece seguro en depósito en garantía.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">6</div>
+                            <h4>Presentación de Trabajos</h4>
+                            <p>El proveedor marca el trabajo como terminado (REVISION_PENDIENTE), activando un mensaje especial con botones de aprobación.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">7</div>
+                            <h4>Aprobación del Cliente</h4>
+                            <p>El cliente revisa y aprueba (libera el pago) o rechaza (solicita correcciones).</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">8</div>
+                            <h4>Liberación de Pago</h4>
+                            <p>Tras la aprobación, los fondos de depósito en garantía se agregan al saldo del proveedor y el contrato pasa a COMPLETADO.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Android -->
+                <section class="content-section" id="implementacion-android">
+                    <h2>Implementación Android</h2>
+
+                    <h3>Bandeja de Entrada de Mensajes</h3>
+                    <p>La bandeja de entrada muestra todos los contratos activos con su estado actual:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MessagesScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun MessagesScreen(
+    navController: NavController, 
+    viewModel: MessagesViewModel = viewModel()
+) {
+    val iMirlyPurple = Color(0xFF6C5CE7)
+    
+    // Reload when screen becomes visible
+    LaunchedEffect(Unit) {
+        viewModel.cargarSolicitudes()
+    }
+    
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text(
+            text = "Bandeja de Entrada",
+            fontSize: 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(24.dp)
+        )
+        
+        if (viewModel.isLoading.value) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                CircularProgressIndicator(color = iMirlyPurple)
+            }
+        } else if (viewModel.solicitudes.value.isEmpty()) {
+            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("No tienes solicitudes nuevas", color = Color.Gray)
+            }
+        } else {
+            LazyColumn {
+                items(viewModel.solicitudes.value) { solicitud ->
+                    SolicitudCard(solicitud, viewModel, navController)
+                }
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Tarjeta de Solicitud de Contrato</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudCard.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun SolicitudCard(
+    solicitud: SolicitudResponse, 
+    viewModel: MessagesViewModel, 
+    navController: NavController
+) {
+    Surface(
+        shape = RoundedCornerShape(16.dp),
+        color = Color.White,
+        shadowElevation = 2.dp
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                // Contact avatar
+                Surface(
+                    shape = RoundedCornerShape(20.dp), 
+                    color = Color(0xFFF0F0F0)
+                ) {
+                    Icon(Icons.Default.Person, null, modifier = Modifier.size(40.dp))
+                }
+                
+                Spacer(modifier = Modifier.width(12.dp))
+                
+                Column(modifier = Modifier.weight(1f)) {
+                    // Show the other party's name
+                    val nombreMostrar = if (solicitud.soyElProveedor) 
+                        solicitud.nombreCliente 
+                    else 
+                        solicitud.nombreProveedor
+                    
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = nombreMostrar ?: "Usuario",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 16.sp
+                        )
+                        
+                        // Role tag
+                        val tagText = if (solicitud.soyElProveedor) 
+                            "CLIENTE" 
+                        else 
+                            "PROVEEDOR"
+                        Surface(
+                            shape = RoundedCornerShape(4.dp),
+                            color = Color(0xFF6C5CE7).copy(alpha = 0.1f)
+                        ) {
+                            Text(
+                                text = tagText,
+                                color = Color(0xFF6C5CE7),
+                                fontSize = 10.sp,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp)
+                            )
+                        }
+                    }
+                    
+                    Text(
+                        "Estado: ${solicitud.estado.replace("_", " ")}",
+                        color = Color.Gray,
+                        fontSize: 12.sp
+                    )
+                }
+            }
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Request details
+            Surface(
+                color = Color(0xFFFAFAFA), 
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Text(
+                    text = "\"${solicitud.detallesSolicitud}\"",
+                    modifier = Modifier.padding(12.dp),
+                    fontStyle = FontStyle.Italic,
+                    fontSize = 14.sp
+                )
+            }
+            
+            // State-specific actions
+            if (solicitud.estado == "PENDIENTE") {
+                Spacer(modifier = Modifier.height(16.dp))
+                if (solicitud.soyElProveedor) {
+                    // Provider can accept or reject
+                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        OutlinedButton(
+                            onClick = { 
+                                viewModel.cambiarEstado(solicitud.id, "RECHAZADO") 
+                            },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.outlinedButtonColors(
+                                contentColor = Color(0xFFFF4757)
+                            )
+                        ) { Text("Rechazar") }
+                        
+                        Button(
+                            onClick = { 
+                                viewModel.cambiarEstado(solicitud.id, "ACEPTADO") 
+                            },
+                            modifier = Modifier.weight(1f),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF2ECC71)
+                            )
+                        ) { Text("Aceptar") }
+                    }
+                } else {
+                    Text(
+                        text = "Esperando a que el profesional acepte la solicitud...",
+                        color = Color.Gray,
+                        fontStyle = FontStyle.Italic,
+                        fontSize: 13.sp
+                    )
+                }
+            } else if (solicitud.estado != "RECHAZADO") {
+                // Show chat button for all other states
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(
+                    onClick = {
+                        val otroUsuarioId = if (solicitud.soyElProveedor) 
+                            solicitud.clienteId 
+                        else 
+                            solicitud.proveedorId ?: ""
+                        val nombreChat = if (solicitud.soyElProveedor) 
+                            solicitud.nombreCliente 
+                        else 
+                            solicitud.nombreProveedor
+                        
+                        navController.navigate(
+                            "chat/${otroUsuarioId}/${nombreChat}/${solicitud.id}/${solicitud.soyElProveedor}"
+                        )
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color(0xFF6C5CE7)
+                    )
+                ) {
+                    Text(
+                        if (solicitud.estado == "PENDIENTE_PAGO") 
+                            "Ver Presupuesto" 
+                        else 
+                            "Abrir Chat"
+                    )
+                }
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Flujo de Finalización del Trabajo</h3>
+                    <p>El proveedor marca el trabajo como completado:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun marcarTrabajoFinalizado(receptorId: String, solicitudId: String) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "He marcado el trabajo como finalizado. Por favor, revísalo y confirma si todo está correcto para liberar el pago.",
+                solicitudId = solicitudId,
+                tipo = "TRABAJO_FINALIZADO"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error marking work finished", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <p>El cliente aprueba el trabajo:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun aprobarTrabajo(receptorId: String, solicitudId: String) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "He revisado el trabajo y está perfecto. Pago liberado, ¡muchas gracias!",
+                solicitudId = solicitudId,
+                tipo = "SERVICIO_COMPLETADO"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error approving work", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <p>El cliente rechaza el trabajo (solicita correcciones):</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun rechazarTrabajo(receptorId: String, solicitudId: String) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "El trabajo no cumple con lo acordado. Necesita arreglos.",
+                solicitudId = solicitudId,
+                tipo = "SERVICIO_RECHAZADO"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error rejecting work", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Botones de Aprobación de Trabajo en el Chat</h3>
+                    <p>Cuando el proveedor marca el trabajo como realizado, el cliente ve botones de aprobación en el chat:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatBubble.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">else if (mensaje.tipo == "TRABAJO_FINALIZADO") {
+    Text("Trabajo Finalizado", 
+         fontWeight = FontWeight.Bold, 
+         color = Color(0xFF2ECC71))
+    Spacer(modifier = Modifier.height(8.dp))
+    Text(mensaje.contenido, color = Color.Black, fontSize = 15.sp)
+    
+    if (!soyElProveedor && !yaRespondido) {
+        Spacer(modifier = Modifier.height(12.dp))
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(
+                onClick = onAprobarTrabajoClick,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF2ECC71)
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Aprobar y Liberar Pago")
+            }
+            OutlinedButton(
+                onClick = onRechazarTrabajoClick,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    contentColor = Color.Red
+                ),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Rechazar (Exigir Arreglos)")
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="chat-preview">
+                        <div class="chat-bubble special">
+                            <div class="bubble-title">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Trabajo Finalizado
+                            </div>
+                            <p>He marcado el trabajo como finalizado. Por favor, revísalo y confirma si todo está correcto para liberar el pago.</p>
+                            
+                            <div class="approval-buttons">
+                                <button class="approval-btn btn-approve">Aprobar y Liberar Pago</button>
+                                <button class="approval-btn btn-reject">Rechazar (Exigir Arreglos)</button>
+                            </div>
+                        </div>
+                        <div style="text-align: center; color: var(--color-text-muted); font-size: 0.75rem; margin-top: var(--spacing-sm);">
+                            Vista previa de los botones de aprobación en el chat
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Backend -->
+                <section class="content-section" id="implementacion-backend">
+                    <h2>Implementación Backend</h2>
+
+                    <h3>Modelo de Dominio Contractual</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContrato.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@Setter
+public class SolicitudContrato {
+    private UUID id;
+    private UUID clienteId;
+    private UUID proveedorId;
+    private UUID anuncioId;
+    private EstadoSolicitud estado;
+    private String detallesSolicitud;
+    private Double precioAcordado;
+    private LocalDateTime fechaCreacion;
+    private String nombreProveedor;
+    private String nombreCliente;
+    
+    // Initial state constructor
+    public SolicitudContrato(UUID clienteId, UUID anuncioId, String detallesSolicitud) {
+        this.clienteId = clienteId;
+        this.anuncioId = anuncioId;
+        this.detallesSolicitud = detallesSolicitud;
+        this.estado = EstadoSolicitud.PENDIENTE;
+        this.fechaCreacion = LocalDateTime.now();
+    }
+    
+    // State transition methods
+    public void aceptar() {
+        if (this.estado == EstadoSolicitud.PENDIENTE) {
+            this.estado = EstadoSolicitud.ACEPTADO;
+        } else {
+            throw new IllegalStateException(
+                "Solo se pueden aceptar solicitudes pendientes."
+            );
+        }
+    }
+    
+    public void proponerPrecio(Double precio) {
+        this.precioAcordado = precio;
+        this.estado = EstadoSolicitud.PENDIENTE_PAGO;
+    }
+    
+    public void pagarPresupuesto() {
+        if (this.estado != EstadoSolicitud.PENDIENTE_PAGO) {
+            throw new IllegalStateException(
+                "Solo se puede pagar una solicitud pendiente de pago."
+            );
+        }
+        this.estado = EstadoSolicitud.PAGADO;
+    }
+    
+    public void marcarComoTerminado() {
+        this.estado = EstadoSolicitud.REVISION_PENDIENTE;
+    }
+    
+    public void validarTrabajo(boolean esBueno) {
+        if (esBueno) {
+            this.estado = EstadoSolicitud.COMPLETADO;
+        } else {
+            this.estado = EstadoSolicitud.PAGADO; // Back to in-progress
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Servicio por Contrato</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+@RequiredArgsConstructor
+public class SolicitudContratoService implements SolicitudContratoUseCase {
+    
+    private final SolicitudContratoRepositoryPort repositoryPort;
+    private final UserRepositoryPort userRepository;
+    private final TransaccionRepository transaccionRepository;
+    
+    @Override
+    public SolicitudContrato crearSolicitud(CrearSolicitudCommand command) {
+        anuncioRepositoryPort.findById(command.getAnuncioId())
+            .orElseThrow(() -> new IllegalArgumentException("El anuncio no existe."));
+        
+        SolicitudContrato nueva = new SolicitudContrato(
+            command.getClienteId(),
+            command.getAnuncioId(),
+            command.getDetalles()
+        );
+        return repositoryPort.save(nueva);
+    }
+    
+    @Override
+    public SolicitudContrato cambiarEstado(CambiarEstadoSolicitudCommand command) {
+        SolicitudContrato solicitud = repositoryPort
+            .findById(command.getSolicitudId())
+            .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada."));
+        
+        if (command.getNuevoEstado() == EstadoSolicitud.RECHAZADO) {
+            repositoryPort.deleteById(solicitud.getId());
+            solicitud.setEstado(EstadoSolicitud.RECHAZADO);
+            return solicitud;
+        }
+        
+        if (command.getNuevoEstado() == EstadoSolicitud.ACEPTADO) {
+            if (solicitud.getEstado() == EstadoSolicitud.PENDIENTE) {
+                solicitud.aceptar();
+            } else if (solicitud.getEstado() == EstadoSolicitud.PENDIENTE_PAGO) {
+                solicitud.setEstado(EstadoSolicitud.ACEPTADO);
+            }
+        } else {
+            solicitud.setEstado(command.getNuevoEstado());
+            
+            // Release escrow when work is completed
+            if (command.getNuevoEstado() == EstadoSolicitud.COMPLETADO) {
+                User proveedor = userRepository.findById(solicitud.getProveedorId())
+                    .orElseThrow();
+                proveedor.sumarSaldo(solicitud.getPrecioAcordado());
+                userRepository.save(proveedor);
+                
+                TransaccionEntity tr = new TransaccionEntity(
+                    null, proveedor.getId(), 
+                    solicitud.getPrecioAcordado(), 
+                    "SERVICIO_COBRADO",
+                    "Cobro por trabajo en iMirly", 
+                    LocalDateTime.now()
+                );
+                transaccionRepository.save(tr);
+            }
+        }
+        
+        return repositoryPort.save(solicitud);
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Cambios de Estado del Servicio de Mensajes</h3>
+                    <p>Los tipos de mensajes especiales desencadenan cambios de estado:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+public class MensajeService implements MensajeUseCase {
+    
+    @Override
+    @Transactional
+    public Mensaje enviarMensaje(EnviarMensajeCommand command) {
+        // Handle work completion message
+        if (command.getTipo() == TipoMensaje.TRABAJO_FINALIZADO) {
+            SolicitudContrato solicitud = solicitudRepositoryPort
+                .findById(command.getSolicitudId())
+                .orElseThrow();
+            solicitud.marcarComoTerminado();
+            solicitudRepositoryPort.save(solicitud);
+        } 
+        // Handle work approval
+        else if (command.getTipo() == TipoMensaje.SERVICIO_COMPLETADO) {
+            solicitudContratoUseCase.cambiarEstado(
+                new CambiarEstadoSolicitudCommand(
+                    command.getSolicitudId(), 
+                    EstadoSolicitud.COMPLETADO, 
+                    command.getRemitenteId()
+                )
+            );
+        } 
+        // Handle work rejection
+        else if (command.getTipo() == TipoMensaje.SERVICIO_RECHAZADO) {
+            SolicitudContrato solicitud = solicitudRepositoryPort
+                .findById(command.getSolicitudId())
+                .orElseThrow();
+            solicitud.validarTrabajo(false); // Revert to PAGADO
+            solicitudRepositoryPort.save(solicitud);
+        }
+        
+        Mensaje nuevoMensaje = new Mensaje(
+            command.getRemitenteId(),
+            command.getReceptorId(),
+            command.getSolicitudId(),
+            command.getContenido(),
+            command.getTipo()
+        );
+        
+        return repositoryPort.save(nuevoMensaje);
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Endpoints API -->
+                <section class="content-section" id="endpoints-api">
+                    <h2>Puntos Finales de la API REST</h2>
+
+                    <h3>Crear Solicitud de Contrato</h3>
+                    <span class="http-badge">POST</span>
+                    <code class="inline">/api/v1/solicitudes</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PostMapping
+public ResponseEntity<?> crearSolicitud(@RequestBody CrearSolicitudRequest request) {
+    String tokenUserId = SecurityContextHolder.getContext()
+        .getAuthentication().getCredentials();
+    UUID clienteId = UUID.fromString(tokenUserId);
+    
+    CrearSolicitudCommand command = new CrearSolicitudCommand(
+        clienteId, 
+        request.getAnuncioId(),
+        request.getDetalles()
+    );
+    return ResponseEntity.status(HttpStatus.CREATED)
+        .body(useCase.crearSolicitud(command));
+}</code></pre>
+                    </div>
+
+                    <h3>Cambiar el Estado del Contrato</h3>
+                    <span class="http-badge">PATCH</span>
+                    <code class="inline">/api/v1/solicitudes/{id}/estado</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PatchMapping("/{id}/estado")
+public ResponseEntity<?> cambiarEstado(
+    @PathVariable UUID id,
+    @RequestBody CambiarEstadoRequest request
+) {
+    String tokenUserId = SecurityContextHolder.getContext()
+        .getAuthentication().getCredentials();
+    UUID usuarioId = UUID.fromString(tokenUserId);
+    
+    CambiarEstadoSolicitudCommand command = new CambiarEstadoSolicitudCommand(
+        id, 
+        request.getNuevoEstado(),
+        usuarioId
+    );
+    return ResponseEntity.ok(useCase.cambiarEstado(command));
+}</code></pre>
+                    </div>
+
+                    <h3>Obtener Mis Contratos como Cliente</h3>
+                    <span class="http-badge">GET</span>
+                    <code class="inline">/api/v1/solicitudes/cliente</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/cliente")
+public ResponseEntity<?> getMisSolicitudesComoCliente() {
+    String tokenUserId = SecurityContextHolder.getContext()
+        .getAuthentication().getCredentials();
+    return ResponseEntity.ok(
+        useCase.getSolicitudesPorCliente(UUID.fromString(tokenUserId))
+    );
+}</code></pre>
+                    </div>
+
+                    <h3>Obtener Mis Contratos como Proveedor</h3>
+                    <span class="http-badge">GET</span>
+                    <code class="inline">/api/v1/solicitudes/proveedor</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/proveedor")
+public ResponseEntity<?> getSolicitudesRecibidasComoProveedor() {
+    String tokenUserId = SecurityContextHolder.getContext()
+        .getAuthentication().getCredentials();
+    return ResponseEntity.ok(
+        useCase.getSolicitudesPorProveedor(UUID.fromString(tokenUserId))
+    );
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>La bandeja de entrada fusiona los contratos de clientes y proveedores en una única vista unificada, y la <code class="inline">soyElProveedor</code> bandera determina qué rol tiene el usuario en cada contrato.</p>
+                    </div>
+                </section>
+
+                <!-- Validación y Seguridad -->
+                <section class="content-section" id="validacion-seguridad">
+                    <h2>Validación y Seguridad</h2>
+
+                    <h3>Validación de Transición de Estado</h3>
+                    <p>El modelo de dominio impone transiciones de estado válidas:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContrato.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void aceptar() {
+    if (this.estado == EstadoSolicitud.PENDIENTE) {
+        this.estado = EstadoSolicitud.ACEPTADO;
+    } else {
+        throw new IllegalStateException(
+            "Solo se pueden aceptar solicitudes pendientes."
+        );
+    }
+}</code></pre>
+                    </div>
+
+                    <p>Esto evita operaciones no válidas como:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Aceptar un contrato ya completado</li>
+                        <li>Pagar por un contrato que no ha sido presupuestado</li>
+                        <li>Marcar el trabajo como terminado antes del pago</li>
+                    </ul>
+
+                    <h3>Protección contra la Eliminación de Chat</h3>
+                    <p>Los contratos con pagos activos no se pueden eliminar:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void eliminarSolicitud(UUID id) {
+    SolicitudContrato solicitud = repositoryPort.findById(id)
+        .orElseThrow();
+    
+    // Block deletion if money is involved
+    if (solicitud.getEstado() == EstadoSolicitud.PENDIENTE_PAGO ||
+        solicitud.getEstado() == EstadoSolicitud.PAGADO ||
+        solicitud.getEstado() == EstadoSolicitud.EN_CURSO ||
+        solicitud.getEstado() == EstadoSolicitud.REVISION_PENDIENTE) {
+        throw new IllegalStateException(
+            "No se puede borrar el chat si hay un presupuesto aceptado."
+        );
+    }
+    
+    repositoryPort.deleteById(id);
+}</code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Protección Financiera
+                        </div>
+                        <p>Esta protección garantiza que los usuarios no puedan eliminar accidentalmente contratos con dinero en depósito, lo que evita disputas financieras.</p>
+                    </div>
+                </section>
+
+                <!-- Integración -->
+                <section class="content-section" id="integracion">
+                    <h2>Puntos de Integración</h2>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Mensajes:</strong> Los cambios de estado activan tipos de mensajes especiales</li>
+                        <li><strong>Monedero Virtual:</strong> El pago transfiere dinero hacia o desde el depósito en garantía</li>
+                        <li><strong>Negociación Presupuestaria:</strong> Las propuestas de precios actualizan el estado del contrato</li>
+                        <li><strong>Sistema de Calificación:</strong> Habilitado después del estado COMPLETADO</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>Consulta el <a href="feature-ratings.html" style="color: var(--color-purple);">Sistema de Calificación</a> para conocer la funcionalidad de revisión posterior a la finalización.</p>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="feature-wallet.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Monedero Virtual</h4>
+                                <p>Descubre cómo funciona el depósito en garantía</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-budget.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Negociación de Presupuesto</h4>
+                                <p>Aprende sobre propuestas de precio</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-ratings.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Sistema de Calificación</h4>
+                                <p>Valoraciones post-servicio</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="feature-wallet.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Monedero Virtual</span>
+                        </a>
+                        <a href="feature-ratings.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Sistema de Calificación →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#descripcion-general" class="toc-link">Descripción General</a>
+                    <a href="#estados-ciclo-vida" class="toc-link">Estados del Ciclo de Vida</a>
+                    <a href="#flujo-usuario" class="toc-link">Flujo de Usuario</a>
+                    <a href="#implementacion-android" class="toc-link">Implementación Android</a>
+                    <a href="#implementacion-backend" class="toc-link">Implementación Backend</a>
+                    <a href="#endpoints-api" class="toc-link">Endpoints API</a>
+                    <a href="#validacion-seguridad" class="toc-link">Validación y Seguridad</a>
+                    <a href="#integracion" class="toc-link">Integración</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

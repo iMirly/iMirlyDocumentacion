@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seguridad - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA SEGURIDAD */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Tablas */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-lg) 0;
+            font-size: 0.875rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--color-border);
+        }
+
+        .data-table th {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: var(--color-text-secondary);
+        }
+
+        .data-table tr:hover td {
+            background-color: var(--color-bg-hover);
+        }
+
+        /* Badges */
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .terminal-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Diagrama de secuencia */
+        .sequence-diagram {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+            overflow-x: auto;
+        }
+
+        .sequence-step {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .sequence-step:last-child {
+            border-bottom: none;
+        }
+
+        .step-number {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Features grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .feature-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--color-bg-hover);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            margin: 0 auto var(--spacing-md);
+        }
+
+        .feature-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .feature-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Best practices */
+        .best-practices-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .practice-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .practice-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-sm);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .practice-card h4 svg {
+            color: var(--color-purple);
+        }
+
+        .practice-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        /* Flow diagram placeholder */
+        .flow-diagram {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .flow-diagram img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .flow-caption {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-top: var(--spacing-md);
+        }
+
+                /* Diagrama de flujo del filtro - Versión SVG corregida */
+        .filter-flow-container {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .filter-flow-svg {
+            width: 100%;
+            max-width: 420px;
+            height: auto;
+        }
+
+        .flow-legend-simple {
+            display: flex;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .legend-row {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .legend-yes {
+            background-color: #0d3b2e;
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid #10b981;
+        }
+
+        .legend-no {
+            background-color: #2d1f1f;
+            color: #ff6b6b;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            border: 1px solid #ff6b6b;
+        }
+
+        .legend-text {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .filter-flow-container {
+                padding: var(--spacing-md);
+            }
+            
+            .flow-legend-simple {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+        }
+        
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Backend</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Seguridad</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Seguridad</h1>
+                    <p class="page-description">
+                        Autenticación JWT y configuración de Spring Security
+                    </p>
+                </header>
+
+                <!-- Arquitectura de Seguridad -->
+                <section class="content-section" id="arquitectura">
+                    <h2>Arquitectura de Seguridad</h2>
+                    <p>El backend de iMirly utiliza <strong>JWT (JSON Web Tokens)</strong> para autenticación stateless con <strong>Spring Security</strong>.</p>
+
+                    <div class="flow-diagram">
+                        <img src="../images/security-sequence.png" alt="Diagrama de Secuencia de Autenticación">
+                        <p class="flow-caption">Flujo de autenticación: Cliente → AuthController → LoginService → PasswordEncoder/JwtTokenAdapter → Base de Datos</p>
+
+                                            <h3>Diagrama de Secuencia de Autenticación</h3>
+                    <div class="sequence-diagram-container">
+                        <svg viewBox="0 0 800 500" class="sequence-flow-svg">
+                            <!-- Definiciones de flechas -->
+                            <defs>
+                                <marker id="arrow-solid" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#6c5ce7" />
+                                </marker>
+                                <marker id="arrow-dashed" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#a0a0a0" />
+                                </marker>
+                                <marker id="arrow-return" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                    <path d="M0,0 L0,6 L9,3 z" fill="#a0a0a0" />
+                                </marker>
+                            </defs>
+
+                            <!-- Líneas de vida (verticales) -->
+                            <!-- Client -->
+                            <line x1="80" y1="60" x2="80" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+                            <!-- AuthController -->
+                            <line x1="220" y1="60" x2="220" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+                            <!-- LoginService -->
+                            <line x1="360" y1="60" x2="360" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+                            <!-- PasswordEncoder -->
+                            <line x1="500" y1="60" x2="500" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+                            <!-- JwtTokenAdapter -->
+                            <line x1="640" y1="60" x2="640" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+                            <!-- Database -->
+                            <line x1="760" y1="60" x2="760" y2="450" stroke="#6c5ce7" stroke-width="2"/>
+
+                            <!-- Cajas de actores (arriba) -->
+                            <!-- Client -->
+                            <rect x="35" y="20" width="90" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="80" y="42" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">Client</text>
+                            
+                            <!-- AuthController -->
+                            <rect x="160" y="20" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="220" y="42" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">AuthController</text>
+                            
+                            <!-- LoginService -->
+                            <rect x="300" y="20" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="360" y="42" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">LoginService</text>
+                            
+                            <!-- PasswordEncoder -->
+                            <rect x="440" y="20" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="500" y="42" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">PasswordEncoder</text>
+                            
+                            <!-- JwtTokenAdapter -->
+                            <rect x="580" y="20" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="640" y="42" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">JwtTokenAdapter</text>
+                            
+                            <!-- Database -->
+                            <rect x="720" y="20" width="80" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="760" y="42" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">Database</text>
+
+                            <!-- Cajas de actores (abajo) -->
+                            <!-- Client -->
+                            <rect x="35" y="430" width="90" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="80" y="452" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">Client</text>
+                            
+                            <!-- AuthController -->
+                            <rect x="160" y="430" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="220" y="452" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">AuthController</text>
+                            
+                            <!-- LoginService -->
+                            <rect x="300" y="430" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="360" y="452" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">LoginService</text>
+                            
+                            <!-- PasswordEncoder -->
+                            <rect x="440" y="430" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="500" y="452" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">PasswordEncoder</text>
+                            
+                            <!-- JwtTokenAdapter -->
+                            <rect x="580" y="430" width="120" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="640" y="452" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">JwtTokenAdapter</text>
+                            
+                            <!-- Database -->
+                            <rect x="720" y="430" width="80" height="35" rx="4" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="760" y="452" text-anchor="middle" fill="#fff" font-size="12" font-family="JetBrains Mono, monospace">Database</text>
+
+                            <!-- Mensajes (líneas horizontales) -->
+                            
+                            <!-- 1. POST /api/v1/auth/login -->
+                            <line x1="80" y1="80" x2="220" y2="80" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                            <text x="150" y="75" text-anchor="middle" fill="#a0a0a0" font-size="10" font-family="JetBrains Mono, monospace">POST /api/v1/auth/login</text>
+
+                            <!-- 2. login(command) -->
+                            <line x1="220" y1="110" x2="360" y2="110" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                            <text x="290" y="105" text-anchor="middle" fill="#a0a0a0" font-size="10" font-family="JetBrains Mono, monospace">login(command)</text>
+
+                            <!-- 3. findByEmail() -->
+                            <line x1="360" y1="140" x2="760" y2="140" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                            <text x="560" y="135" text-anchor="middle" fill="#a0a0a0" font-size="10" font-family="JetBrains Mono, monospace">findByEmail()</text>
+
+                            <!-- 4. User (retorno) -->
+                            <line x1="760" y1="170" x2="360" y2="170" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-dashed)"/>
+                            <text x="560" y="165" text-anchor="middle" fill="#10b981" font-size="10" font-family="JetBrains Mono, monospace">User</text>
+
+                            <!-- 5. matches(raw, hash) -->
+                            <line x1="360" y1="200" x2="500" y2="200" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                            <text x="430" y="195" text-anchor="middle" fill="#a0a0a0" font-size="10" font-family="JetBrains Mono, monospace">matches(raw, hash)</text>
+
+                            <!-- 6. true (retorno) -->
+                            <line x1="500" y1="230" x2="360" y2="230" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-dashed)"/>
+                            <text x="430" y="225" text-anchor="middle" fill="#10b981" font-size="10" font-family="JetBrains Mono, monospace">true</text>
+
+                            <!-- 7. generateToken(user) -->
+                            <line x1="360" y1="260" x2="640" y2="260" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrow-solid)"/>
+                            <text x="500" y="255" text-anchor="middle" fill="#a0a0a0" font-size="10" font-family="JetBrains Mono, monospace">generateToken(user)</text>
+
+                            <!-- 8. JWT token (retorno) -->
+                            <line x1="640" y1="290" x2="360" y2="290" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-dashed)"/>
+                            <text x="500" y="285" text-anchor="middle" fill="#10b981" font-size="10" font-family="JetBrains Mono, monospace">JWT token</text>
+
+                            <!-- 9. token (retorno a AuthController) -->
+                            <line x1="360" y1="320" x2="220" y2="320" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-dashed)"/>
+                            <text x="290" y="315" text-anchor="middle" fill="#10b981" font-size="10" font-family="JetBrains Mono, monospace">token</text>
+
+                            <!-- 10. 200 OK + token (retorno a Client) -->
+                            <line x1="220" y1="350" x2="80" y2="350" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-dashed)"/>
+                            <text x="150" y="365" text-anchor="middle" fill="#10b981" font-size="10" font-family="JetBrains Mono, monospace">200 OK + token</text>
+
+                            <!-- Cajas de activación (líneas gruesas verticales) -->
+                            <!-- LoginService activación -->
+                            <rect x="355" y="110" width="10" height="210" fill="#6c5ce7" opacity="0.3"/>
+                            
+                            <!-- PasswordEncoder activación -->
+                            <rect x="495" y="200" width="10" height="30" fill="#6c5ce7" opacity="0.3"/>
+                            
+                            <!-- JwtTokenAdapter activación -->
+                            <rect x="635" y="260" width="10" height="30" fill="#6c5ce7" opacity="0.3"/>
+
+                        </svg>
+
+                        <!-- Leyenda -->
+                        <div class="sequence-legend">
+                            <div class="legend-item-seq">
+                                <div class="legend-line solid"></div>
+                                <span>Llamada síncrona</span>
+                            </div>
+                            <div class="legend-item-seq">
+                                <div class="legend-line dashed"></div>
+                                <span>Retorno</span>
+                            </div>
+                            <div class="legend-item-seq">
+                                <div class="legend-activation"></div>
+                                <span>Activación del objeto</span>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </section>
+
+                <!-- Configuración de Spring Security -->
+                <section class="content-section" id="configuracion">
+                    <h2>Configuración de Spring Security</h2>
+                    <p>Desde <code class="inline">SecurityConfig.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SecurityConfig.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
+public class SecurityConfig {
+
+    private final JwtAuthenticationFilter jwtAuthFilter;
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(csrf -> csrf.disable())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authorizeHttpRequests(auth -> auth
+                        // Endpoints públicos
+                        .requestMatchers("/api/v1/auth/**").permitAll()
+                        .requestMatchers("/api/v1/dev/**").permitAll()
+                        // Todos los demás endpoints requieren autenticación
+                        .anyRequest().authenticated())
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>CSRF está deshabilitado porque los tokens JWT no son vulnerables a ataques CSRF (no se almacenan en cookies).</p>
+                    </div>
+
+                    <h3>Política de Sesión</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Configuración Stateless</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))</code></pre>
+                    </div>
+
+                    <p><strong>STATELESS</strong> significa:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>No se crean sesiones HTTP</li>
+                        <li>No se usan cookies para autenticación</li>
+                        <li>Cada petición debe incluir el token JWT</li>
+                        <li>Perfecto para APIs REST y microservicios</li>
+                    </ul>
+
+                    <h3>Reglas de Autorización</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Patrón</th>
+                                <th>Acceso</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="inline">/api/v1/auth/**</code></td>
+                                <td>Público (login, registro)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">/api/v1/dev/**</code></td>
+                                <td>Público (endpoints de desarrollo)</td>
+                            </tr>
+                            <tr>
+                                <td>Todos los demás endpoints</td>
+                                <td>Autenticado (requiere JWT)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Encriptación de Contraseñas -->
+                <section class="content-section" id="encriptacion">
+                    <h2>Encriptación de Contraseñas</h2>
+
+                    <h3>BCrypt Password Encoder</h3>
+                    <p>Desde <code class="inline">BasicPasswordEncoderAdapter.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">BasicPasswordEncoderAdapter.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Component
+@RequiredArgsConstructor
+public class BasicPasswordEncoderAdapter implements PasswordEncoderPort {
+
+    private final PasswordEncoder springPasswordEncoder;
+
+    @Override
+    public String encode(String rawPassword) {
+        // Hash BCrypt con generación automática de salt
+        return springPasswordEncoder.encode(rawPassword);
+    }
+
+    @Override
+    public boolean matches(String rawPassword, String encodedPassword) {
+        // Comparación segura que previene ataques de timing
+        return springPasswordEncoder.matches(rawPassword, encodedPassword);
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>¿Por qué BCrypt?</h3>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="6" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                            </div>
+                            <h4>Lento por Diseño</h4>
+                            <p>Deliberadamente lento para hacer ataques de fuerza bruta impracticables</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <h4>Salt Automático</h4>
+                            <p>Cada contraseña obtiene un salt único, previniendo ataques de rainbow table</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 0 0 6.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 0 0 6.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"></path>
+                                </svg>
+                            </div>
+                            <h4>Adaptativo</h4>
+                            <p>El factor de costo puede aumentar a medida que el hardware mejora</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0 1 12 2.944a11.955 11.955 0 0 1-8.618 3.04A12.02 12.02 0 0 0 3 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <h4>Estándar de la Industria</h4>
+                            <p>Algoritmo ampliamente utilizado y probado en producción</p>
+                        </div>
+                    </div>
+
+                    <h3>Flujo de Contraseña</h3>
+                    
+                    <div class="sequence-diagram">
+                        <div class="sequence-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Registro de Usuario</h4>
+                                <span class="java-badge">Java</span>
+                                <pre><code class="language-java">// Usuario proporciona: "MiContraseñaSegura123"
+String rawPassword = "MiContraseñaSegura123";
+
+// BCrypt genera hash con salt
+String hash = passwordEncoder.encode(rawPassword);
+// Resultado: "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy"
+
+// Almacenar hash en base de datos (nunca la contraseña en texto plano)
+user.setPasswordHash(hash);
+userRepository.save(user);</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="sequence-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Login de Usuario</h4>
+                                <span class="java-badge">Java</span>
+                                <pre><code class="language-java">// Usuario proporciona: "MiContraseñaSegura123"
+String rawPassword = "MiContraseñaSegura123";
+
+// Obtener hash almacenado de la base de datos
+String storedHash = user.getPasswordHash();
+// "$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy"
+
+// BCrypt verifica haciendo hash de la entrada y comparando
+boolean isValid = passwordEncoder.matches(rawPassword, storedHash);
+// true - ¡contraseñas coinciden!</code></pre>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Importante
+                        </div>
+                        <p>Nunca almacenes contraseñas en texto plano ni uses encriptación reversible. BCrypt es una función de hash unidireccional.</p>
+                    </div>
+                </section>
+
+                <!-- Implementación de Token JWT -->
+                <section class="content-section" id="jwt">
+                    <h2>Implementación de Token JWT</h2>
+
+                    <h3>Generación de Token</h3>
+                    <p>Desde <code class="inline">JwtTokenAdapter.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">JwtTokenAdapter.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Component
+public class JwtTokenAdapter implements TokenProviderPort {
+
+    private final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private final long EXPIRATION_TIME = 86400000; // 24 horas en milisegundos
+
+    @Override
+    public String generateToken(User user) {
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("id", user.getId())
+                .claim("tipo", user.getTipo().name())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+                .signWith(SECRET_KEY)
+                .compact();
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Estructura del Token JWT</h3>
+                    <p>Un JWT tiene tres partes separadas por puntos:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Ejemplo de Token JWT</span>
+                        </div>
+                        <pre><code class="language-text">eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWQiOiIxMjM0In0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
+     Header              Payload                          Signature</code></pre>
+                    </div>
+
+                    <div class="comparison-card" style="margin-bottom: var(--spacing-lg);">
+                        <h4>Header</h4>
+                        <span class="java-badge">JSON</span>
+                        <pre><code class="language-json">{
+  "alg": "HS256",
+  "typ": "JWT"
+}</code></pre>
+                        <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-top: var(--spacing-md);">
+                            Especifica el algoritmo de firma (HMAC SHA-256).
+                        </p>
+                    </div>
+
+                    <h3>Validación de Token</h3>
+                    <p>Desde <code class="inline">JwtTokenAdapter.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Validación de Token</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public boolean validateToken(String token) {
+    try {
+        Jwts.parserBuilder()
+            .setSigningKey(SECRET_KEY)
+            .build()
+            .parseClaimsJws(token);
+        return true;
+    } catch (Exception e) {
+        return false; // Token inválido, expirado o malformado
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Extracción de Claims</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Extracción de Claims</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public String getEmailFromToken(String token) {
+    return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
+            .parseClaimsJws(token).getBody().getSubject();
+}
+
+public String getIdFromToken(String token) {
+    return Jwts.parserBuilder().setSigningKey(SECRET_KEY).build()
+            .parseClaimsJws(token).getBody().get("id", String.class);
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Filtro de Autenticación JWT -->
+                <section class="content-section" id="filtro">
+                    <h2>Filtro de Autenticación JWT</h2>
+                    <p>Desde <code class="inline">JwtAuthenticationFilter.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">JwtAuthenticationFilter.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Component
+@RequiredArgsConstructor
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private final JwtTokenAdapter jwtTokenAdapter;
+
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        
+        // 1. Extraer token del header Authorization
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            token = authHeader.substring(7); // Eliminar prefijo "Bearer "
+        }
+
+        // 2. Validar token y autenticar usuario
+        if (token != null && jwtTokenAdapter.validateToken(token)) {
+            String email = jwtTokenAdapter.getEmailFromToken(token);
+            String userId = jwtTokenAdapter.getIdFromToken(token);
+
+            // Crear objeto de autenticación
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    email, userId, new ArrayList<>()
+            );
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+
+        // 3. Continuar cadena de filtros
+        filterChain.doFilter(request, response);
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="flow-diagram">
+                        <img src="../images/filter-flow.png" alt="Diagrama de Flujo del Filtro">
+                        <p class="flow-caption">Flujo del filtro: Request → ¿Tiene header Authorization? → ¿Empieza con Bearer? → Extraer token → ¿Token válido? → Establecer autenticación → Siguiente filtro</p>
+
+                                            <h3>Flujo del Filtro</h3>
+                    <div class="filter-flow-container">
+                        <svg viewBox="0 0 400 750" class="filter-flow-svg">
+                            <!-- Definiciones de flechas -->
+                            <defs>
+                                <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#6c5ce7" />
+                                </marker>
+                                <marker id="arrowhead-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                                    <polygon points="0 0, 10 3.5, 0 7" fill="#10b981" />
+                                </marker>
+                            </defs>
+
+                            <!-- Caja: Request arrives -->
+                            <rect x="125" y="10" width="150" height="45" rx="8" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="38" text-anchor="middle" fill="#fff" font-size="13" font-family="JetBrains Mono, monospace">Request arrives</text>
+
+                            <!-- Flecha hacia abajo -->
+                            <line x1="200" y1="55" x2="200" y2="85" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                            <!-- Rombo 1: ¿Tiene header Authorization? -->
+                            <polygon points="200,105 270,155 200,205 130,155" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="150" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">¿Tiene header</text>
+                            <text x="200" y="165" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">Authorization?</text>
+
+                            <!-- Etiqueta NO -->
+                            <text x="115" y="145" fill="#ff6b6b" font-size="10" font-weight="bold" font-family="JetBrains Mono, monospace">NO</text>
+                            <!-- Línea NO curva hacia abajo -->
+                            <path d="M 130 155 Q 80 155 80 200 L 80 650" fill="none" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3"/>
+                            <!-- Flecha hacia abajo desde el rombo -->
+                            <line x1="200" y1="205" x2="200" y2="235" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrowhead)"/>
+                            <!-- Etiqueta SÍ (implícita, continúa abajo) -->
+
+                            <!-- Rombo 2: ¿Empieza con Bearer? -->
+                            <polygon points="200,255 270,305 200,355 130,305" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="300" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">¿Empieza con</text>
+                            <text x="200" y="315" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">Bearer?</text>
+
+                            <!-- Etiqueta NO -->
+                            <text x="115" y="295" fill="#ff6b6b" font-size="10" font-weight="bold" font-family="JetBrains Mono, monospace">NO</text>
+                            <!-- Línea NO curva hacia abajo -->
+                            <path d="M 130 305 Q 100 305 100 340 L 100 650" fill="none" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3"/>
+                            <!-- Flecha hacia abajo -->
+                            <line x1="200" y1="355" x2="200" y2="385" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                            <!-- Caja: Extraer token -->
+                            <rect x="125" y="400" width="150" height="45" rx="8" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="428" text-anchor="middle" fill="#fff" font-size="13" font-family="JetBrains Mono, monospace">Extraer token</text>
+
+                            <!-- Flecha hacia abajo -->
+                            <line x1="200" y1="445" x2="200" y2="475" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                            <!-- Rombo 3: ¿Token válido? -->
+                            <polygon points="200,495 270,545 200,595 130,545" fill="#1a1a2e" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="540" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">¿Token</text>
+                            <text x="200" y="555" text-anchor="middle" fill="#fff" font-size="11" font-family="JetBrains Mono, monospace">válido?</text>
+
+                            <!-- Etiqueta NO -->
+                            <text x="115" y="535" fill="#ff6b6b" font-size="10" font-weight="bold" font-family="JetBrains Mono, monospace">NO</text>
+                            <!-- Línea NO curva hacia abajo -->
+                            <path d="M 130 545 Q 115 545 115 570 L 115 650" fill="none" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3"/>
+
+                            <!-- Camino SÍ: hacia la derecha, abajo, izquierda -->
+                            <text x="285" y="535" fill="#10b981" font-size="10" font-weight="bold" font-family="JetBrains Mono, monospace">SÍ</text>
+                            <line x1="270" y1="545" x2="310" y2="545" stroke="#10b981" stroke-width="2"/>
+                            <line x1="310" y1="545" x2="310" y2="640" stroke="#10b981" stroke-width="2"/>
+                            <line x1="310" y1="640" x2="255" y2="640" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+
+                            <!-- Caja: Establecer autenticación (a la derecha del flujo principal) -->
+                            <rect x="120" y="620" width="210" height="45" rx="8" fill="#0d3b2e" stroke="#10b981" stroke-width="2"/>
+                            <text x="225" y="648" text-anchor="middle" fill="#10b981" font-size="12" font-family="JetBrains Mono, monospace">Establecer autenticación</text>
+
+                            <!-- Flecha desde establecer autenticación hacia abajo -->
+                            <line x1="225" y1="665" x2="225" y2="685" stroke="#10b981" stroke-width="2"/>
+                            <line x1="225" y1="685" x2="200" y2="685" stroke="#10b981" stroke-width="2" marker-end="url(#arrowhead-green)"/>
+
+                            <!-- Unión de todos los caminos NO -->
+                            <!-- Línea horizontal que une todos los NO -->
+                            <line x1="80" y1="650" x2="120" y2="650" stroke="#a0a0a0" stroke-width="2" stroke-dasharray="5,3"/>
+
+                            <!-- Caja: Continue without auth (donde convergen los NO) -->
+                            <rect x="100" y="700" width="200" height="45" rx="8" fill="#2d2d44" stroke="#a0a0a0" stroke-width="2"/>
+                            <text x="200" y="728" text-anchor="middle" fill="#a0a0a0" font-size="13" font-family="JetBrains Mono, monospace">Continue without auth</text>
+
+                            <!-- Flecha hacia abajo -->
+                            <line x1="200" y1="745" x2="200" y2="775" stroke="#6c5ce7" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+                            <!-- Caja final: Next Filter -->
+                            <rect x="125" y="790" width="150" height="45" rx="8" fill="#6c5ce7" stroke="#6c5ce7" stroke-width="2"/>
+                            <text x="200" y="818" text-anchor="middle" fill="#fff" font-size="14" font-family="JetBrains Mono, monospace" font-weight="600">Next Filter</text>
+
+                        </svg>
+
+                        <!-- Leyenda -->
+                        <div class="flow-legend-simple">
+                            <div class="legend-row">
+                                <span class="legend-yes">SÍ</span>
+                                <span class="legend-text">→ Establece autenticación</span>
+                            </div>
+                            <div class="legend-row">
+                                <span class="legend-no">NO</span>
+                                <span class="legend-text">→ Continúa sin autenticación</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <p><code class="inline">OncePerRequestFilter</code> asegura que el filtro se ejecute exactamente una vez por petición, incluso con forwards/includes.</p>
+                    </div>
+                        
+                    </div>
+
+                    <div class="info-box">
+                        <p><code class="inline">OncePerRequestFilter</code> asegura que el filtro se ejecute exactamente una vez por petición, incluso con forwards/includes.</p>
+                    </div>
+                </section>
+
+                <!-- Flujo de Autenticación -->
+                <section class="content-section" id="flujo">
+                    <h2>Flujo de Autenticación</h2>
+
+                    <div class="sequence-diagram">
+                        <div class="sequence-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Petición de Login</h4>
+                                <p>El cliente envía las credenciales:</p>
+                                <span class="terminal-badge">cURL</span>
+                                <pre><code class="language-bash">curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "usuario@example.com",
+    "rawPassword": "ContraseñaSegura123"
+  }'</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="sequence-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Validar Credenciales</h4>
+                                <p>Desde <code class="inline">LoginUserService.java</code>:</p>
+                                <span class="java-badge">Java</span>
+                                <pre><code class="language-java">@Override
+public String login(LoginUserCommand command) {
+    // Buscar usuario
+    User user = userRepositoryPort.findByEmail(command.getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
+
+    // Verificar contraseña
+    if (!passwordEncoderPort.matches(command.getRawPassword(), user.getPasswordHash())) {
+        throw new IllegalArgumentException("Credenciales inválidas");
+    }
+
+    // Generar token
+    return tokenProviderPort.generateToken(user);
+}</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="sequence-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Devolver Token JWT</h4>
+                                <p>El servidor responde con el token:</p>
+                                <pre><code class="language-text">"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyQGV4YW1wbGUuY29tIiwiaWQiOiIxMjM0NTY3OC0xMjM0LTEyMzQtMTIzNC0xMjM0NTY3ODlhYmMiLCJ0aXBvIjoiUFJPRkVTSU9OQUwiLCJpYXQiOjE2Nzg5MDEyMzQsImV4cCI6MTY3ODk4NzYzNH0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"</code></pre>
+                            </div>
+                        </div>
+
+                        <div class="sequence-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Peticiones Autenticadas</h4>
+                                <p>El cliente incluye el token en peticiones posteriores:</p>
+                                <span class="terminal-badge">cURL</span>
+                                <pre><code class="language-bash">curl http://localhost:8080/api/v1/user/profile \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."</code></pre>
+                                <p style="margin-top: var(--spacing-sm);">El <code class="inline">JwtAuthenticationFilter</code> intercepta, valida y autentica automáticamente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Acceso al Usuario Autenticado -->
+                <section class="content-section" id="acceso-usuario">
+                    <h2>Acceso al Usuario Autenticado</h2>
+                    <p>En los controladores, recupera el usuario autenticado:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SecurityContextHolder</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/profile")
+public ResponseEntity<?> getProfile() {
+    // Obtener autenticación del SecurityContext
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    
+    String email = (String) auth.getPrincipal();
+    String userId = (String) auth.getCredentials();
+    
+    // Obtener detalles completos del usuario
+    User user = getUserUseCase.getUserById(UUID.fromString(userId));
+    
+    return ResponseEntity.ok(user);
+}</code></pre>
+                    </div>
+
+                    <p>O usa <code class="inline">@AuthenticationPrincipal</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">@AuthenticationPrincipal</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/profile")
+public ResponseEntity<?> getProfile(@AuthenticationPrincipal String email) {
+    User user = getUserUseCase.getUserByEmail(email);
+    return ResponseEntity.ok(user);
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Mejores Prácticas de Seguridad -->
+                <section class="content-section" id="mejores-practicas">
+                    <h2>Mejores Prácticas de Seguridad</h2>
+
+                    <div class="best-practices-grid">
+                        <div class="practice-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 15v2m-6 4h12a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2zm10-10V7a4 4 0 0 0-8 0v4h8z"></path>
+                                </svg>
+                                Gestión de Clave Secreta
+                            </h4>
+                            <p>Almacena la clave secreta en variables de entorno, nunca en el código fuente. Usa algoritmos fuertes (HS256 o superior).</p>
+                        </div>
+
+                        <div class="practice-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                Expiración de Token
+                            </h4>
+                            <p>Mantén los tokens con vida corta (15-60 minutos). Implementa refresh tokens para sesiones largas sin comprometer seguridad.</p>
+                        </div>
+
+                        <div class="practice-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                HTTPS en Producción
+                            </h4>
+                            <p>Siempre usa HTTPS en producción para proteger los tokens en tránsito. Los tokens son credenciales sensibles.</p>
+                        </div>
+
+                        <div class="practice-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                                Rate Limiting
+                            </h4>
+                            <p>Implementa límites de peticiones en endpoints de autenticación para prevenir ataques de fuerza bruta.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Problemas de Seguridad Comunes -->
+                <section class="content-section" id="problemas">
+                    <h2>Problemas de Seguridad Comunes</h2>
+
+                    <h3>XSS (Cross-Site Scripting)</h3>
+                    <p>No almacenes JWT en localStorage en el frontend. Usa cookies httpOnly o almacenamiento en memoria.</p>
+
+                    <h3>Robo de Token</h3>
+                    <p>Si un token es robado, es válido hasta su expiración. Implementa revocación/blacklisting de tokens para operaciones sensibles.</p>
+
+                    <h3>Contraseñas Débiles</h3>
+                    <p>Refuerza políticas de contraseñas fuertes:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Validación de Contraseña</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">if (password.length() < 8) {
+    throw new IllegalArgumentException("La contraseña debe tener al menos 8 caracteres");
+}
+if (!password.matches(".*[A-Z].*")) {
+    throw new IllegalArgumentException("La contraseña debe contener mayúscula");
+}
+if (!password.matches(".*[0-9].*")) {
+    throw new IllegalArgumentException("La contraseña debe contener número");
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Testing de Autenticación -->
+                <section class="content-section" id="testing">
+                    <h2>Testing de Autenticación</h2>
+
+                    <h3>Test Unitario</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">JwtTokenAdapterTest.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Test
+void shouldGenerateValidToken() {
+    User user = new User();
+    user.setEmail("test@example.com");
+    user.setId(UUID.randomUUID());
+    user.setTipo(UserType.PROFESIONAL);
+
+    String token = jwtTokenAdapter.generateToken(user);
+
+    assertNotNull(token);
+    assertTrue(jwtTokenAdapter.validateToken(token));
+    assertEquals("test@example.com", jwtTokenAdapter.getEmailFromToken(token));
+}</code></pre>
+                    </div>
+
+                    <h3>Test de Integración</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">AuthControllerIntegrationTest.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Test
+void shouldAuthenticateWithValidToken() throws Exception {
+    String token = "Bearer eyJhbGciOiJIUzI1NiJ9...";
+
+    mockMvc.perform(get("/api/v1/user/profile")
+            .header("Authorization", token))
+            .andExpect(status().isOk());
+}
+
+@Test
+void shouldRejectInvalidToken() throws Exception {
+    mockMvc.perform(get("/api/v1/user/profile")
+            .header("Authorization", "Bearer invalid_token"))
+            .andExpect(status().isUnauthorized());
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Arquitectura Hexagonal</h4>
+                                <p>Ve cómo la seguridad encaja en el patrón de puertos y adaptadores</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-database.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Base de Datos</h4>
+                                <p>Aprende sobre el almacenamiento de contraseñas hasheadas</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-setup.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Configuración Backend</h4>
+                                <p>Vuelve a la configuración del backend</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="backend-database.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Base de Datos</span>
+                        </a>
+                        <a href="arquitectura.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Arquitectura Hexagonal →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#arquitectura" class="toc-link">Arquitectura de Seguridad</a>
+                    <a href="#configuracion" class="toc-link">Configuración Spring Security</a>
+                    <a href="#encriptacion" class="toc-link">Encriptación de Contraseñas</a>
+                    <a href="#jwt" class="toc-link">Implementación JWT</a>
+                    <a href="#filtro" class="toc-link">Filtro de Autenticación</a>
+                    <a href="#flujo" class="toc-link">Flujo de Autenticación</a>
+                    <a href="#acceso-usuario" class="toc-link">Acceso al Usuario</a>
+                    <a href="#mejores-practicas" class="toc-link">Mejores Prácticas</a>
+                    <a href="#problemas" class="toc-link">Problemas Comunes</a>
+                    <a href="#testing" class="toc-link">Testing</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

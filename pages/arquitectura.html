@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        /* ESTILOS ADICIONALES PARA ARQUITECTURA */
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .comparison-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .comparison-card.negative {
+            border-left: 3px solid #ef4444;
+        }
+
+        .comparison-card.positive {
+            border-left: 3px solid #22c55e;
+        }
+
+        .comparison-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .comparison-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Principles List */
+        .principles-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .principles-list li {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+        }
+
+        .principle-number {
+            width: 28px;
+            height: 28px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+            flex-shrink: 0;
+        }
+
+        .principle-content h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-purple-light);
+        }
+
+        .principle-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+/* Contenedor centrado para el diagrama */
+.architecture-diagram-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg);
+    background-color: var(--color-bg-card);
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    overflow-x: auto;
+}
+
+/* Diagrama más grande y centrado */
+.architecture-diagram {
+    background-color: #0d0d1a;
+    border-radius: 12px;
+    padding: var(--spacing-xl);
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.5;
+    color: #e4e4e7;
+    text-align: center;
+    min-width: fit-content;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.architecture-diagram pre {
+    margin: 0;
+    display: inline-block;
+    text-align: left;
+}
+
+/* Responsive: en móviles reducir tamaño */
+@media (max-width: 768px) {
+    .architecture-diagram {
+        font-size: 0.65rem;
+        padding: var(--spacing-md);
+    }
+    
+    .architecture-diagram-container {
+        padding: var(--spacing-sm);
+    }
+}
+
+        /* Module Grid - 2 columnas */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .module-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            transition: all var(--transition-base);
+        }
+
+        .module-card:hover {
+            border-color: var(--color-purple);
+            transform: translateY(-2px);
+        }
+
+        .module-card h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-purple);
+        }
+
+        .module-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--spacing-sm) 0;
+            line-height: 1.5;
+        }
+
+        /* Code Block con sintaxis resaltada y botón copiar */
+        .code-block {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            margin: var(--spacing-md) 0;
+            overflow: hidden;
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .code-lang {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family);
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(120, 100, 215, 0.2);
+            border-color: var(--color-purple);
+            color: var(--color-text-primary);
+        }
+
+        .copy-btn.copied {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: var(--spacing-lg);
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: #e4e4e7;
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Sintaxis resaltada */
+        .code-keyword { color: #c678dd; }
+        .code-string { color: #98c379; }
+        .code-comment { color: #5c6370; font-style: italic; }
+        .code-function { color: #61afef; }
+        .code-number { color: #d19a66; }
+        .code-operator { color: #56b6c2; }
+        .code-class { color: #e5c07b; }
+        .code-property { color: #e06c75; }
+        .code-annotation { color: #d19a66; }
+
+        /* Info Box */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Layer Section */
+        .layer-section {
+            margin: var(--spacing-2xl) 0;
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .layer-badge {
+            background-color: var(--color-purple);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Data Flow Steps */
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin: var(--spacing-xl) 0;
+            position: relative;
+        }
+
+        .flow-step {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            position: relative;
+        }
+
+        .flow-step:not(:last-child)::after {
+            content: "";
+            position: absolute;
+            left: 20px;
+            top: 48px;
+            width: 2px;
+            height: calc(100% - 32px);
+            background-color: var(--color-border);
+        }
+
+        .flow-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-card);
+            border: 2px solid var(--color-purple);
+            color: var(--color-purple);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .flow-content {
+            flex: 1;
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .flow-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-primary);
+        }
+
+        .flow-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--spacing-sm) 0;
+        }
+
+        /* Feature Tags */
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-sm);
+        }
+
+        .feature-tag {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-secondary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+
+        /* Benefits Grid - 2 columnas */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .benefit-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .benefit-card:hover {
+            border-color: var(--color-purple);
+        }
+
+        .benefit-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-purple);
+        }
+
+        .benefit-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Feature Tags */
+        .feature-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-xs);
+        }
+
+        .feature-tag {
+            background-color: rgba(120, 100, 215, 0.2);
+            color: var(--color-purple-light);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Responsive - en móviles 1 columna */
+        @media (max-width: 640px) {
+
+            .module-grid,
+            .benefits-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+
+        /* Inline Code */
+        code {
+            background-color: rgba(120, 100, 215, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                                <!-- <a href="pages/introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>-->
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda - CARGADO DINÁMICAMENTE -->
+        <div id="sidebar-container">
+            <!-- El menú se carga aquí desde menulateral.html -->
+        </div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Comenzar</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Arquitectura</span>
+                </div>
+
+                <header class="page-header">
+                    <h1 id="arquitectura">Arquitectura</h1>
+                    <p class="page-description">
+                        Exploración profunda de la implementación de arquitectura hexagonal de iMirly y la estructura de
+                        módulos
+                    </p>
+                </header>
+
+                <!-- Visión General -->
+                <section class="content-section">
+                    <h2 id="vision-general">Visión General de la Arquitectura</h2>
+                    <p>
+                        iMirly sigue la <strong>Arquitectura Hexagonal</strong> (también conocida como Puertos y
+                        Adaptadores), un patrón de diseño que desacopla completamente la lógica de negocio de las
+                        dependencias externas como bases de datos, frameworks y UI. Esto asegura que el dominio
+                        permanezca puro, testable y agnóstico al framework.
+                    </p>
+                </section>
+
+                <!-- ¿Por qué Arquitectura Hexagonal? -->
+                <section class="content-section">
+                    <h2 id="por-que-hexagonal">¿Por qué Arquitectura Hexagonal?</h2>
+                    <p>Las arquitecturas tradicionales en capas acoplan fuertemente la lógica de negocio a las
+                        preocupaciones de infraestructura. La arquitectura hexagonal invierte estas dependencias:</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card negative">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                Capas Tradicionales
+                            </h4>
+                            <p>La lógica de negocio depende de las implementaciones de base de datos y framework.
+                                Difícil de probar, difícil de cambiar.</p>
+                        </div>
+
+                        <div class="comparison-card positive">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                                Hexagonal (Puertos & Adaptadores)
+                            </h4>
+                            <p>La lógica de negocio define interfaces (puertos). La infraestructura las implementa
+                                (adaptadores). Fácil de probar, intercambiar implementaciones.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Principios Core -->
+                <section class="content-section">
+                    <h2 id="principios-core">Principios Core</h2>
+
+                    <ol class="principles-list">
+                        <li>
+                            <span class="principle-number">1</span>
+                            <div class="principle-content">
+                                <h4>Independencia del Dominio</h4>
+                                <p>La lógica de negocio tiene cero dependencias en Spring, JPA o cualquier biblioteca
+                                    externa</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="principle-number">2</span>
+                            <div class="principle-content">
+                                <h4>Inversión de Control</h4>
+                                <p>El dominio define interfaces (puertos), la infraestructura las implementa</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="principle-number">3</span>
+                            <div class="principle-content">
+                                <h4>Testabilidad</h4>
+                                <p>La lógica pura de dominio puede probarse sin bases de datos ni frameworks</p>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="principle-number">4</span>
+                            <div class="principle-content">
+                                <h4>Flexibilidad</h4>
+                                <p>Intercambia base de datos, framework o UI sin tocar las reglas de negocio</p>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+
+
+<!-- Arquitectura de Alto Nivel -->
+<section class="content-section">
+    <h2 id="arquitectura-alto-nivel">Arquitectura de Alto Nivel</h2>
+
+    <div class="architecture-diagram-container">
+        <div class="architecture-diagram">
+            <pre>
+┌───────────────────────────────────────────────────────────┐
+│                     Android Frontend                      │
+│            (Kotlin + Jetpack Compose)                     │
+│                                                           │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐                 │
+│  │ UI Views │→ │ViewModels│→ │ Retrofit │                 │
+│  └──────────┘  └──────────┘  └─────┬────┘                 │
+└────────────────────────────────────┼──────────────────────┘
+                                      │ HTTP/JSON
+                                      ↓
+┌────────────────────────────────────────────────────────────┐
+│              Spring Boot Backend (Java 21)                 │
+│                                                            │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │           INFRASTRUCTURE LAYER                      │   │
+│  │  (Adapters - Input & Output)                        │   │
+│  │                                                     │   │
+│  │  INPUT (Driving)        OUTPUT (Driven)             │   │
+│  │  ┌──────────────┐      ┌──────────────┐             │   │
+│  │  │ REST         │      │ JPA          │             │   │
+│  │  │ Controllers  │      │ Repositories │             │   │
+│  │  │              │      │              │             │   │
+│  │  │ JWT Filters  │      │ Security     │             │   │
+│  │  └──────┬───────┘      └──────▲───────┘             │   │
+│  └─────────┼────────────────────┼──────────────────────┘   │
+│            │                    │                          │
+│            ↓ uses InPorts       │ implements OutPorts      │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │         APPLICATION LAYER                           │   │
+│  │  (Use Cases / Services)                             │   │
+│  │                                                     │   │
+│  │  ┌──────────────────┐  ┌──────────────────┐         │   │
+│  │  │ RegisterUser     │  │ CreateAnuncio    │         │   │
+│  │  │ Service          │  │ Service          │         │   │
+│  │  │                  │  │                  │         │   │
+│  │  │ implements       │  │ implements       │         │   │
+│  │  │ RegisterUserUse  │  │ ManageAnuncio    │         │   │
+│  │  │ Case (InPort)    │  │ UseCase (InPort) │         │   │
+│  │  └────────┬─────────┘  └────────┬─────────┘         │   │
+│  └───────────┼──────────────────────┼──────────────────┘   │
+│              │ uses Domain          │                      │
+│              ↓                      ↓                      │
+│  ┌─────────────────────────────────────────────────────┐   │
+│  │            DOMAIN LAYER                             │   │
+│  │  (Pure Business Logic - No Dependencies)            │   │
+│  │                                                     │   │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐           │   │
+│  │  │   User   │  │ Anuncio  │  │ Solicitud│           │   │
+│  │  │          │  │ Servicio │  │ Contrato │           │   │
+│  │  │ - saldo  │  │          │  │          │           │   │
+│  │  │ + restar │  │ + pausar │  │ + aceptar│           │   │
+│  │  │   Saldo()│  │ Anuncio()│  │()        │           │   │
+│  │  └──────────┘  └──────────┘  └──────────┘           │   │
+│  │                                                     │   │
+│  │  ┌─────────────────────────────────────────┐        │   │
+│  │  │ PORTS (Interfaces)                      │        │   │
+│  │  │                                         │        │   │
+│  │  │ InPorts          OutPorts              │         │   │
+│  │  │ (Driven by UI)   (Drive Infrastructure)│         │   │
+│  │  └─────────────────────────────────────────┘        │   │
+│  └─────────────────────────────────────────────────────┘   │
+│                                                            │
+└──────────────────────────┬─────────────────────────────────┘
+                           │
+                           ↓
+                  ┌─────────────────┐
+                  │   PostgreSQL    │
+                  │   Database      │
+                  └─────────────────┘
+            
+            </pre>
+        </div>
+    </div>
+</section>
+
+                <!-- Estructura de Módulos -->
+                <section class="content-section">
+                    <h2 id="estructura-modulos">Estructura de Módulos</h2>
+                    <p>El backend está organizado en cuatro contextos acotados (módulos), cada uno siguiendo la
+                        arquitectura hexagonal:</p>
+
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code>backend/src/main/java/tfg/imirly/
+├── <span class="code-property">auth/</span>          <span class="code-comment"># Autenticación de usuarios y gestión de billetera</span>
+├── <span class="code-property">catalog/</span>       <span class="code-comment"># Listados de servicios y categorías</span>
+├── <span class="code-property">contracting/</span>   <span class="code-comment"># Ciclo de vida de contratos y pagos</span>
+└── <span class="code-property">messages/</span>      <span class="code-comment"># Chat en tiempo real y propuestas</span></code></pre>
+                    </div>
+
+                    <h3 id="anatomia-modulo">Anatomía del Módulo</h3>
+                    <p>Cada módulo sigue la misma estructura de tres capas:</p>
+
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-property">module/</span>
+├── <span class="code-property">domain/</span>              <span class="code-comment"># CAPA INTERNA - Lógica pura de negocio</span>
+│   ├── <span class="code-property">model/</span>          <span class="code-comment"># Entidades de dominio (User, AnuncioServicio, etc.)</span>
+│   └── <span class="code-property">port/</span>
+│       └── <span class="code-property">out/</span>        <span class="code-comment"># OutPorts: Interfaces que necesita el dominio</span>
+├── <span class="code-property">application/</span>         <span class="code-comment"># CAPA MEDIA - Casos de uso</span>
+│   ├── <span class="code-property">port/</span>
+│   │   └── <span class="code-property">in/</span>         <span class="code-comment"># InPorts: Interfaces de casos de uso</span>
+│   └── <span class="code-property">service/</span>        <span class="code-comment"># Implementaciones de servicios (ejecutan lógica)</span>
+└── <span class="code-property">infrastructure/</span>      <span class="code-comment"># CAPA EXTERNA - Adaptadores</span>
+    ├── <span class="code-property">input/</span>          <span class="code-comment"># Adaptadores driving (REST controllers, filtros)</span>
+    │   └── <span class="code-property">rest/</span>
+    │       ├── <span class="code-property">Controller.java</span>
+    │       └── <span class="code-property">dto/</span>    <span class="code-comment"># DTOs Request/Response</span>
+    └── <span class="code-property">output/</span>         <span class="code-comment"># Adaptadores driven (JPA repos, APIs externas)</span>
+        └── <span class="code-property">persistence/</span>
+            ├── <span class="code-property">entity/</span>        <span class="code-comment"># Entidades JPA</span>
+            ├── <span class="code-property">repository/</span>    <span class="code-comment"># Repositorios Spring Data</span>
+            └── <span class="code-property">RepositoryAdapter.java</span>  <span class="code-comment"># Implementa OutPorts del dominio</span></code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>💡 Insight Clave:</strong> Las dependencias siempre apuntan hacia adentro.
+                            Infraestructura depende de Aplicación, Aplicación depende de Dominio. Dominio NO depende de
+                            nada.</p>
+                    </div>
+                </section>
+
+                <!-- Módulos -->
+                <section class="content-section">
+                    <h2 id="modulos">Módulos del Sistema</h2>
+
+                    <div class="module-grid">
+                        <div class="module-card">
+                            <h4>Auth</h4>
+                            <p>Autenticación de usuarios, gestión de perfiles y billetera virtual</p>
+                            <div class="feature-tags">
+                                <span class="feature-tag">JWT</span>
+                                <span class="feature-tag">Wallet</span>
+                                <span class="feature-tag">Ratings</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <h4>Catalog</h4>
+                            <p>Gestión de categorías, subcategorías y anuncios de servicios</p>
+                            <div class="feature-tags">
+                                <span class="feature-tag">Categorías</span>
+                                <span class="feature-tag">Búsqueda</span>
+                                <span class="feature-tag">Favoritos</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <h4>Contracting</h4>
+                            <p>Ciclo de vida de contratos, propuestas de presupuesto y pagos</p>
+                            <div class="feature-tags">
+                                <span class="feature-tag">Contratos</span>
+                                <span class="feature-tag">Escrow</span>
+                                <span class="feature-tag">Tareas</span>
+                            </div>
+                        </div>
+
+                        <div class="module-card">
+                            <h4>Messages</h4>
+                            <p>Chat en tiempo real con propuestas integradas y notificaciones</p>
+                            <div class="feature-tags">
+                                <span class="feature-tag">WebSocket</span>
+                                <span class="feature-tag">Chat</span>
+                                <span class="feature-tag">Propuestas</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Capa de Dominio -->
+                <section class="content-section layer-section">
+                    <div class="layer-header">
+                        <span class="layer-badge">Capa 1</span>
+                    </div>
+                    <h2 id="capa-dominio">Capa de Dominio (Lógica de Negocio Core)</h2>
+                    <p>El corazón de la aplicación. Contiene:</p>
+
+                    <h3 id="modelos-dominio">Modelos de Dominio</h3>
+                    <p>Clases Java puras con lógica de negocio y cero dependencias de framework:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/domain/model/User.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.domain.model;
+
+<span class="code-keyword">import</span> lombok.Getter;
+<span class="code-keyword">import</span> lombok.Setter;
+<span class="code-keyword">import</span> java.time.LocalDateTime;
+<span class="code-keyword">import</span> java.util.UUID;
+
+<span class="code-annotation">@Getter</span>
+<span class="code-annotation">@Setter</span>
+<span class="code-keyword">public class</span> <span class="code-class">User</span> {
+    <span class="code-keyword">private</span> UUID id;
+    <span class="code-keyword">private</span> String nombre;
+    <span class="code-keyword">private</span> String email;
+    <span class="code-keyword">private</span> String passwordHash;
+    <span class="code-keyword">private</span> UserType tipo;  <span class="code-comment">// CLIENTE or PROFESIONAL</span>
+    <span class="code-keyword">private</span> String documentoIdentidad;
+    <span class="code-keyword">private boolean</span> verificado;
+    <span class="code-keyword">private</span> LocalDateTime fechaRegistro;
+    
+    <span class="code-comment">// Billetera virtual</span>
+    <span class="code-keyword">private</span> Double saldo;
+    <span class="code-keyword">private</span> Double puntuacionTotal;
+    <span class="code-keyword">private</span> Integer numeroValoraciones;
+    
+    <span class="code-comment">// Métodos de lógica de negocio</span>
+    <span class="code-keyword">public void</span> <span class="code-function">restarSaldo</span>(Double cantidad) {
+        <span class="code-keyword">if</span> (cantidad == <span class="code-keyword">null</span> || cantidad <= <span class="code-number">0</span>) {
+            <span class="code-keyword">throw new</span> IllegalArgumentException(<span class="code-string">"La cantidad debe ser mayor que cero."</span>);
+        }
+        <span class="code-keyword">this</span>.saldo -= cantidad;
+    }
+    
+    <span class="code-keyword">public void</span> <span class="code-function">sumarSaldo</span>(Double cantidad) {
+        <span class="code-keyword">if</span> (cantidad == <span class="code-keyword">null</span> || cantidad <= <span class="code-number">0</span>) {
+            <span class="code-keyword">throw new</span> IllegalArgumentException(<span class="code-string">"La cantidad debe ser mayor que cero."</span>);
+        }
+        <span class="code-keyword">this</span>.saldo += cantidad;
+    }
+    
+    <span class="code-keyword">public</span> Double <span class="code-function">getValoracionMedia</span>() {
+        <span class="code-keyword">if</span> (numeroValoraciones == <span class="code-keyword">null</span> || numeroValoraciones == <span class="code-number">0</span>)
+            <span class="code-keyword">return</span> <span class="code-number">0.0</span>;
+        <span class="code-keyword">return</span> Math.<span class="code-function">round</span>((puntuacionTotal / numeroValoraciones) * <span class="code-number">10.0</span>) / <span class="code-number">10.0</span>;
+    }
+}</code></pre>
+                    </div>
+
+                    <p><strong>Nota:</strong> Sin <code>@Entity</code>, sin <code>@Table</code>, sin anotaciones Spring.
+                        Esto es lógica pura de negocio.</p>
+
+                    <h3 id="outports">OutPorts (Interfaces Definidas por el Dominio)</h3>
+                    <p>El dominio declara lo que necesita del mundo exterior:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/domain/port/out/UserRepositoryPort.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.domain.port.out;
+
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.User;
+<span class="code-keyword">import</span> java.util.Optional;
+<span class="code-keyword">import</span> java.util.UUID;
+
+<span class="code-keyword">public interface</span> <span class="code-class">UserRepositoryPort</span> {
+    User <span class="code-function">save</span>(User user);
+    Optional&lt;User&gt; <span class="code-function">findByEmail</span>(String email);
+    Optional&lt;User&gt; <span class="code-function">findById</span>(UUID id);
+    <span class="code-keyword">boolean</span> <span class="code-function">existsByEmail</span>(String email);
+}
+
+<span class="code-comment">// auth/domain/port/out/PasswordEncoderPort.java</span>
+<span class="code-keyword">public interface</span> <span class="code-class">PasswordEncoderPort</span> {
+    String <span class="code-function">encode</span>(String rawPassword);
+    <span class="code-keyword">boolean</span> <span class="code-function">matches</span>(String rawPassword, String encodedPassword);
+}</code></pre>
+                    </div>
+
+                    <p>Estas son interfaces, no implementaciones. El dominio no le importa si usas BCrypt, Argon2 o MD5
+                        (por favor no). Solo necesita codificación de contraseñas.</p>
+                </section>
+
+                <!-- Capa de Aplicación -->
+                <section class="content-section layer-section">
+                    <div class="layer-header">
+                        <span class="layer-badge">Capa 2</span>
+                    </div>
+                    <h2 id="capa-aplicacion">Capa de Aplicación (Casos de Uso)</h2>
+                    <p>Orquesta la lógica de dominio para cumplir casos de uso específicos.</p>
+
+                    <h3 id="inports">InPorts (Interfaces de Casos de Uso)</h3>
+                    <p>Define lo que la aplicación puede hacer:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/application/port/in/RegisterUserUseCase.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.application.port.in;
+
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.User;
+
+<span class="code-keyword">public interface</span> <span class="code-class">RegisterUserUseCase</span> {
+    User <span class="code-function">registerUser</span>(RegisterUserCommand command);
+}
+
+<span class="code-comment">// auth/application/port/in/RegisterUserCommand.java</span>
+<span class="code-keyword">public class</span> <span class="code-class">RegisterUserCommand</span> {
+    <span class="code-keyword">private final</span> String nombre;
+    <span class="code-keyword">private final</span> String email;
+    <span class="code-keyword">private final</span> String rawPassword;
+    <span class="code-keyword">private final</span> UserType tipo;
+    <span class="code-keyword">private final</span> String documentoIdentidad;
+    
+    <span class="code-comment">// Constructor, getters</span>
+}</code></pre>
+                    </div>
+
+                    <h3 id="servicios">Servicios (Implementaciones de Casos de Uso)</h3>
+                    <p>Ejecutan lógica de negocio coordinando objetos de dominio y puertos:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/application/service/RegisterUserService.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.application.service;
+
+<span class="code-keyword">import</span> lombok.RequiredArgsConstructor;
+<span class="code-keyword">import</span> org.springframework.stereotype.Service;
+<span class="code-keyword">import</span> tfg.imirly.auth.application.port.in.RegisterUserCommand;
+<span class="code-keyword">import</span> tfg.imirly.auth.application.port.in.RegisterUserUseCase;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.User;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.port.out.PasswordEncoderPort;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.port.out.UserRepositoryPort;
+
+<span class="code-annotation">@Service</span>
+<span class="code-annotation">@RequiredArgsConstructor</span>
+<span class="code-keyword">public class</span> <span class="code-class">RegisterUserService</span> <span class="code-keyword">implements</span> RegisterUserUseCase {
+    
+    <span class="code-keyword">private final</span> UserRepositoryPort userRepository;
+    <span class="code-keyword">private final</span> PasswordEncoderPort passwordEncoder;
+    
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> User <span class="code-function">registerUser</span>(RegisterUserCommand command) {
+        <span class="code-comment">// Regla de negocio: email debe ser único</span>
+        <span class="code-keyword">if</span> (userRepository.<span class="code-function">existsByEmail</span>(command.<span class="code-function">getEmail</span>())) {
+            <span class="code-keyword">throw new</span> IllegalArgumentException(<span class="code-string">"Email ya registrado"</span>);
+        }
+        
+        <span class="code-comment">// Hashear la contraseña</span>
+        String hashedPassword = passwordEncoder.<span class="code-function">encode</span>(command.<span class="code-function">getRawPassword</span>());
+        
+        <span class="code-comment">// Crear objeto de dominio</span>
+        User newUser = <span class="code-keyword">new</span> <span class="code-class">User</span>(
+            command.<span class="code-function">getNombre</span>(),
+            command.<span class="code-function">getEmail</span>(),
+            hashedPassword,
+            command.<span class="code-function">getTipo</span>(),
+            command.<span class="code-function">getDocumentoIdentidad</span>()
+        );
+        
+        <span class="code-comment">// Persistir vía puerto</span>
+        <span class="code-keyword">return</span> userRepository.<span class="code-function">save</span>(newUser);
+    }
+}</code></pre>
+                    </div>
+
+                    <p>El servicio depende de puertos (<code>UserRepositoryPort</code>,
+                        <code>PasswordEncoderPort</code>), no de implementaciones concretas. La inyección de
+                        dependencias de Spring proporciona los adaptadores en runtime.
+                    </p>
+                </section>
+
+                <!-- Capa de Infraestructura -->
+                <section class="content-section layer-section">
+                    <div class="layer-header">
+                        <span class="layer-badge">Capa 3</span>
+                    </div>
+                    <h2 id="capa-infraestructura">Capa de Infraestructura (Adaptadores)</h2>
+                    <p>Conecta el dominio con el mundo real.</p>
+
+                    <h3 id="adaptadores-entrada">Adaptadores de Entrada (Driving - Controladores REST)</h3>
+                    <p>Reciben peticiones del mundo exterior e invocan casos de uso:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/infrastructure/input/rest/AuthController.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.infrastructure.input.rest;
+
+<span class="code-keyword">import</span> lombok.RequiredArgsConstructor;
+<span class="code-keyword">import</span> org.springframework.http.HttpStatus;
+<span class="code-keyword">import</span> org.springframework.http.ResponseEntity;
+<span class="code-keyword">import</span> org.springframework.web.bind.annotation.*;
+<span class="code-keyword">import</span> tfg.imirly.auth.application.port.in.*;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.User;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.UserType;
+<span class="code-keyword">import</span> tfg.imirly.auth.infrastructure.input.rest.dto.*;
+
+<span class="code-annotation">@RestController</span>
+<span class="code-annotation">@RequestMapping</span>(<span class="code-string">"/api/v1/auth"</span>)
+<span class="code-annotation">@RequiredArgsConstructor</span>
+<span class="code-keyword">public class</span> <span class="code-class">AuthController</span> {
+    
+    <span class="code-keyword">private final</span> RegisterUserUseCase registerUserUseCase;
+    <span class="code-keyword">private final</span> LoginUserUseCase loginUserUseCase;
+    
+    <span class="code-annotation">@PostMapping</span>(<span class="code-string">"/register"</span>)
+    <span class="code-keyword">public</span> ResponseEntity&lt;?&gt; <span class="code-function">registerUser</span>(<span class="code-annotation">@RequestBody</span> RegisterUserRequest request) {
+        <span class="code-keyword">try</span> {
+            <span class="code-comment">// Mapear DTO a Command</span>
+            RegisterUserCommand command = <span class="code-keyword">new</span> <span class="code-class">RegisterUserCommand</span>(
+                request.<span class="code-function">getNombre</span>(),
+                request.<span class="code-function">getEmail</span>(),
+                request.<span class="code-function">getRawPassword</span>(),
+                UserType.<span class="code-function">valueOf</span>(request.<span class="code-function">getTipoUsuario</span>().<span class="code-function">toUpperCase</span>()),
+                request.<span class="code-function">getDocumentoIdentidad</span>()
+            );
+            
+            <span class="code-comment">// Ejecutar caso de uso</span>
+            User newUser = registerUserUseCase.<span class="code-function">registerUser</span>(command);
+            
+            <span class="code-keyword">return</span> ResponseEntity.<span class="code-function">status</span>(HttpStatus.<span class="code-property">CREATED</span>)
+                .<span class="code-function">body</span>(<span class="code-string">"Usuario registrado con ID: "</span> + newUser.<span class="code-function">getId</span>());
+        } <span class="code-keyword">catch</span> (IllegalArgumentException e) {
+            <span class="code-keyword">return</span> ResponseEntity.<span class="code-function">status</span>(HttpStatus.<span class="code-property">BAD_REQUEST</span>)
+                .<span class="code-function">body</span>(e.<span class="code-function">getMessage</span>());
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3 id="adaptadores-salida">Adaptadores de Salida (Driven - Repositorios JPA)</h3>
+                    <p>Implementan OutPorts del dominio usando Spring Data JPA:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/infrastructure/output/persistence/UserRepositoryAdapter.java</span>
+<span class="code-keyword">package</span> tfg.imirly.auth.infrastructure.output.persistence;
+
+<span class="code-keyword">import</span> lombok.RequiredArgsConstructor;
+<span class="code-keyword">import</span> org.springframework.stereotype.Component;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.model.User;
+<span class="code-keyword">import</span> tfg.imirly.auth.domain.port.out.UserRepositoryPort;
+<span class="code-keyword">import</span> tfg.imirly.auth.infrastructure.output.persistence.entity.UserEntity;
+<span class="code-keyword">import</span> tfg.imirly.auth.infrastructure.output.persistence.repository.SpringDataUserRepository;
+
+<span class="code-keyword">import</span> java.util.Optional;
+<span class="code-keyword">import</span> java.util.UUID;
+
+<span class="code-annotation">@Component</span>
+<span class="code-annotation">@RequiredArgsConstructor</span>
+<span class="code-keyword">public class</span> <span class="code-class">UserRepositoryAdapter</span> <span class="code-keyword">implements</span> UserRepositoryPort {
+    
+    <span class="code-keyword">private final</span> SpringDataUserRepository springDataRepo;
+    <span class="code-keyword">private final</span> UserMapper mapper;
+    
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> User <span class="code-function">save</span>(User user) {
+        UserEntity entity = mapper.<span class="code-function">toEntity</span>(user);
+        UserEntity saved = springDataRepo.<span class="code-function">save</span>(entity);
+        <span class="code-keyword">return</span> mapper.<span class="code-function">toDomain</span>(saved);
+    }
+    
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public</span> Optional&lt;User&gt; <span class="code-function">findByEmail</span>(String email) {
+        <span class="code-keyword">return</span> springDataRepo.<span class="code-function">findByEmail</span>(email)
+            .<span class="code-function">map</span>(mapper::toDomain);
+    }
+    
+    <span class="code-annotation">@Override</span>
+    <span class="code-keyword">public boolean</span> <span class="code-function">existsByEmail</span>(String email) {
+        <span class="code-keyword">return</span> springDataRepo.<span class="code-function">existsByEmail</span>(email);
+    }
+}</code></pre>
+                    </div>
+
+                    <p>El adaptador traduce entre modelos de dominio y entidades JPA:</p>
+
+                    <div class="code-block" data-lang="java">
+                        <div class="code-header">
+                            <span class="code-lang">java</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-comment">// auth/infrastructure/output/persistence/entity/UserEntity.java</span>
+<span class="code-annotation">@Entity</span>
+<span class="code-annotation">@Table</span>(name = <span class="code-string">"usuarios"</span>)
+<span class="code-annotation">@Getter</span>
+<span class="code-annotation">@Setter</span>
+<span class="code-keyword">public class</span> <span class="code-class">UserEntity</span> {
+    <span class="code-annotation">@Id</span>
+    <span class="code-annotation">@GeneratedValue</span>(strategy = GenerationType.<span class="code-property">UUID</span>)
+    <span class="code-keyword">private</span> UUID id;
+    
+    <span class="code-annotation">@Column</span>(nullable = <span class="code-keyword">false</span>)
+    <span class="code-keyword">private</span> String nombre;
+    
+    <span class="code-annotation">@Column</span>(unique = <span class="code-keyword">true</span>, nullable = <span class="code-keyword">false</span>)
+    <span class="code-keyword">private</span> String email;
+    
+    <span class="code-annotation">@Column</span>(nullable = <span class="code-keyword">false</span>)
+    <span class="code-keyword">private</span> String passwordHash;
+    
+    <span class="code-annotation">@Enumerated</span>(EnumType.<span class="code-property">STRING</span>)
+    <span class="code-keyword">private</span> UserType tipo;
+    
+    <span class="code-keyword">private</span> String documentoIdentidad;
+    <span class="code-keyword">private boolean</span> verificado;
+    <span class="code-keyword">private</span> LocalDateTime fechaRegistro;
+    <span class="code-keyword">private</span> Double saldo;
+    <span class="code-keyword">private</span> Double puntuacionTotal;
+    <span class="code-keyword">private</span> Integer numeroValoraciones;
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Flujo de Datos -->
+                <section class="content-section">
+                    <h2 id="flujo-datos">Ejemplo de Flujo de Datos: Registro de Usuario</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step">
+                            <span class="flow-number">1</span>
+                            <div class="flow-content">
+                                <h4>App Android Envía Petición</h4>
+                                <p>La app construye un RegisterUserRequest y lo envía vía Retrofit</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <span class="flow-number">2</span>
+                            <div class="flow-content">
+                                <h4>Controlador REST Recibe (Infraestructura Input)</h4>
+                                <p>AuthController mapea el DTO a RegisterUserCommand y llama a RegisterUserUseCase</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <span class="flow-number">3</span>
+                            <div class="flow-content">
+                                <h4>Caso de Uso Ejecuta (Capa de Aplicación)</h4>
+                                <p>RegisterUserService valida unicidad del email vía UserRepositoryPort, hashea
+                                    contraseña vía PasswordEncoderPort</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <span class="flow-number">4</span>
+                            <div class="flow-content">
+                                <h4>Objeto de Dominio Creado</h4>
+                                <p>Se crea un User puro con reglas de negocio aplicadas (saldo = 0.0, verificado =
+                                    false)</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <span class="flow-number">5</span>
+                            <div class="flow-content">
+                                <h4>Persistencia vía Adaptador (Infraestructura Output)</h4>
+                                <p>UserRepositoryAdapter convierte User a UserEntity y guarda en PostgreSQL</p>
+                            </div>
+                        </div>
+
+                        <div class="flow-step">
+                            <span class="flow-number">6</span>
+                            <div class="flow-content">
+                                <h4>Respuesta Fluye de Vuelta</h4>
+                                <p>El User guardado se devuelve a través de las capas, el controlador envía HTTP 201 con
+                                    el ID del usuario</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Beneficios -->
+                <section class="content-section">
+                    <h2 id="beneficios">Beneficios de Esta Arquitectura</h2>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <h4>Testabilidad</h4>
+                            <p>Prueba la lógica de negocio sin bases de datos, frameworks o dependencias externas</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>Flexibilidad</h4>
+                            <p>Cambia PostgreSQL por MongoDB, Spring por Quarkus, REST por GraphQL - sin tocar las
+                                reglas de negocio</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>Mantenibilidad</h4>
+                            <p>Separación clara de responsabilidades. Sabes exactamente dónde añadir features o corregir
+                                bugs</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>Enfoque en Dominio</h4>
+                            <p>La lógica de negocio es explícita, no dispersa entre controladores y repositorios</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="inicio-rapido.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Inicio Rápido</span>
+                        </a>
+                        <a href="android-overview.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Visión General Android →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho (Table of Contents) -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav" id="toc-nav"></nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- CARGA EL MENÚ DINÁMICAMENTE -->
+    <script src="../js/menu-loader.js"></script>
+    <script src="../js/script.js"></script>
+    <script>
+        // Función para copiar código al portapapeles
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const codeElement = codeBlock.querySelector('code');
+            
+            // Obtener el texto sin los spans de sintaxis
+            let codeText = '';
+            codeElement.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    codeText += node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    codeText += node.textContent;
+                }
+            });
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(codeText.trim()).then(() => {
+                // Cambiar el estado del botón
+                const originalHTML = button.innerHTML;
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    ¡Copiado!
+                `;
+                
+                // Restaurar después de 2 segundos
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+
+</html>

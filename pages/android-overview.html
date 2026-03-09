@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visión General Android - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="../js/menu-loader.js" defer></script>
+    <script src="../js/script.js" defer></script>
+    <style>
+        /* Estilos adicionales para bloques de código con sintaxis resaltada */
+        .code-block {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            margin: var(--spacing-md) 0;
+            overflow: hidden;
+            position: relative;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .code-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 16px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .code-lang {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--color-purple-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: var(--font-family);
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(120, 100, 215, 0.2);
+            border-color: var(--color-purple);
+            color: var(--color-text-primary);
+        }
+
+        .copy-btn.copied {
+            background-color: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+
+        .copy-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .code-block pre {
+            margin: 0;
+            padding: var(--spacing-lg);
+            overflow-x: auto;
+            line-height: 1.7;
+        }
+
+        .code-block code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.7;
+            color: #e4e4e7;
+            background: transparent;
+            padding: 0;
+        }
+
+        /* Sintaxis resaltada */
+        .code-keyword { color: #c678dd; }
+        .code-string { color: #98c379; }
+        .code-comment { color: #5c6370; font-style: italic; }
+        .code-function { color: #61afef; }
+        .code-number { color: #d19a66; }
+        .code-operator { color: #56b6c2; }
+        .code-class { color: #e5c07b; }
+        .code-property { color: #e06c75; }
+        .code-annotation { color: #d19a66; }
+
+        /* Inline code */
+        code {
+            background-color: rgba(120, 100, 215, 0.15);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Info Box */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Top Bar -->
+    <header class="top-bar">
+        <a href="../index.html" class="logo">
+            <span class="logo-text">iMirly</span>
+        </a>
+        <nav class="top-nav">
+            <a href="https://github.com/imirly" class="top-nav-link github-link" target="_blank">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                GitHub
+            </a>
+        </nav>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container">
+            <!-- El menú se carga dinámicamente desde menulateral.html -->
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <nav class="breadcrumb">
+                    <span class="breadcrumb-item">Documentación</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item">App Android</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Visión General</span>
+                </nav>
+
+                <!-- Page Header -->
+                <header class="page-header">
+                    <h1>Visión General de la App Android</h1>
+                    <p class="page-description">
+                        Guía completa de la arquitectura y características de la aplicación iMirly para Android, 
+                        construida con Jetpack Compose y las mejores prácticas modernas de desarrollo.
+                    </p>
+                </header>
+
+                <!-- Introducción -->
+                <section class="content-section" id="introduccion">
+                    <h2>Introducción</h2>
+                    <p class="section-description">
+                        La aplicación iMirly para Android está construida con <strong>Jetpack Compose</strong> y sigue 
+                        las mejores prácticas modernas de desarrollo Android utilizando la arquitectura <strong>MVVM</strong>. 
+                        La app conecta usuarios con profesionales de servicios locales a través de una plataforma de 
+                        marketplace segura y en tiempo real.
+                    </p>
+                    
+                    <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+                        <div class="feature-card" style="text-align: center;">
+                            <div class="feature-icon" style="margin: 0 auto var(--spacing-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: var(--spacing-xs);">26+</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-text-muted);">Min SDK Support</p>
+                        </div>
+                        <div class="feature-card" style="text-align: center;">
+                            <div class="feature-icon" style="margin: 0 auto var(--spacing-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: var(--spacing-xs);">100%</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-text-muted);">Kotlin</p>
+                        </div>
+                        <div class="feature-card" style="text-align: center;">
+                            <div class="feature-icon" style="margin: 0 auto var(--spacing-md);">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
+                            <h3 style="font-size: 1.5rem; margin-bottom: var(--spacing-xs);">Real-time</h3>
+                            <p style="font-size: 0.875rem; color: var(--color-text-muted);">Chat System</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Arquitectura -->
+                <section class="content-section" id="arquitectura">
+                    <h2>Arquitectura</h2>
+                    
+                    <h3>Stack Tecnológico</h3>
+                    <p class="section-description">
+                        La aplicación utiliza un stack tecnológico moderno y robusto para garantizar 
+                        rendimiento, mantenibilidad y escalabilidad.
+                    </p>
+
+                    <div class="components-grid">
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="3" y1="9" x2="21" y2="9"></line>
+                                    <line x1="9" y1="21" x2="9" y2="9"></line>
+                                </svg>
+                                <h3>UI Framework</h3>
+                            </div>
+                            <p>Jetpack Compose con Material 3 design system</p>
+                        </div>
+
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                                </svg>
+                                <h3>Networking</h3>
+                            </div>
+                            <p>Retrofit 2.9.0 con Gson converter</p>
+                        </div>
+
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="3 11 22 2 13 21 11 13 3 11"></polygon>
+                                </svg>
+                                <h3>Navigation</h3>
+                            </div>
+                            <p>Jetpack Navigation Compose 2.8.0</p>
+                        </div>
+
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                                <h3>State Management</h3>
+                            </div>
+                            <p>ViewModel con Kotlin Coroutines</p>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: var(--spacing-2xl);">Estructura del Proyecto</h3>
+                    <p class="section-description">
+                        La aplicación sigue una estructura de paquetes modular organizada por funcionalidades:
+                    </p>
+
+                    <div class="code-block" data-lang="bash">
+                        <div class="code-header">
+                            <span class="code-lang">bash</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code>com.imirly.app/
+├── <span class="code-property">network/</span>              <span class="code-comment">// API services y data models</span>
+│   ├── RetrofitClient.kt
+│   ├── AuthApiService.kt
+│   ├── CatalogApiService.kt
+│   ├── MensajeApiService.kt
+│   ├── SolicitudApiService.kt
+│   ├── UserApiService.kt
+│   └── TokenManager.kt
+├── <span class="code-property">ui/</span>
+│   ├── <span class="code-property">auth/</span>            <span class="code-comment">// Login y registro</span>
+│   ├── <span class="code-property">main/</span>            <span class="code-comment">// Pantalla principal</span>
+│   ├── <span class="code-property">catalog/</span>         <span class="code-comment">// Listados de servicios</span>
+│   ├── <span class="code-property">chat/</span>            <span class="code-comment">// Mensajería en tiempo real</span>
+│   ├── <span class="code-property">messages/</span>        <span class="code-comment">// Bandeja de entrada</span>
+│   ├── <span class="code-property">profile/</span>         <span class="code-comment">// Perfil de usuario</span>
+│   └── <span class="code-property">publish/</span>         <span class="code-comment">// Crear anuncios</span>
+└── MainActivity.kt      <span class="code-comment">// Navigation host</span></code></pre>
+                    </div>
+                </section>
+
+                <!-- Características Principales -->
+                <section class="content-section" id="caracteristicas">
+                    <h2>Características Principales</h2>
+
+                    <!-- Autenticación -->
+                    <div class="step" style="margin-bottom: var(--spacing-xl); flex-direction: column; gap: var(--spacing-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div class="step-number">1</div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.25rem;">Sistema de Autenticación</h3>
+                                <p style="margin: 0; color: var(--color-text-muted); font-size: 0.875rem;">
+                                    Autenticación JWT segura con inyección automática de tokens
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="code-block" data-lang="kotlin" style="margin: 0;">
+                            <div class="code-header">
+                                <span class="code-lang">kotlin</span>
+                                <button class="copy-btn" onclick="copyCode(this)">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copiar
+                                </button>
+                            </div>
+                            <pre><code><span class="code-keyword">package</span> com.imirly.app.network
+
+<span class="code-keyword">import</span> okhttp3.Interceptor
+<span class="code-keyword">import</span> okhttp3.OkHttpClient
+<span class="code-keyword">import</span> retrofit2.Retrofit
+<span class="code-keyword">import</span> retrofit2.converter.gson.GsonConverterFactory
+
+<span class="code-keyword">object</span> <span class="code-class">RetrofitClient</span> {
+    <span class="code-keyword">private const val</span> <span class="code-property">BASE_URL</span> = <span class="code-string">"http://10.0.2.2:8080"</span>
+
+    <span class="code-keyword">private val</span> <span class="code-property">okHttpClient</span> = <span class="code-class">OkHttpClient</span>.<span class="code-function">Builder</span>()
+        .<span class="code-function">addInterceptor</span>(Interceptor { chain ->
+            <span class="code-keyword">val</span> originalRequest = chain.<span class="code-function">request</span>()
+            <span class="code-keyword">val</span> token = <span class="code-class">TokenManager</span>.jwtToken
+
+            <span class="code-keyword">val</span> newRequest = <span class="code-keyword">if</span> (token != <span class="code-keyword">null</span>) {
+                originalRequest.<span class="code-function">newBuilder</span>()
+                    .<span class="code-function">header</span>(<span class="code-string">"Authorization"</span>, <span class="code-string">"Bearer $token"</span>)
+                    .<span class="code-function">build</span>()
+            } <span class="code-keyword">else</span> {
+                originalRequest
+            }
+
+            chain.<span class="code-function">proceed</span>(newRequest)
+        })
+        .<span class="code-function">build</span>()
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Catálogo -->
+                    <div class="step" style="margin-bottom: var(--spacing-xl); flex-direction: column; gap: var(--spacing-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div class="step-number">2</div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.25rem;">Catálogo de Servicios</h3>
+                                <p style="margin: 0; color: var(--color-text-muted); font-size: 0.875rem;">
+                                    Explora categorías y subcategorías con listados dinámicos
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="categories-grid" style="width: 100%;">
+                            <div class="category-item">
+                                <h4>Categorías</h4>
+                                <p>Deporte, Belleza, Reparaciones, Clases, y más...</p>
+                            </div>
+                            <div class="category-item">
+                                <h4>Búsqueda</h4>
+                                <p>Búsqueda de texto completo con filtros de ubicación y categoría</p>
+                            </div>
+                            <div class="category-item">
+                                <h4>Favoritos</h4>
+                                <p>Guarda y gestiona tus proveedores de servicios favoritos</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat -->
+                    <div class="step" style="margin-bottom: var(--spacing-xl); flex-direction: column; gap: var(--spacing-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div class="step-number">3</div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.25rem;">Chat en Tiempo Real</h3>
+                                <p style="margin: 0; color: var(--color-text-muted); font-size: 0.875rem;">
+                                    Sistema de chat basado en polling con tipos de mensajes especiales
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div style="width: 100%; display: flex; flex-direction: column; gap: var(--spacing-sm);">
+                            <div class="category-item" style="display: flex; align-items: center; border-left: 3px solid #3b82f6;">
+                                <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; margin-right: var(--spacing-md);"></div>
+                                <code style="color: #3b82f6; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; flex: 1;">PROPUESTA_PRECIO</code>
+                                <span style="color: var(--color-text-muted); font-size: 0.875rem;">Propuestas de precio</span>
+                            </div>
+                            <div class="category-item" style="display: flex; align-items: center; border-left: 3px solid #10b981;">
+                                <div style="width: 8px; height: 8px; background: #10b981; border-radius: 50%; margin-right: var(--spacing-md);"></div>
+                                <code style="color: #10b981; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; flex: 1;">ACEPTAR/RECHAZAR</code>
+                                <span style="color: var(--color-text-muted); font-size: 0.875rem;">Aceptación/rechazo de contratos</span>
+                            </div>
+                            <div class="category-item" style="display: flex; align-items: center; border-left: 3px solid #8b5cf6;">
+                                <div style="width: 8px; height: 8px; background: #8b5cf6; border-radius: 50%; margin-right: var(--spacing-md);"></div>
+                                <code style="color: #8b5cf6; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; flex: 1;">COMPLETAR</code>
+                                <span style="color: var(--color-text-muted); font-size: 0.875rem;">Notificaciones de trabajo completado</span>
+                            </div>
+                            <div class="category-item" style="display: flex; align-items: center; border-left: 3px solid #f59e0b;">
+                                <div style="width: 8px; height: 8px; background: #f59e0b; border-radius: 50%; margin-right: var(--spacing-md);"></div>
+                                <code style="color: #f59e0b; font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; flex: 1;">RATING</code>
+                                <span style="color: var(--color-text-muted); font-size: 0.875rem;">Sistema de valoración</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pagos -->
+                    <div class="step" style="flex-direction: column; gap: var(--spacing-lg);">
+                        <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div class="step-number">4</div>
+                            <div>
+                                <h3 style="margin: 0; font-size: 1.25rem;">Pagos Seguros</h3>
+                                <p style="margin: 0; color: var(--color-text-muted); font-size: 0.875rem;">
+                                    Sistema de pagos en escrow que retiene fondos hasta la finalización del servicio
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="info-box" style="width: 100%; margin: 0; display: flex; align-items: center; justify-content: space-between;">
+                            <div style="display: flex; align-items: center; gap: var(--spacing-md);">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                                <div>
+                                    <h4 style="margin: 0; font-size: 1rem; color: var(--color-text-primary);">Protección de Pagos</h4>
+                                    <p style="margin: 0; font-size: 0.875rem; color: var(--color-text-muted);">Los fondos se liberan solo cuando el trabajo está completado</p>
+                                </div>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">100%</div>
+                                <div style="font-size: 0.75rem; color: var(--color-text-muted);">Seguro</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Navegación -->
+                <section class="content-section" id="navegacion">
+                    <h2>Flujo de Navegación</h2>
+                    <p class="section-description">
+                        La app utiliza Jetpack Navigation con la siguiente estructura de rutas:
+                    </p>
+
+                    <div class="code-block" data-lang="kotlin">
+                        <div class="code-header">
+                            <span class="code-lang">kotlin</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-function">NavHost</span>(navController = navController, startDestination = <span class="code-string">"onboarding"</span>) {
+    <span class="code-function">composable</span>(<span class="code-string">"onboarding"</span>) { <span class="code-function">OnboardingScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"login"</span>) { <span class="code-function">LoginScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"register"</span>) { <span class="code-function">RegisterScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"main"</span>) { <span class="code-function">MainScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"mis_anuncios"</span>) { <span class="code-function">MisAnunciosScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"change_password"</span>) { <span class="code-function">ChangePasswordScreen</span>(navController) }
+    <span class="code-function">composable</span>(<span class="code-string">"saldo_screen"</span>) { <span class="code-function">SaldoScreen</span>(navController) }
+    <span class="code-comment">// Rutas adicionales...</span>
+}</code></pre>
+                    </div>
+
+                    <div class="info-box" style="margin-top: var(--spacing-lg);">
+                        <p style="margin: 0;">
+                            <strong>Nota de Implementación:</strong> La app utiliza navegación <code>popUpTo</code> 
+                            para prevenir que los usuarios vuelvan a las pantallas de login después de la autenticación.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Configuración -->
+                <section class="content-section" id="configuracion">
+                    <h2>Configuración de Build</h2>
+                    
+                    <div class="code-block" data-lang="kotlin">
+                        <div class="code-header">
+                            <span class="code-lang">kotlin</span>
+                            <button class="copy-btn" onclick="copyCode(this)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                                Copiar
+                            </button>
+                        </div>
+                        <pre><code><span class="code-property">android</span> {
+    namespace = <span class="code-string">"com.imirly.app"</span>
+    compileSdk = <span class="code-number">36</span>
+
+    <span class="code-property">defaultConfig</span> {
+        applicationId = <span class="code-string">"com.imirly.app"</span>
+        minSdk = <span class="code-number">26</span>
+        targetSdk = <span class="code-number">36</span>
+        versionCode = <span class="code-number">1</span>
+        versionName = <span class="code-string">"1.0"</span>
+    }
+
+    <span class="code-property">compileOptions</span> {
+        sourceCompatibility = JavaVersion.<span class="code-property">VERSION_17</span>
+        targetCompatibility = JavaVersion.<span class="code-property">VERSION_17</span>
+    }
+
+    <span class="code-property">kotlinOptions</span> {
+        jvmTarget = <span class="code-string">"17"</span>
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="features-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: var(--spacing-lg);">
+                        <div class="feature-card" style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div style="width: 12px; height: 12px; background: #10b981; border-radius: 50%;"></div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--color-text-primary);">Min SDK 26</div>
+                                <div style="font-size: 0.875rem; color: var(--color-text-muted);">Android 8.0+ (Oreo)</div>
+                            </div>
+                        </div>
+                        <div class="feature-card" style="display: flex; align-items: center; gap: var(--spacing-md);">
+                            <div style="width: 12px; height: 12px; background: #3b82f6; border-radius: 50%;"></div>
+                            <div>
+                                <div style="font-weight: 600; color: var(--color-text-primary);">Target SDK 36</div>
+                                <div style="font-size: 0.875rem; color: var(--color-text-muted);">Android 16 (Baklava)</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+                    
+                    <div class="next-steps-grid">
+                        <a href="android-instalacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Instalación</h4>
+                                <p>Configura tu entorno de desarrollo Android Studio y dependencias necesarias</p>
+                            </div>
+                        </a>
+
+                        <a href="android-autenticacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Autenticación</h4>
+                                <p>Implementa el sistema de login y registro con JWT</p>
+                            </div>
+                        </a>
+
+                        <a href="android-catalogo.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Catálogo de Servicios</h4>
+                                <p>Explora y busca servicios disponibles en la plataforma</p>
+                            </div>
+                        </a>
+
+                        <a href="android-chat.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Chat en Tiempo Real</h4>
+                                <p>Construye el sistema de mensajería entre usuarios</p>
+                            </div>
+                        </a>
+
+                        <a href="arquitectura.html" class="next-step-card" style="grid-column: span 2;">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Arquitectura Completa</h4>
+                                <p>Documentación detallada de la arquitectura MVVM y componentes del sistema</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <div class="pagination">
+                    <a href="android-instalacion.html" class="pagination-link prev" style="visibility: hidden;">
+                        <span class="pagination-label">Anterior</span>
+                        <span class="pagination-title">← Instalación</span>
+                    </a>
+                    <a href="android-instalacion.html" class="pagination-link next">
+                        <span class="pagination-label">Siguiente</span>
+                        <span class="pagination-title">Instalación →</span>
+                    </a>
+                </div>
+
+                <!-- Footer -->
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/imirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                            </svg>
+                            Ver en GitHub
+                        </a>
+                        <p class="footer-text">© 2024 iMirly. Documentación técnica para desarrolladores.</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Sidebar Derecha - Table of Contents -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h3 class="toc-title">En esta página</h3>
+                <nav class="toc-nav">
+                    <a href="#introduccion" class="toc-link">Introducción</a>
+                    <a href="#arquitectura" class="toc-link">Arquitectura</a>
+                    <a href="#caracteristicas" class="toc-link">Características Principales</a>
+                    <a href="#navegacion" class="toc-link">Flujo de Navegación</a>
+                    <a href="#configuracion" class="toc-link">Configuración de Build</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <script>
+        // Función para copiar código al portapapeles
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block');
+            const codeElement = codeBlock.querySelector('code');
+            
+            // Obtener el texto sin los spans de sintaxis
+            let codeText = '';
+            codeElement.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    codeText += node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    codeText += node.textContent;
+                }
+            });
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(codeText.trim()).then(() => {
+                // Cambiar el estado del botón
+                const originalHTML = button.innerHTML;
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    ¡Copiado!
+                `;
+                
+                // Restaurar después de 2 segundos
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configuración del Backend - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA CONFIGURACIÓN DEL BACKEND */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Bloque de código con encabezado */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Grid de Prerrequisitos */
+        .prereq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .prereq-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+        }
+
+        .prereq-icon {
+            width: 48px;
+            height: 48px;
+            background-color: var(--color-bg-hover);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .prereq-content h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: 4px;
+        }
+
+        .prereq-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        .prereq-version {
+            display: inline-block;
+            background-color: rgba(108, 92, 231, 0.1);
+            color: var(--color-purple-light);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: var(--spacing-sm);
+        }
+
+        /* Pasos */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 70px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50px;
+            height: 50px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .step-item h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+        }
+
+        .step-item p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Pestañas */
+        .tabs {
+            display: flex;
+            gap: var(--spacing-xs);
+            margin-bottom: var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            padding-bottom: var(--spacing-sm);
+        }
+
+        .tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 150ms ease;
+        }
+
+        .tab:hover {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-primary);
+        }
+
+        .tab.active {
+            background-color: var(--color-purple);
+            color: white;
+            border-color: var(--color-purple);
+        }
+
+        /* Caja de Advertencia */
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Árbol de Estructura del Proyecto */
+        .structure-tree {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            overflow-x: auto;
+        }
+
+        .tree-line {
+            white-space: pre;
+        }
+
+        .tree-dir {
+            color: var(--color-purple-light);
+        }
+
+        .tree-file {
+            color: var(--color-text-secondary);
+        }
+
+        .tree-comment {
+            color: #6b7280;
+        }
+
+        /* Grid de Problemas */
+        .issues-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .issue-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .issue-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .issue-card h4 svg {
+            color: #f59e0b;
+        }
+
+        .issue-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Cajas de información */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Próximos pasos */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Insignias */
+        .terminal-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .xml-badge {
+            display: inline-block;
+            background-color: rgba(227, 79, 38, 0.1);
+            color: #e34f26;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .sql-badge {
+            display: inline-block;
+            background-color: rgba(0, 150, 199, 0.1);
+            color: #0096c7;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .properties-badge {
+            display: inline-block;
+            background-color: rgba(106, 176, 76, 0.1);
+            color: #6ab04c;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Backend</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Configuración</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Configuración del Backend</h1>
+                    <p class="page-description">
+                        Pon en marcha el backend Spring Boot localmente
+                    </p>
+                </header>
+
+                <!-- Prerrequisitos -->
+                <section class="content-section" id="prerequisites">
+                    <h2>Prerrequisitos</h2>
+                    <p>Asegúrate de tener instalado lo siguiente:</p>
+
+                    <div class="prereq-grid">
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>Java 25</h4>
+                                <p>Requerido para Spring Boot 4.0.3</p>
+                                <span class="prereq-version">Versión 25</span>
+                            </div>
+                        </div>
+
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path
+                                        d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                                    </path>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>Maven 3.8+</h4>
+                                <p>Para gestión de dependencias</p>
+                                <span class="prereq-version">3.8 o superior</span>
+                            </div>
+                        </div>
+
+                        <div class="prereq-card">
+                            <div class="prereq-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="prereq-content">
+                                <h4>PostgreSQL 14+</h4>
+                                <p>Servidor de base de datos</p>
+                                <span class="prereq-version">14 o superior</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Pasos de Instalación -->
+                <section class="content-section" id="installation">
+                    <h2>Pasos de Instalación</h2>
+
+                    <ol class="steps-list">
+                        <!-- Paso 1 -->
+                        <li class="step-item">
+                            <h3>Instalar Java 25</h3>
+                            <p>Descarga e instala Java 25 desde Oracle o usa SDKMAN:</p>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Instalar con SDKMAN</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash"># Usando SDKMAN
+sdk install java 25-open
+sdk use java 25-open
+
+# Verificar instalación
+java -version</code></pre>
+                            </div>
+
+                            <p>Salida esperada:</p>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Salida</span>
+                                </div>
+                                <pre><code class="language-text">java version "25" 2025-XX-XX</code></pre>
+                            </div>
+                        </li>
+
+                        <!-- Paso 2 -->
+                        <li class="step-item">
+                            <h3>Instalar PostgreSQL</h3>
+
+                            <div class="tabs">
+                                <button class="tab active">macOS</button>
+                                <button class="tab">Ubuntu/Debian</button>
+                                <button class="tab">Windows</button>
+                            </div>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">macOS con Homebrew</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash"># Usando Homebrew
+brew install postgresql@14
+brew services start postgresql@14</code></pre>
+                            </div>
+                        </li>
+
+                        <!-- Paso 3 -->
+                        <li class="step-item">
+                            <h3>Crear la Base de Datos</h3>
+                            <p>Crea la base de datos iMirly y el usuario:</p>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">PostgreSQL</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash"># Acceder a PostgreSQL
+psql -U postgres</code></pre>
+                            </div>
+
+                            <span class="sql-badge">SQL</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Crear DB y Usuario</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-sql">-- Crear base de datos
+CREATE DATABASE imirly_db;
+
+-- Crear usuario
+CREATE USER user_imirly WITH PASSWORD 'password_imirly';
+
+-- Otorgar privilegios
+GRANT ALL PRIVILEGES ON DATABASE imirly_db TO user_imirly;
+
+-- Salir de psql
+\q</code></pre>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warning-box-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                        </path>
+                                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
+                                    Nota de Seguridad
+                                </div>
+                                <p>Estas credenciales coinciden con la configuración en application.properties.
+                                    ¡Cámbialas en producción!</p>
+                            </div>
+                        </li>
+
+                        <!-- Paso 4 -->
+                        <li class="step-item">
+                            <h3>Clonar y Navegar</h3>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Git</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash"># Clonar el repositorio (si no lo has hecho)
+git clone <url-del-repositorio>
+cd source/backend</code></pre>
+                            </div>
+                        </li>
+
+                        <!-- Paso 5 -->
+                        <li class="step-item">
+                            <h3>Configurar Application Properties</h3>
+                            <p>Revisa y actualiza src/main/resources/application.properties si es necesario:</p>
+
+                            <span class="properties-badge">Properties</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">application.properties</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-properties">spring.application.name=iMirly
+spring.datasource.url=jdbc:postgresql://localhost:5432/imirly_db
+spring.datasource.username=user_imirly
+spring.datasource.password=password_imirly
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true</code></pre>
+                            </div>
+
+                            <div class="warning-box">
+                                <div class="warning-box-header">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <path
+                                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                        </path>
+                                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                    </svg>
+                                    Configuración de Producción
+                                </div>
+                                <p>spring.jpa.hibernate.ddl-auto=update actualiza automáticamente el esquema. ¡Usa
+                                    validate en producción!</p>
+                            </div>
+                        </li>
+
+                        <!-- Paso 6 -->
+                        <li class="step-item">
+                            <h3>Compilar el Proyecto</h3>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Maven</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash"># Limpiar y empaquetar
+./mvnw clean package
+
+# O en Windows
+mvnw.cmd clean package</code></pre>
+                            </div>
+
+                            <p>Esto hará lo siguiente:</p>
+                            <ul
+                                style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                                <li>Descargar todas las dependencias de pom.xml</li>
+                                <li>Compilar el código fuente Java</li>
+                                <li>Ejecutar pruebas (si las hay)</li>
+                                <li>Crear un archivo JAR en target/</li>
+                            </ul>
+                        </li>
+
+                        <!-- Paso 7 -->
+                        <li class="step-item">
+                            <h3>Ejecutar la Aplicación</h3>
+
+                            <div class="tabs">
+                                <button class="tab active">Maven</button>
+                                <button class="tab">JAR</button>
+                                <button class="tab">IDE</button>
+                            </div>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Ejecutar con Maven</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash">./mvnw spring-boot:run</code></pre>
+                            </div>
+
+                            <p>Deberías ver una salida como:</p>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Salida</span>
+                                </div>
+                                <pre><code class="language-text">Started IMirlyApplication in 3.456 seconds (process running for 4.123)</code></pre>
+                            </div>
+                        </li>
+
+                        <!-- Paso 8 -->
+                        <li class="step-item">
+                            <h3>Verificar que el Servidor está Corriendo</h3>
+                            <p>La aplicación se ejecuta en el puerto 8080 por defecto. Prueba con:</p>
+
+                            <span class="terminal-badge">Terminal</span>
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">cURL</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                                <pre><code class="language-bash">curl http://localhost:8080/api/v1/health</code></pre>
+                            </div>
+
+                            <div class="info-box">
+                                <p>O visita <code class="inline">http://localhost:8080</code> en tu navegador para ver la
+                                    aplicación en ejecución.</p>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Estructura del Proyecto -->
+                <section class="content-section" id="structure">
+                    <h2>Estructura del Proyecto</h2>
+
+                    <div class="structure-tree">
+                        <div class="tree-line"><span class="tree-dir">backend/</span></div>
+                        <div class="tree-line">├── <span class="tree-file">pom.xml</span> <span class="tree-comment">#
+                                Dependencias Maven</span></div>
+                        <div class="tree-line">├── <span class="tree-file">mvnw</span> <span class="tree-comment">#
+                                Wrapper de Maven (Unix)</span></div>
+                        <div class="tree-line">├── <span class="tree-file">mvnw.cmd</span> <span class="tree-comment">#
+                                Wrapper de Maven (Windows)</span></div>
+                        <div class="tree-line">├── <span class="tree-dir">src/</span></div>
+                        <div class="tree-line">│ ├── <span class="tree-dir">main/</span></div>
+                        <div class="tree-line">│ │ ├── <span class="tree-dir">java/tfg/imirly/</span></div>
+                        <div class="tree-line">│ │ │ ├── <span class="tree-file">IMirlyApplication.java</span></div>
+                        <div class="tree-line">│ │ │ ├── <span class="tree-dir">auth/</span> <span
+                                class="tree-comment"># Módulo de autenticación</span></div>
+                        <div class="tree-line">│ │ │ └── <span class="tree-dir">catalog/</span> <span
+                                class="tree-comment"># Módulo de catálogo de servicios</span></div>
+                        <div class="tree-line">│ │ └── <span class="tree-dir">resources/</span></div>
+                        <div class="tree-line">│ │ └── <span class="tree-file">application.properties</span></div>
+                        <div class="tree-line">│ └── <span class="tree-dir">test/</span></div>
+                        <div class="tree-line">│ └── <span class="tree-dir">java/</span> <span class="tree-comment">#
+                                Archivos de prueba</span></div>
+                        <div class="tree-line">└── <span class="tree-dir">target/</span> <span class="tree-comment">#
+                                Salida compilada (generada)</span></div>
+                    </div>
+                </section>
+
+                <!-- Flujo de Desarrollo -->
+                <section class="content-section" id="workflow">
+                    <h2>Flujo de Desarrollo</h2>
+
+                    <h3>Usando Maven Wrapper</h3>
+                    <p>El proyecto incluye wrappers de Maven (<code class="inline">mvnw</code> y <code
+                            class="inline">mvnw.cmd</code>) para que no necesites tener Maven instalado globalmente:</p>
+
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Comandos Comunes de Maven</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash"># Limpiar compilación
+./mvnw clean
+
+# Compilar
+./mvnw compile
+
+# Ejecutar pruebas
+./mvnw test
+
+# Empaquetar JAR
+./mvnw package
+
+# Ejecutar aplicación
+./mvnw spring-boot:run</code></pre>
+                    </div>
+
+                    <h3>Recarga en Caliente con Spring DevTools</h3>
+                    <p>Añade a <code class="inline">pom.xml</code> para reinicio automático al cambiar el código:</p>
+
+                    <span class="xml-badge">XML</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">pom.xml</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+&lt;/dependency&gt;</code></pre>
+                    </div>
+
+                    <h3>Configuración de Lombok</h3>
+                    <p>El proyecto usa Lombok para reducir código repetitivo. Configura tu IDE:</p>
+
+                    <div class="tabs">
+                        <button class="tab active">IntelliJ IDEA</button>
+                        <button class="tab">Eclipse</button>
+                        <button class="tab">VS Code</button>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>IntelliJ IDEA:</strong> Instala el plugin de Lombok desde el Marketplace, luego habilita
+                            el procesamiento de anotaciones: Archivo → Configuración → Compilación, Ejecución, Despliegue → Compilador →
+                            Procesadores de Anotaciones → Marcar "Habilitar procesamiento de anotaciones"</p>
+                    </div>
+                </section>
+
+                <!-- Esquema de Base de Datos -->
+                <section class="content-section" id="database">
+                    <h2>Creación del Esquema de Base de Datos</h2>
+                    <p>Con <code class="inline">spring.jpa.hibernate.ddl-auto=update</code>, Hibernate crea automáticamente
+                        las tablas basadas en clases <code class="inline">@Entity</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">UserEntity.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Entity
+@Table(name = "usuarios")
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
+    private String nombre;
+    private String email;
+    
+    @Column(name = "password_hash")
+    private String passwordHash;
+    // ... más campos
+}</code></pre>
+                    </div>
+
+                    <p>Esto crea automáticamente la tabla <code class="inline">usuarios</code>:</p>
+
+                    <span class="sql-badge">SQL</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Esquema Generado</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-sql">CREATE TABLE usuarios (
+    id UUID PRIMARY KEY,
+    nombre VARCHAR(255),
+    email VARCHAR(255),
+    password_hash VARCHAR(255),
+    tipo_usuario VARCHAR(50),
+    documento_identidad VARCHAR(255),
+    verificado BOOLEAN,
+    fecha_registro TIMESTAMP,
+    saldo DECIMAL(10,2) DEFAULT 0.0,
+    puntuacion_total DOUBLE PRECISION DEFAULT 0.0,
+    numero_valoraciones INTEGER DEFAULT 0
+);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Probando la API -->
+                <section class="content-section" id="testing">
+                    <h2>Probando la API</h2>
+
+                    <h3>Registrar un Usuario</h3>
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">cURL - Registro</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">curl -X POST http://localhost:8080/api/v1/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "nombre": "Juan Pérez",
+    "email": "juan@example.com",
+    "rawPassword": "SecurePass123",
+    "tipoUsuario": "PROFESIONAL",
+    "documentoIdentidad": "12345678A"
+  }'</code></pre>
+                    </div>
+
+                    <h3>Iniciar Sesión</h3>
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">cURL - Login</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">curl -X POST http://localhost:8080/api/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "juan@example.com",
+    "rawPassword": "SecurePass123"
+  }'</code></pre>
+                    </div>
+
+                    <p>Respuesta:</p>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Respuesta de Token JWT</span>
+                        </div>
+                        <pre><code class="language-text">"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqdWFuQGV4YW1wbGUuY29tIiwiaWQiOiIxMjM0NTY3OC0uLi4ifQ..."</code></pre>
+                    </div>
+
+                    <h3>Usar el Token JWT</h3>
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">cURL - Petición Autenticada</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">curl http://localhost:8080/api/v1/user/profile \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiJ9..."</code></pre>
+                    </div>
+                </section>
+
+                <!-- Problemas Comunes -->
+                <section class="content-section" id="issues">
+                    <h2>Problemas Comunes</h2>
+
+                    <div class="issues-grid">
+                        <div class="issue-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Puerto 8080 ya en uso
+                            </h4>
+                            <p>Cambia el puerto en application.properties: <code class="inline">server.port=8081</code> o
+                                mata el proceso que usa el puerto 8080.</p>
+                        </div>
+
+                        <div class="issue-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Conexión PostgreSQL rechazada
+                            </h4>
+                            <p>Asegúrate de que PostgreSQL esté corriendo: <code
+                                    class="inline">brew services start postgresql@14</code> (macOS) o <code
+                                    class="inline">sudo service postgresql start</code> (Linux).</p>
+                        </div>
+
+                        <div class="issue-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Anotaciones de Lombok no funcionan
+                            </h4>
+                            <p>Habilita el procesamiento de anotaciones en tu IDE y asegúrate de que el plugin de Lombok esté instalado.</p>
+                        </div>
+
+                        <div class="issue-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Error de validación de esquema
+                            </h4>
+                            <p>Establece <code class="inline">spring.jpa.hibernate.ddl-auto=create-drop</code> temporalmente para
+                                recrear el esquema, luego vuelve a <code class="inline">update</code>.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Variables de Entorno -->
+                <section class="content-section" id="env-vars">
+                    <h2>Variables de Entorno</h2>
+                    <p>Para producción, usa variables de entorno en lugar de codificar credenciales:</p>
+
+                    <span class="properties-badge">Properties</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">application.properties</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-properties">spring.datasource.url=${DB_URL:jdbc:postgresql://localhost:5432/imirly_db}
+spring.datasource.username=${DB_USERNAME:user_imirly}
+spring.datasource.password=${DB_PASSWORD:password_imirly}</code></pre>
+                    </div>
+
+                    <p>Luego configúralas:</p>
+
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Variables de Entorno</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-bash">export DB_URL=jdbc:postgresql://prod-server:5432/imirly_prod
+export DB_USERNAME=prod_user
+export DB_PASSWORD=strong_password</code></pre>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="next-steps">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Arquitectura Hexagonal</h4>
+                                <p>Comprende la estructura del código</p>
+                            </div>
+                        </a>
+
+                        <a href="security.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Seguridad</h4>
+                                <p>Aprende sobre autenticación JWT</p>
+                            </div>
+                        </a>
+
+                        <a href="database.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Base de Datos</h4>
+                                <p>Explora el esquema de la base de datos</p>
+                            </div>
+                        </a>
+
+                        <a href="api-docs.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Documentación API</h4>
+                                <p>Prueba todos los endpoints disponibles (próximamente)</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="backend-overview.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Visión General Backend</span>
+                        </a>
+                        <a href="arquitectura.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Arquitectura Hexagonal →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#prerequisites" class="toc-link">Prerrequisitos</a>
+                    <a href="#installation" class="toc-link">Pasos de Instalación</a>
+                    <a href="#structure" class="toc-link">Estructura del Proyecto</a>
+                    <a href="#workflow" class="toc-link">Flujo de Desarrollo</a>
+                    <a href="#database" class="toc-link">Esquema de Base de Datos</a>
+                    <a href="#testing" class="toc-link">Probando la API</a>
+                    <a href="#issues" class="toc-link">Problemas Comunes</a>
+                    <a href="#env-vars" class="toc-link">Variables de Entorno</a>
+                    <a href="#next-steps" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Funcionalidad de pestañas
+        document.querySelectorAll('.tabs').forEach(tabContainer => {
+            const tabs = tabContainer.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                });
+            });
+        });
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

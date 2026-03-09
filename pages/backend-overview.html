@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backend API - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA BACKEND OVERVIEW */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Lista de features */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Tech Stack Grid */
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .tech-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            transition: all 250ms ease;
+        }
+
+        .tech-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .tech-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .tech-value {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        /* Architecture benefits grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .benefit-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .benefit-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-purple);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .benefit-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Project structure tree */
+        .structure-tree {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            overflow-x: auto;
+        }
+
+        .tree-line {
+            white-space: pre;
+        }
+
+        .tree-dir {
+            color: var(--color-purple-light);
+        }
+
+        .tree-file {
+            color: var(--color-text-secondary);
+        }
+
+        .tree-comment {
+            color: #6b7280;
+        }
+
+        /* Module cards */
+        .module-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .module-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .module-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .module-card h4 svg {
+            color: var(--color-purple);
+        }
+
+        .module-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .module-card li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .module-card li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* XML Badge */
+        .xml-badge {
+            display: inline-block;
+            background-color: rgba(227, 79, 38, 0.1);
+            color: #e34f26;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .config-badge {
+            display: inline-block;
+            background-color: rgba(106, 176, 76, 0.1);
+            color: #6ab04c;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Backend</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Visión General</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Backend API</h1>
+                    <p class="page-description">
+                        Backend Spring Boot construido con Arquitectura Hexagonal
+                    </p>
+                </header>
+
+                <!-- Architecture Overview -->
+                <section class="content-section" id="overview">
+                    <h2>Visión General de la Arquitectura</h2>
+                    <p>
+                        El backend de iMirly es una aplicación <strong>Spring Boot 4.0.3</strong> construida utilizando 
+                        <strong>Arquitectura Hexagonal</strong> (patrón Ports and Adapters). Esta arquitectura asegura 
+                        una separación limpia entre la lógica de negocio y las preocupaciones de infraestructura.
+                    </p>
+                </section>
+
+                <!-- Technology Stack -->
+                <section class="content-section" id="tech-stack">
+                    <h2>Stack Tecnológico</h2>
+
+                    <div class="tech-grid">
+                        <div class="tech-card">
+                            <div class="tech-label">Framework</div>
+                            <div class="tech-value">Spring Boot 4.0.3</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-label">Lenguaje</div>
+                            <div class="tech-value">Java 25</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-label">Base de Datos</div>
+                            <div class="tech-value">PostgreSQL</div>
+                        </div>
+                        <div class="tech-card">
+                            <div class="tech-label">Seguridad</div>
+                            <div class="tech-value">Spring Security + JWT</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Key Dependencies -->
+                <section class="content-section" id="dependencies">
+                    <h2>Dependencias Principales</h2>
+                    <span class="xml-badge">pom.xml</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">pom.xml</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-xml">&lt;dependencies&gt;
+    &lt;!-- Core Spring Boot --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-data-jpa&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-validation&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-webmvc&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Database --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.postgresql&lt;/groupId&gt;
+        &lt;artifactId&gt;postgresql&lt;/artifactId&gt;
+        &lt;scope&gt;runtime&lt;/scope&gt;
+    &lt;/dependency&gt;
+
+    &lt;!-- Security & JWT --&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-security&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;io.jsonwebtoken&lt;/groupId&gt;
+        &lt;artifactId&gt;jjwt-api&lt;/artifactId&gt;
+        &lt;version&gt;0.11.5&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre>
+                    </div>
+                </section>
+
+                <!-- Project Structure -->
+                <section class="content-section" id="structure">
+                    <h2>Estructura del Proyecto</h2>
+                    <p>La aplicación sigue una estructura de <strong>monolito modular</strong> con contextos delimitados distintos:</p>
+
+                    <div class="structure-tree">
+<div class="tree-line"><span class="tree-dir">src/main/java/tfg/imirly/</span></div>
+<div class="tree-line">├── <span class="tree-file">IMirlyApplication.java</span>          <span class="tree-comment"># Punto de entrada Spring Boot</span></div>
+<div class="tree-line">├── <span class="tree-dir">auth/</span>                           <span class="tree-comment"># Módulo de autenticación</span></div>
+<div class="tree-line">│   ├── <span class="tree-dir">domain/</span>                     <span class="tree-comment"># Lógica de negocio</span></div>
+<div class="tree-line">│   │   ├── <span class="tree-dir">model/</span></div>
+<div class="tree-line">│   │   └── <span class="tree-dir">port/out/</span></div>
+<div class="tree-line">│   ├── <span class="tree-dir">application/</span>                <span class="tree-comment"># Casos de uso</span></div>
+<div class="tree-line">│   │   ├── <span class="tree-dir">port/in/</span></div>
+<div class="tree-line">│   │   └── <span class="tree-dir">service/</span></div>
+<div class="tree-line">│   └── <span class="tree-dir">infrastructure/</span>             <span class="tree-comment"># Adaptadores externos</span></div>
+<div class="tree-line">│       ├── <span class="tree-dir">input/rest/</span></div>
+<div class="tree-line">│       └── <span class="tree-dir">output/</span></div>
+<div class="tree-line">│           ├── <span class="tree-dir">persistence/</span></div>
+<div class="tree-line">│           └── <span class="tree-dir">security/</span></div>
+<div class="tree-line">└── <span class="tree-dir">catalog/</span>                        <span class="tree-comment"># Módulo de catálogo</span></div>
+<div class="tree-line">    ├── <span class="tree-dir">domain/</span></div>
+<div class="tree-line">    ├── <span class="tree-dir">application/</span></div>
+<div class="tree-line">    └── <span class="tree-dir">infrastructure/</span></div>
+                    </div>
+                </section>
+
+                <!-- Application Entry Point -->
+                <section class="content-section" id="entry-point">
+                    <h2>Punto de Entrada de la Aplicación</h2>
+                    <span class="java-badge">Java</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">IMirlyApplication.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">package tfg.imirly;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class IMirlyApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(IMirlyApplication.class, args);
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Core Modules -->
+                <section class="content-section" id="modules">
+                    <h2>Módulos Principales</h2>
+
+                    <div class="module-grid">
+                        <div class="module-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                Módulo Auth
+                            </h4>
+                            <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                                Maneja autenticación de usuarios, registro y gestión de perfiles:
+                            </p>
+                            <ul>
+                                <li>Registro y login de usuarios</li>
+                                <li>Generación y validación de tokens JWT</li>
+                                <li>Encriptación de contraseñas con BCrypt</li>
+                                <li>Gestión de perfiles de usuario</li>
+                                <li>Funcionalidad de monedero virtual</li>
+                            </ul>
+                        </div>
+
+                        <div class="module-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                Módulo Catalog
+                            </h4>
+                            <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                                Gestiona los listados de servicios:
+                            </p>
+                            <ul>
+                                <li>Anuncios de servicios (AnuncioServicio)</li>
+                                <li>Categorías y subcategorías</li>
+                                <li>Gestión de favoritos</li>
+                                <li>Búsqueda y filtrado de servicios</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configuration -->
+                <section class="content-section" id="configuration">
+                    <h2>Configuración</h2>
+                    <span class="config-badge">Properties</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">application.properties</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-properties">spring.application.name=iMirly
+spring.datasource.url=jdbc:postgresql://localhost:5432/imirly_db
+spring.datasource.username=user_imirly
+spring.datasource.password=password_imirly
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            La configuración <code class="inline">spring.jpa.hibernate.ddl-auto=update</code> actualiza 
+                            automáticamente el esquema de la base de datos basándose en las definiciones de entidades 
+                            durante el desarrollo.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Why Hexagonal -->
+                <section class="content-section" id="why-hexagonal">
+                    <h2>¿Por qué Arquitectura Hexagonal?</h2>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Testabilidad
+                            </h4>
+                            <p>La lógica de negocio puede probarse sin dependencias de infraestructura</p>
+                        </div>
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                                Flexibilidad
+                            </h4>
+                            <p>Fácil cambiar implementaciones (ej: de PostgreSQL a MongoDB)</p>
+                        </div>
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                                Mantenibilidad
+                            </h4>
+                            <p>La clara separación de responsabilidades hace el código más fácil de entender y modificar</p>
+                        </div>
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                Independencia Tecnológica
+                            </h4>
+                            <p>La lógica de dominio no depende de frameworks o librerías externas</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="backend-arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Detalles de Arquitectura</h4>
+                                <p>Inmersión profunda en la implementación hexagonal</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-setup.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Guía de Setup</h4>
+                                <p>Pon el backend en marcha localmente</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-database.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Base de Datos</h4>
+                                <p>Aprende sobre el esquema y entidades JPA</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-security.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Seguridad</h4>
+                                <p>Entiende la autenticación y autorización JWT</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="android-contratos.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Contratos y Pagos Android</span>
+                        </a>
+                        <a href="backend-arquitectura.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Detalles de Arquitectura →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#overview" class="toc-link">Visión General</a>
+                    <a href="#tech-stack" class="toc-link">Stack Tecnológico</a>
+                    <a href="#dependencies" class="toc-link">Dependencias</a>
+                    <a href="#structure" class="toc-link">Estructura</a>
+                    <a href="#entry-point" class="toc-link">Punto de Entrada</a>
+                    <a href="#modules" class="toc-link">Módulos</a>
+                    <a href="#configuration" class="toc-link">Configuración</a>
+                    <a href="#why-hexagonal" class="toc-link">Arquitectura Hexagonal</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

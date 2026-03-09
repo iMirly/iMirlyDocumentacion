@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat en Tiempo Real - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA CHAT */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Lista de features */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Steps numerados */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .step-item h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .step-item p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Warning/Performance Box - ESTILO ESPECÍFICO DE LA IMAGEN */
+        .performance-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .performance-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .performance-box-header svg {
+            width: 20px;
+            height: 20px;
+            stroke: #f59e0b;
+        }
+
+        .performance-box ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .performance-box li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .performance-box li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0.6rem;
+            width: 4px;
+            height: 4px;
+            background-color: #f59e0b;
+            border-radius: 50%;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* API Badge */
+        .api-badge {
+            display: inline-block;
+            background-color: rgba(0, 184, 148, 0.1);
+            color: #00b894;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .ui-badge {
+            display: inline-block;
+            background-color: rgba(225, 112, 85, 0.1);
+            color: #e17055;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .vm-badge {
+            display: inline-block;
+            background-color: rgba(9, 132, 227, 0.1);
+            color: #0984e3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">App Android</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Chat en Tiempo Real</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Chat en Tiempo Real</h1>
+                    <p class="page-description">
+                        Implementa el sistema de mensajería en tiempo real en la aplicación iMirly Android
+                    </p>
+                </header>
+
+                <!-- Overview -->
+                <section class="content-section" id="overview">
+                    <h2>Visión General</h2>
+                    <p>
+                        El sistema de chat de iMirly utiliza <strong>polling</strong> para mensajería en tiempo real 
+                        con tipos de mensajes especiales para negociaciones de contratos:
+                    </p>
+                    
+                    <ul class="feature-list">
+                        <li>Mensajes de texto</li>
+                        <li>Propuestas de precio (PROPUESTA_PRECIO)</li>
+                        <li>Aceptación/rechazo de presupuestos</li>
+                        <li>Notificaciones de trabajo completado</li>
+                        <li>Sistema de valoraciones</li>
+                    </ul>
+                </section>
+
+                <!-- API Service -->
+                <section class="content-section" id="api-service">
+                    <h2>Servicio API de Mensajes</h2>
+
+                    <h3>Interfaz Retrofit</h3>
+                    <span class="api-badge">API Interface</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">network/MensajeApiService.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.network
+
+import retrofit2.Response
+import retrofit2.http.*
+
+data class EnviarMensajeRequest(
+    val receptorId: String,
+    val contenido: String,
+    val solicitudId: String? = null,
+    val tipo: String? = null
+)
+
+data class MensajeResponse(
+    val id: String,
+    val remitenteId: String,
+    val receptorId: String,
+    val contenido: String,
+    val tipo: String?,
+    val timestamp: String,
+    val leido: Boolean
+)
+
+interface MensajeApiService {
+    @POST("/api/v1/mensajes")
+    suspend fun enviarMensaje(
+        @Body request: EnviarMensajeRequest
+    ): Response<MensajeResponse>
+
+    @GET("/api/v1/mensajes/conversacion/{otroUsuarioId}")
+    suspend fun obtenerConversacion(
+        @Path("otroUsuarioId") otroUsuarioId: String
+    ): Response<List<MensajeResponse>>
+
+    @DELETE("/api/v1/mensajes/conversacion/{otroUsuarioId}")
+    suspend fun borrarConversacion(
+        @Path("otroUsuarioId") otroUsuarioId: String
+    ): Response<Unit>
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Chat ViewModel -->
+                <section class="content-section" id="viewmodel">
+                    <h2>Chat ViewModel con Polling</h2>
+
+                    <h3>Implementación Principal</h3>
+                    <span class="vm-badge">ViewModel</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/chat/ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.chat
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.EnviarMensajeRequest
+import com.imirly.app.network.MensajeResponse
+import com.imirly.app.network.RetrofitClient
+import com.imirly.app.network.TokenManager
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+
+class ChatViewModel : ViewModel() {
+    var mensajes = mutableStateOf<List<MensajeResponse>>(emptyList())
+    var inputText = mutableStateOf("")
+    var myUserId = mutableStateOf<String?>(null)
+
+    private var pollingJob: Job? = null
+
+    init {
+        myUserId.value = TokenManager.getUserId()
+    }
+
+    // Iniciar refresco automático cada 3 segundos
+    fun startPolling(otroUsuarioId: String) {
+        pollingJob?.cancel()
+        pollingJob = viewModelScope.launch {
+            while (isActive) {
+                cargarConversacion(otroUsuarioId)
+                delay(3000) // Esperar 3 segundos
+            }
+        }
+    }
+
+    // Detener polling al salir de la pantalla
+    fun stopPolling() {
+        pollingJob?.cancel()
+    }
+
+    private suspend fun cargarConversacion(otroUsuarioId: String) {
+        try {
+            val response = RetrofitClient.mensajeService.obtenerConversacion(otroUsuarioId)
+            if (response.isSuccessful) {
+                mensajes.value = response.body() ?: emptyList()
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error cargando mensajes", e)
+        }
+    }
+
+    fun enviarMensaje(receptorId: String) {
+        val texto = inputText.value.trim()
+        if (texto.isEmpty()) return
+
+        // Limpiar input inmediatamente para feedback rápido
+        inputText.value = ""
+
+        viewModelScope.launch {
+            try {
+                val request = EnviarMensajeRequest(receptorId, texto)
+                val response = RetrofitClient.mensajeService.enviarMensaje(request)
+                if (response.isSuccessful) {
+                    cargarConversacion(receptorId) // Recargar para ver nuestro mensaje
+                }
+            } catch (e: Exception) {
+                android.util.Log.e("ChatViewModel", "Error enviando mensaje", e)
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            El mecanismo de polling refresca la conversación cada 3 segundos. 
+                            Para producción, considera usar WebSockets o Server-Sent Events para 
+                            actualizaciones verdaderamente en tiempo real.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Chat Screen UI -->
+                <section class="content-section" id="chat-ui">
+                    <h2>Interfaz de Chat</h2>
+
+                    <h3>Pantalla Principal de Chat</h3>
+                    <span class="ui-badge">Jetpack Compose</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/chat/ChatScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.chat
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Send
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+
+@Composable
+fun ChatScreen(
+    navController: NavController,
+    otroUsuarioId: String,
+    nombreOtroUsuario: String,
+    viewModel: ChatViewModel = viewModel()
+) {
+    // Iniciar polling al abrir la pantalla
+    LaunchedEffect(otroUsuarioId) {
+        viewModel.startPolling(otroUsuarioId)
+    }
+
+    // Detener polling al cerrar la pantalla
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.stopPolling()
+        }
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        // Header
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            color = Color(0xFF6C5CE7),
+            shadowElevation = 4.dp
+        ) {
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = { navController.popBackStack() }) {
+                    Icon(Icons.Default.ArrowBack, contentDescription = null, tint = Color.White)
+                }
+                Text(
+                    nombreOtroUsuario,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+        }
+
+        // Lista de mensajes
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxWidth()
+                .padding(16.dp),
+            reverseLayout = false
+        ) {
+            items(viewModel.mensajes.value) { mensaje ->
+                MessageBubble(
+                    mensaje = mensaje,
+                    isMyMessage = mensaje.remitenteId == viewModel.myUserId.value
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+        }
+
+        // Campo de input
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedTextField(
+                value = viewModel.inputText.value,
+                onValueChange = { viewModel.inputText.value = it },
+                placeholder = { Text("Escribe un mensaje...") },
+                modifier = Modifier.weight(1f),
+                shape = RoundedCornerShape(24.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            IconButton(
+                onClick = { viewModel.enviarMensaje(otroUsuarioId) },
+                modifier = Modifier
+                    .size(48.dp)
+                    .background(Color(0xFF6C5CE7), RoundedCornerShape(24.dp))
+            ) {
+                Icon(Icons.Default.Send, contentDescription = null, tint = Color.White)
+            }
+        }
+    }
+}
+
+@Composable
+fun MessageBubble(mensaje: MensajeResponse, isMyMessage: Boolean) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = if (isMyMessage) Arrangement.End else Arrangement.Start
+    ) {
+        Surface(
+            shape = RoundedCornerShape(
+                topStart = 16.dp,
+                topEnd = 16.dp,
+                bottomStart = if (isMyMessage) 16.dp else 4.dp,
+                bottomEnd = if (isMyMessage) 4.dp else 16.dp
+            ),
+            color = if (isMyMessage) Color(0xFF6C5CE7) else Color(0xFFE8E8E8),
+            modifier = Modifier.widthIn(max = 280.dp)
+        ) {
+            Column(modifier = Modifier.padding(12.dp)) {
+                Text(
+                    mensaje.contenido,
+                    color = if (isMyMessage) Color.White else Color.Black,
+                    fontSize = 14.sp
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    mensaje.timestamp,
+                    color = if (isMyMessage) Color.White.copy(alpha = 0.7f) else Color.Gray,
+                    fontSize = 10.sp
+                )
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Special Message Types -->
+                <section class="content-section" id="special-messages">
+                    <h2>Tipos de Mensajes Especiales</h2>
+
+                    <h3>Propuestas de Precio</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Enviar Presupuesto</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun enviarPresupuesto(
+    receptorId: String,
+    solicitudId: String,
+    presupuestoContenido: String
+) {
+    if (presupuestoContenido.isBlank()) return
+
+    viewModelScope.launch {
+        try {
+            val request = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = presupuestoContenido, // Formato: "precio|descripción"
+                solicitudId = solicitudId,
+                tipo = "PROPUESTA_PRECIO"
+            )
+            val response = RetrofitClient.mensajeService.enviarMensaje(request)
+            if (response.isSuccessful) {
+                cargarConversacion(receptorId)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error enviando propuesta", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Aceptar y Pagar</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Aceptar y Pagar</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun aceptarYPagar(solicitudId: String, otroUsuarioId: String) {
+    viewModelScope.launch {
+        try {
+            // Procesar pago (retiene fondos en escrow)
+            val responsePago = RetrofitClient.solicitudService.pagarSolicitud(solicitudId)
+
+            if (responsePago.isSuccessful) {
+                // Enviar mensaje de aceptación
+                val requestMsg = EnviarMensajeRequest(
+                    receptorId = otroUsuarioId,
+                    contenido = "He aceptado el presupuesto y he realizado el pago. El dinero está retenido de forma segura en iMirly. Ya puedes empezar el trabajo.",
+                    solicitudId = solicitudId,
+                    tipo = "PRESUPUESTO_ACEPTADO"
+                )
+                RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+                cargarConversacion(otroUsuarioId)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error procesando pago", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Rechazar Propuesta</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Rechazar Presupuesto</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun rechazarPresupuesto(solicitudId: String, otroUsuarioId: String) {
+    viewModelScope.launch {
+        try {
+            val requestEstado = CambiarEstadoRequest("ACEPTADO")
+            val response = RetrofitClient.solicitudService
+                .cambiarEstadoSolicitud(solicitudId, requestEstado)
+
+            if (response.isSuccessful) {
+                val requestMsg = EnviarMensajeRequest(
+                    receptorId = otroUsuarioId,
+                    contenido = "He rechazado la oferta. Por favor, revisa el precio y envíame un nuevo presupuesto.",
+                    solicitudId = solicitudId,
+                    tipo = "PRESUPUESTO_RECHAZADO"
+                )
+                RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+                cargarConversacion(otroUsuarioId)
+            }
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error rechazando", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Marcar Trabajo Finalizado</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Marcar Trabajo Finalizado</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun marcarTrabajoFinalizado(receptorId: String, solicitudId: String) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "He marcado el trabajo como finalizado. Por favor, revísalo y confirma si todo está correcto para liberar el pago.",
+                solicitudId = solicitudId,
+                tipo = "TRABAJO_FINALIZADO"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error marcando completado", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Aprobar Trabajo</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Aprobar Trabajo</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun aprobarTrabajo(receptorId: String, solicitudId: String) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "He revisado el trabajo y está perfecto. Pago liberado, ¡muchas gracias!",
+                solicitudId = solicitudId,
+                tipo = "SERVICIO_COMPLETADO"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error aprobando", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Enviar Valoración</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Enviar Valoración</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun enviarValoracion(receptorId: String, solicitudId: String, nota: Double) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "$nota|He dejado una valoración de $nota estrellas.",
+                solicitudId = solicitudId,
+                tipo = "VALORACION"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            android.util.Log.e("ChatViewModel", "Error valorando", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Borrar Conversación</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Borrar Chat y Solicitud</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun borrarChatYSolicitud(
+    otroUsuarioId: String,
+    solicitudId: String,
+    onSuccess: () -> Unit,
+    onError: (String) -> Unit
+) {
+    viewModelScope.launch {
+        try {
+            // Intentar borrar la solicitud (backend protege si hay fondos retenidos)
+            val response = RetrofitClient.solicitudService.eliminarSolicitud(solicitudId)
+
+            if (response.isSuccessful) {
+                // Si se permite, borrar mensajes
+                RetrofitClient.mensajeService.borrarConversacion(otroUsuarioId)
+                onSuccess()
+            } else {
+                onError("No se puede borrar este chat porque hay un presupuesto en curso o pagado.")
+            }
+        } catch (e: Exception) {
+            onError("Error de conexión al intentar borrar el chat.")
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Message Inbox -->
+                <section class="content-section" id="inbox">
+                    <h2>Bandeja de Entrada</h2>
+                    <p>Muestra todas las conversaciones activas:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MessagesScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun MessagesScreen(navController: NavController, viewModel: MessagesViewModel = viewModel()) {
+    LaunchedEffect(Unit) {
+        viewModel.cargarSolicitudes()
+    }
+
+    Column(modifier = Modifier.fillMaxSize()) {
+        Text("Mensajes", fontSize = 24.sp, fontWeight = FontWeight.Bold)
+        
+        LazyColumn {
+            items(viewModel.solicitudes.value) { solicitud ->
+                ConversationCard(
+                    solicitud = solicitud,
+                    onClick = {
+                        navController.navigate(
+                            "chat/${solicitud.clienteId}/${solicitud.nombreCliente}/${solicitud.id}"
+                        )
+                    }
+                )
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Navigation Setup -->
+                <section class="content-section" id="navigation">
+                    <h2>Configuración de Navegación</h2>
+                    <p>Añade las rutas de chat en <code class="inline">MainActivity.kt</code>:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MainActivity.kt - NavHost</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">composable(
+    "chat/{otroUsuarioId}/{nombreOtroUsuario}/{solicitudId}",
+    arguments = listOf(
+        navArgument("otroUsuarioId") { type = NavType.StringType },
+        navArgument("nombreOtroUsuario") { type = NavType.StringType },
+        navArgument("solicitudId") { type = NavType.StringType }
+    )
+) { backStackEntry ->
+    ChatScreen(
+        navController,
+        backStackEntry.arguments?.getString("otroUsuarioId") ?: "",
+        backStackEntry.arguments?.getString("nombreOtroUsuario") ?: "",
+        backStackEntry.arguments?.getString("solicitudId") ?: ""
+    )
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Testing -->
+                <section class="content-section" id="testing">
+                    <h2>Probar Chat</h2>
+
+                    <ol class="steps-list">
+                        <li class="step-item">
+                            <h3>Enviar Mensaje de Texto</h3>
+                            <p>Abre un chat y envía un mensaje de texto normal.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Verificar Polling</h3>
+                            <p>Abre el chat en dos dispositivos y verifica que los mensajes aparecen en menos de 3 segundos.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Enviar Propuesta de Precio</h3>
+                            <p>Como profesional, envía una propuesta de precio a un cliente.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Aceptar/Rechazar</h3>
+                            <p>Prueba aceptar y rechazar propuestas.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Completar Flujo de Trabajo</h3>
+                            <p>Prueba el flujo completo: propuesta → pago → trabajo completado → aprobación → valoración.</p>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Performance Optimization - ESTILO DE LA IMAGEN -->
+                <section class="content-section" id="performance">
+                    <h2>Optimización de Rendimiento</h2>
+                    
+                    <div class="performance-box">
+                        <div class="performance-box-header">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Polling cada 3 segundos puede agotar la batería y usar datos móviles. Para producción:
+                        </div>
+                        <ul>
+                            <li>Implementa WebSockets para actualizaciones en tiempo real</li>
+                            <li>Usa backoff exponencial cuando la app está en segundo plano</li>
+                            <li>Añade caché local con base de datos Room</li>
+                            <li>Implementa notificaciones push para nuevos mensajes</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="android-contratos.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Contratos y Pagos</h4>
+                                <p>Gestiona contratos de servicios y pagos en escrow</p>
+                            </div>
+                        </a>
+
+                        <a href="android-catalogo.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Catálogo de Servicios</h4>
+                                <p>Explora y busca servicios disponibles</p>
+                            </div>
+                        </a>
+
+                        <a href="android-autenticacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Autenticación</h4>
+                                <p>Revisa el sistema de login y registro</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="android-catalogo.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Catálogo de Servicios</span>
+                        </a>
+                        <a href="android-contratos.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Contratos y Pagos →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#overview" class="toc-link">Visión General</a>
+                    <a href="#api-service" class="toc-link">Servicio API</a>
+                    <a href="#viewmodel" class="toc-link">Chat ViewModel</a>
+                    <a href="#chat-ui" class="toc-link">Interfaz de Chat</a>
+                    <a href="#special-messages" class="toc-link">Mensajes Especiales</a>
+                    <a href="#inbox" class="toc-link">Bandeja de Entrada</a>
+                    <a href="#navigation" class="toc-link">Navegación</a>
+                    <a href="#testing" class="toc-link">Testing</a>
+                    <a href="#performance" class="toc-link">Optimización</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Calificación - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA SISTEMA DE CALIFICACIÓN */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Badges */
+        .kotlin-badge {
+            display: inline-block;
+            background-color: rgba(127, 82, 255, 0.1);
+            color: #7f52ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .success-box {
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .success-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .success-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* User flow steps */
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-step-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .flow-step-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .flow-step-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Rating preview */
+        .rating-preview {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .rating-bar {
+            background-color: #FFF9E6;
+            border-radius: 16px;
+            padding: var(--spacing-lg);
+            text-align: center;
+            border: 2px solid #FFB800;
+        }
+
+        .rating-title {
+            font-weight: 700;
+            color: #6C5CE7;
+            font-size: 1.125rem;
+            margin-bottom: 4px;
+        }
+
+        .rating-subtitle {
+            color: #666;
+            font-size: 0.875rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .stars-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: var(--spacing-md) 0;
+        }
+
+        .star {
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .star:hover {
+            transform: scale(1.1);
+        }
+
+        .star.filled {
+            color: #FFB800;
+            fill: #FFB800;
+        }
+
+        .star.empty {
+            color: #ccc;
+            stroke: #999;
+        }
+
+        .rating-btn {
+            background-color: #6C5CE7;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: var(--spacing-sm);
+            width: 100%;
+        }
+
+        /* Chat bubble rating */
+        .chat-bubble {
+            max-width: 70%;
+            padding: 16px;
+            border-radius: 16px;
+            margin-bottom: var(--spacing-md);
+            background-color: #FFF9E6;
+            border: 1px solid #FFB800;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble-header {
+            font-weight: 700;
+            color: #FFB800;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .chat-stars {
+            display: flex;
+            gap: 4px;
+        }
+
+        .chat-star {
+            width: 20px;
+            height: 20px;
+            color: #FFB800;
+            fill: #FFB800;
+        }
+
+        .chat-star.empty {
+            color: #ccc;
+            fill: none;
+            stroke: #999;
+        }
+
+        /* Profile rating display */
+        .profile-rating {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+        }
+
+        .profile-rating-star {
+            color: #FFB800;
+            fill: #FFB800;
+            width: 24px;
+            height: 24px;
+        }
+
+        .profile-rating-score {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--color-text-primary);
+        }
+
+        .profile-rating-count {
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Stats grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .stat-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-purple);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Benefits grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .benefit-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .benefit-icon {
+            width: 40px;
+            height: 40px;
+            background-color: rgba(108, 92, 231, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+        }
+
+        .benefit-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .benefit-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Future improvements */
+        .improvements-list {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .improvement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .improvement-item:last-child {
+            border-bottom: none;
+        }
+
+        .improvement-bullet {
+            width: 8px;
+            height: 8px;
+            background-color: var(--color-purple);
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .improvement-content h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0 0 4px 0;
+        }
+
+        .improvement-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Características</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Sistema de Calificación</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Sistema de Calificación</h1>
+                    <p class="page-description">
+                        Calificaciones de estrellas posteriores al servicio con cálculo automático de puntuación de perfil y envío en el chat
+                    </p>
+                </header>
+
+                <!-- Descripción General -->
+                <section class="content-section" id="descripcion-general">
+                    <h2>Descripción General</h2>
+                    <p>Tras la finalización de un servicio, iMirly invita a los clientes a calificar su experiencia con un sistema de 1 a 5 estrellas. Las calificaciones se envían directamente en el chat y actualizan automáticamente la puntuación del perfil del proveedor, lo que genera confianza y responsabilidad en el mercado.</p>
+                </section>
+
+                <!-- Flujo de Usuario -->
+                <section class="content-section" id="flujo-usuario">
+                    <h2>Flujo de Usuario</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">1</div>
+                            <h4>Finalización del Servicio</h4>
+                            <p>Una vez que el cliente aprueba el trabajo y se libera el pago, el contrato pasa al estado COMPLETADO.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">2</div>
+                            <h4>Aparece el Mensaje de Calificación</h4>
+                            <p>La entrada del chat se reemplaza con una barra de calificación que solicita al cliente que deje una reseña.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">3</div>
+                            <h4>Seleccione la Clasificación por Estrellas</h4>
+                            <p>El cliente toca las estrellas para seleccionar su calificación de 1 (mala) a 5 (excelente).</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">4</div>
+                            <h4>Enviar Calificación</h4>
+                            <p>El cliente pulsa "Enviar Valoración" y la calificación se envía como un tipo de mensaje especial.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">5</div>
+                            <h4>Actualización de Perfil</h4>
+                            <p>El backend actualiza automáticamente la calificación promedio del proveedor y el recuento total de reseñas.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Android -->
+                <section class="content-section" id="implementacion-android">
+                    <h2>Implementación Android</h2>
+
+                    <h3>Lógica de Detección de Clasificación</h3>
+                    <p>La pantalla de chat detecta cuándo mostrar la barra de calificación:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun ChatScreen(
+    navController: NavController,
+    otroUsuarioId: String,
+    nombreContacto: String,
+    solicitudId: String,
+    soyElProveedor: Boolean,
+    viewModel: ChatViewModel = viewModel()
+) {
+    Scaffold(
+        bottomBar = { 
+            val isCompleted = viewModel.mensajes.value.any { 
+                it.tipo == "SERVICIO_COMPLETADO" 
+            }
+            val hasRated = viewModel.mensajes.value.any { 
+                it.tipo == "VALORACION" && it.remitenteId != otroUsuarioId 
+            }
+            
+            if (isCompleted && !hasRated) {
+                // Show rating bar
+                ValoracionBar(viewModel, otroUsuarioId, solicitudId, iMirlyPurple)
+            } else {
+                // Show normal chat input
+                ChatInputBar(viewModel, otroUsuarioId, solicitudId, soyElProveedor, iMirlyPurple)
+            }
+        }
+    ) { paddingValues ->
+        // Chat messages...
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Interfaz de Usuario de la Barra de Calificación</h3>
+                    <p>La interfaz de calificación reemplaza la entrada del chat cuando corresponde:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ValoracionBar.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun ValoracionBar(
+    viewModel: ChatViewModel, 
+    otroUsuarioId: String, 
+    solicitudId: String, 
+    primaryColor: Color
+) {
+    var selectedStar by remember { mutableStateOf(0) }
+    
+    Surface(color = Color(0xFFFFF9E6), shadowElevation = 8.dp) {
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                "¡El servicio ha finalizado!", 
+                fontWeight = FontWeight.Bold, 
+                color = primaryColor
+            )
+            Text(
+                "Valora tu experiencia de 1 a 5 estrellas.", 
+                fontSize = 14.sp, 
+                color = Color.DarkGray
+            )
+            
+            Spacer(modifier = Modifier.height(12.dp))
+            
+            // Star rating selector
+            Row(horizontalArrangement = Arrangement.Center) {
+                for (i in 1..5) {
+                    IconButton(onClick = { selectedStar = i }) {
+                        if (i <= selectedStar) {
+                            Icon(
+                                Icons.Filled.Star, 
+                                contentDescription = null,
+                                tint = Color(0xFFFFB800),
+                                modifier = Modifier.size(36.dp)
+                            )
+                        } else {
+                            Icon(
+                                Icons.Outlined.Star, 
+                                contentDescription = null,
+                                tint = Color.Gray,
+                                modifier = Modifier.size(36.dp)
+                            )
+                        }
+                    }
+                }
+            }
+            
+            // Submit button (only shown after selecting)
+            if (selectedStar > 0) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Button(
+                    onClick = { 
+                        viewModel.enviarValoracion(
+                            otroUsuarioId, 
+                            solicitudId, 
+                            selectedStar.toDouble()
+                        ) 
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = primaryColor
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Enviar Valoración")
+                }
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="rating-preview">
+                        <div class="rating-bar">
+                            <div class="rating-title">¡El servicio ha finalizado!</div>
+                            <div class="rating-subtitle">Valora tu experiencia de 1 a 5 estrellas.</div>
+                            
+                            <div class="stars-container">
+                                <svg class="star filled" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                <svg class="star filled" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                <svg class="star filled" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                <svg class="star filled" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                                <svg class="star empty" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                </svg>
+                            </div>
+                            
+                            <button class="rating-btn">Enviar Valoración</button>
+                        </div>
+                    </div>
+
+                    <h3>Enviando Calificación</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun enviarValoracion(
+    receptorId: String, 
+    solicitudId: String, 
+    nota: Double
+) {
+    viewModelScope.launch {
+        try {
+            val requestMsg = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = "$nota|He dejado una valoración de $nota estrellas.",
+                solicitudId = solicitudId,
+                tipo = "VALORACION"
+            )
+            val msgResponse = RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+            if (msgResponse.isSuccessful) cargarConversacion(receptorId)
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error submitting rating", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Visualización de la Calificación en el Chat</h3>
+                    <p>Las calificaciones aparecen como burbujas de mensajes especiales:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatBubble.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">else if (mensaje.tipo == "VALORACION") {
+    val partes = mensaje.contenido.split("|")
+    val nota = partes.getOrNull(0)?.toDoubleOrNull() ?: 5.0
+    
+    Text(
+        "Valoración del Servicio", 
+        fontWeight = FontWeight.Bold, 
+        color = Color(0xFFFFB800), 
+        fontSize = 12.sp
+    )
+    Spacer(modifier = Modifier.height(8.dp))
+    
+    // Star display
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        repeat(nota.toInt()) { 
+            Icon(
+                Icons.Filled.Star, 
+                contentDescription = null,
+                tint = Color(0xFFFFB800),
+                modifier = Modifier.size(16.dp)
+            ) 
+        }
+        repeat(5 - nota.toInt()) { 
+            Icon(
+                Icons.Outlined.Star, 
+                contentDescription = null,
+                tint = Color.Gray,
+                modifier = Modifier.size(16.dp)
+            ) 
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="chat-bubble">
+                        <div class="chat-bubble-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            Valoración del Servicio
+                        </div>
+                        <div class="chat-stars">
+                            <svg class="chat-star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <svg class="chat-star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <svg class="chat-star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <svg class="chat-star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            <svg class="chat-star" viewBox="0 0 24 24">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Backend -->
+                <section class="content-section" id="implementacion-backend">
+                    <h2>Implementación Backend</h2>
+
+                    <h3>Campos de Calificación del Usuario</h3>
+                    <p>Los usuarios rastrean sus datos de calificación acumulada:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@Setter
+public class User {
+    private UUID id;
+    private String nombre;
+    private String email;
+    private Double puntuacionTotal;
+    private Integer numeroValoraciones;
+    
+    public void addValoracion(Double nota) {
+        if (nota == null || nota < 0 || nota > 5)
+            throw new IllegalArgumentException("Nota inválida");
+        if (this.puntuacionTotal == null)
+            this.puntuacionTotal = 0.0;
+        if (this.numeroValoraciones == null)
+            this.numeroValoraciones = 0;
+        
+        this.puntuacionTotal += nota;
+        this.numeroValoraciones++;
+    }
+    
+    public Double getValoracionMedia() {
+        if (numeroValoraciones == null || numeroValoraciones == 0)
+            return 0.0;
+        return Math.round((puntuacionTotal / numeroValoraciones) * 10.0) / 10.0;
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>La calificación promedio se calcula a pedido con precisión de 1 decimal (por ejemplo, 4,7) dividiendo los puntos totales por el número de reseñas.</p>
+                    </div>
+
+                    <h3>Manejador de Calificación del Servicio de Mensajes</h3>
+                    <p>Cuando se envía un mensaje de calificación, el servicio actualiza el perfil del proveedor:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+public class MensajeService implements MensajeUseCase {
+    
+    @Override
+    @Transactional
+    public Mensaje enviarMensaje(EnviarMensajeCommand command) {
+        // ... other message type handling ...
+        
+        if (command.getTipo() == TipoMensaje.VALORACION) {
+            User valorado = userRepositoryPort.findById(command.getReceptorId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                    "Usuario a valorar no encontrado"
+                ));
+            
+            try {
+                // Parse "5.0|Rating text" format
+                String[] partes = command.getContenido().split("\\|");
+                Double nota = Double.parseDouble(partes[0].trim());
+                
+                // Update user's rating statistics
+                valorado.addValoracion(nota);
+                userRepositoryPort.save(valorado);
+            } catch (Exception e) {
+                throw new IllegalArgumentException(
+                    "El formato de la valoración es incorrecto."
+                );
+            }
+        }
+        
+        // Create and save the message
+        Mensaje nuevoMensaje = new Mensaje(
+            command.getRemitenteId(),
+            command.getReceptorId(),
+            command.getSolicitudId(),
+            command.getContenido(),
+            command.getTipo()
+        );
+        
+        return repositoryPort.save(nuevoMensaje);
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Visualización de la Calificación del Perfil</h3>
+                    <p>Los perfiles de usuario incluyen información de calificación:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">UserController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/profile/{email}")
+public ResponseEntity<?> getUserProfile(@PathVariable String email) {
+    String tokenEmail = SecurityContextHolder.getContext()
+        .getAuthentication().getName();
+    
+    if (!email.equals(tokenEmail)) {
+        return ResponseEntity.status(403).body("Prohibido.");
+    }
+    
+    User user = getUserUseCase.getUserByEmail(email);
+    UserProfileResponse response = new UserProfileResponse(
+        user.getId(), 
+        user.getNombre(), 
+        user.getEmail(), 
+        user.getDocumentoIdentidad(),
+        user.getSaldo(), 
+        user.getValoracionMedia(),      // e.g., 4.7
+        user.getNumeroValoraciones()    // e.g., 23
+    );
+    return ResponseEntity.ok(response);
+}</code></pre>
+                    </div>
+
+                    <h3>Respuesta del Perfil de Usuario DTO</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">UserProfileResponse.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@AllArgsConstructor
+public class UserProfileResponse {
+    private UUID id;
+    private String nombre;
+    private String email;
+    private String documentoIdentidad;
+    private Double saldo;
+    private Double valoracionMedia;     // Average rating
+    private Integer numeroValoraciones;  // Total reviews count
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Validación -->
+                <section class="content-section" id="validacion">
+                    <h2>Validación de Calificación</h2>
+
+                    <h3>Validación del Lado del Cliente</h3>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Solo se aceptan números enteros del 1 al 5 mediante selección de estrellas</li>
+                        <li>El botón Enviar solo aparece después de seleccionar estrellas</li>
+                        <li>La barra de calificación solo se muestra una vez por cada servicio completado</li>
+                    </ul>
+
+                    <h3>Validación del Lado del Servidor</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void addValoracion(Double nota) {
+    if (nota == null || nota < 0 || nota > 5)
+        throw new IllegalArgumentException("Nota inválida");
+    if (this.puntuacionTotal == null)
+        this.puntuacionTotal = 0.0;
+    if (this.numeroValoraciones == null)
+        this.numeroValoraciones = 0;
+    
+    this.puntuacionTotal += nota;
+    this.numeroValoraciones++;
+}</code></pre>
+                    </div>
+
+                    <p>El backend valida que las calificaciones estén entre 0 y 5 e inicializa correctamente los valores nulos para evitar errores de cálculo.</p>
+                </section>
+
+                <!-- Estadísticas -->
+                <section class="content-section" id="estadisticas">
+                    <h2>Estadísticas de Calificación</h2>
+
+                    <h3>Método de Cálculo</h3>
+                    <p>La calificación promedio se calcula como:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Fórmula</span>
+                        </div>
+                        <pre><code class="language-java">valoracionMedia = round(puntuacionTotal / numeroValoraciones * 10) / 10</code></pre>
+                    </div>
+
+                    <p>Esto proporciona una precisión de 1 decimal (por ejemplo, 4,7 en lugar de 4,666667).</p>
+
+                    <h3>Ejemplo de Cálculo</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">5, 4, 5, 4, 5</div>
+                            <div class="stat-label">Calificaciones recibidas</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">23.0</div>
+                            <div class="stat-label">puntuacionTotal</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">numeroValoraciones</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">4.6</div>
+                            <div class="stat-label">valoracionMedia</div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>Cálculo:</strong> round(23.0 / 5 * 10) / 10 = round(4.6 * 10) / 10 = 46 / 10 = <strong>4.6</strong></p>
+                    </div>
+
+                    <h3>Una Calificación por Servicio</h3>
+                    <p>La lógica de la interfaz de usuario evita calificaciones múltiples:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">val hasRated = viewModel.mensajes.value.any { 
+    it.tipo == "VALORACION" && it.remitenteId != otroUsuarioId 
+}
+
+if (isCompleted && !hasRated) {
+    // Show rating bar
+} else {
+    // Show normal chat input
+}</code></pre>
+                    </div>
+
+                    <p>Esto verifica si el usuario actual ya ha enviado un mensaje de VALORACION en esta conversación.</p>
+                </section>
+
+                <!-- Beneficios -->
+                <section class="content-section" id="beneficios">
+                    <h2>Beneficios de Generar Confianza</h2>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <h4>Responsabilidad del Proveedor</h4>
+                            <p>Las calificaciones públicas motivan a los proveedores a ofrecer un trabajo de calidad y un servicio profesional.</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                            </div>
+                            <h4>Confianza del Cliente</h4>
+                            <p>Los clientes pueden revisar las calificaciones de los proveedores antes de solicitar servicios, lo que reduce el riesgo.</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="8" r="7"></circle>
+                                    <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                                </svg>
+                            </div>
+                            <h4>Sistema de Reputación</h4>
+                            <p>Las calificaciones acumulativas construyen la reputación del proveedor a lo largo del tiempo, recompensando la consistencia.</p>
+                        </div>
+
+                        <div class="benefit-card">
+                            <div class="benefit-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <h4>Filtro de Calidad</h4>
+                            <p>Las calificaciones altas ayudan a los mejores proveedores a destacarse en los resultados de búsqueda del mercado.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Visibilidad -->
+                <section class="content-section" id="visibilidad">
+                    <h2>Visibilidad de la Calificación</h2>
+
+                    <h3>Exhibición Pública</h3>
+                    <p>Las calificaciones son visibles en:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Las páginas de perfil del proveedor</li>
+                        <li>Tarjetas de listado en servicio</li>
+                        <li>En los resultados de búsqueda</li>
+                        <li>En mensajes de servicio completados</li>
+                    </ul>
+
+                    <div class="profile-rating">
+                        <svg class="profile-rating-star" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                        </svg>
+                        <span class="profile-rating-score">4.7</span>
+                        <span class="profile-rating-count">(23 valoraciones)</span>
+                    </div>
+
+                    <h3>Privacidad</h3>
+                    <p>Detalles de la calificación protegidos:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Calificaciones individuales que no se muestran públicamente</li>
+                        <li>Solo se muestran el promedio agregado y el recuento</li>
+                        <li>Mensajes de calificación visibles solo para los participantes de la conversación</li>
+                    </ul>
+                </section>
+
+                <!-- Mejoras Futuras -->
+                <section class="content-section" id="mejoras-futuras">
+                    <h2>Mejoras Futuras</h2>
+
+                    <div class="improvements-list">
+                        <div class="improvement-item">
+                            <div class="improvement-bullet"></div>
+                            <div class="improvement-content">
+                                <h4>Reseñas Escritas</h4>
+                                <p>Comentarios de texto opcionales con calificación de estrellas</p>
+                            </div>
+                        </div>
+
+                        <div class="improvement-item">
+                            <div class="improvement-bullet"></div>
+                            <div class="improvement-content">
+                                <h4>Respuestas de los Proveedores</h4>
+                                <p>Permitir que los proveedores respondan a las reseñas</p>
+                            </div>
+                        </div>
+
+                        <div class="improvement-item">
+                            <div class="improvement-bullet"></div>
+                            <div class="improvement-content">
+                                <h4>Desglose de la Calificación</h4>
+                                <p>Mostrar distribución (5⭐: 70%, 4⭐: 20%, etc.)</p>
+                            </div>
+                        </div>
+
+                        <div class="improvement-item">
+                            <div class="improvement-bullet"></div>
+                            <div class="improvement-content">
+                                <h4>Calificaciones de Categorías</h4>
+                                <p>Puntuaciones separadas para comunicación, calidad y puntualidad</p>
+                            </div>
+                        </div>
+
+                        <div class="improvement-item">
+                            <div class="improvement-bullet"></div>
+                            <div class="improvement-content">
+                                <h4>Insignias de Verificación</h4>
+                                <p>Resalte a los proveedores con altas calificaciones y muchas reseñas</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Integración -->
+                <section class="content-section" id="integracion">
+                    <h2>Puntos de Integración</h2>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Gestión de Tareas:</strong> Calificaciones habilitadas después del estado COMPLETADO</li>
+                        <li><strong>Mensajes:</strong> Calificaciones enviadas como tipo de mensaje especial</li>
+                        <li><strong>Perfiles de Usuario:</strong> Calificaciones mostradas en los perfiles de los proveedores</li>
+                        <li><strong>Catálogo de Servicios:</strong> Calificaciones utilizadas para la clasificación y el filtrado de búsquedas</li>
+                    </ul>
+
+                    <div class="success-box">
+                        <div class="success-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Ciclo Completo
+                        </div>
+                        <p>El sistema de calificación completa el ciclo de vida completo del servicio, brindando responsabilidad y generando confianza entre los clientes y los proveedores de servicios en el mercado de iMirly.</p>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="feature-tasks.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Gestión de Tareas</h4>
+                                <p>Revisa el flujo completo de servicios</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-profile.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Perfil de Usuario</h4>
+                                <p>Visualización de calificaciones en perfiles</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-catalog.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="3" width="7" height="7"></rect>
+                                    <rect x="14" y="14" width="7" height="7"></rect>
+                                    <rect x="3" y="14" width="7" height="7"></rect>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Catálogo de Servicios</h4>
+                                <p>Filtrado y ranking por calificación</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="feature-tasks.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Gestión de Tareas</span>
+                        </a>
+                        <a href="introduccion.html" class="pagination-link next">
+                            <span class="pagination-label">Inicio</span>
+                            <span class="pagination-title">Volver al Inicio →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#descripcion-general" class="toc-link">Descripción General</a>
+                    <a href="#flujo-usuario" class="toc-link">Flujo de Usuario</a>
+                    <a href="#implementacion-android" class="toc-link">Implementación Android</a>
+                    <a href="#implementacion-backend" class="toc-link">Implementación Backend</a>
+                    <a href="#validacion" class="toc-link">Validación</a>
+                    <a href="#estadisticas" class="toc-link">Estadísticas</a>
+                    <a href="#beneficios" class="toc-link">Beneficios</a>
+                    <a href="#visibilidad" class="toc-link">Visibilidad</a>
+                    <a href="#mejoras-futuras" class="toc-link">Mejoras Futuras</a>
+                    <a href="#integracion" class="toc-link">Integración</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

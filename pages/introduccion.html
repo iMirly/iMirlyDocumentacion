@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Introducción - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA INTRODUCCIÓN */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Lista de features */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Components grid */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .component-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            transition: all 250ms ease;
+        }
+
+        .component-card:hover {
+            border-color: var(--color-border-light);
+            transform: translateY(-2px);
+        }
+
+        .component-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-purple);
+        }
+
+        .component-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .component-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* Steps container */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .step {
+            display: flex;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-text-primary);
+        }
+
+        .step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Tech list */
+        .tech-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .tech-list li {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            padding: var(--spacing-xs) 0;
+            padding-left: var(--spacing-md);
+            position: relative;
+        }
+
+        .tech-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--color-purple);
+        }
+
+        .tech-list li strong {
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        /* Categories grid */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .category-item {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .category-item h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-purple);
+        }
+
+        .category-item p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* User types */
+        .user-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+
+        .user-type-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .user-type-card h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .user-type-card p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Info box */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                                <!-- <a href="pages/introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>-->
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- CONTENEDOR PARA EL MENÚ DINÁMICO -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Comenzar</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Introducción</span>
+                </div>
+
+                <header class="page-header">
+                    <h1 id="introduccion">Introducción</h1>
+                    <p class="page-description">
+                        Bienvenido a iMirly - Un marketplace moderno que conecta proveedores de servicios con clientes a través de comunicación en tiempo real y pagos seguros
+                    </p>
+                </header>
+
+                <!-- Bienvenida -->
+                <section class="content-section">
+                    <h2 id="bienvenido-a-imirly">Bienvenido a iMirly</h2>
+                    <p>
+                        iMirly es una plataforma integral de marketplace de servicios que reúne a proveedores de servicios y clientes en un ecosistema fluido, seguro y eficiente. Construida con arquitectura moderna y tecnologías de vanguardia, iMirly agiliza todo el ciclo de vida de la contratación de servicios, desde el descubrimiento hasta la finalización.
+                    </p>
+                </section>
+
+                <!-- Qué es iMirly -->
+                <section class="content-section">
+                    <h2 id="que-es-imirly">¿Qué es iMirly?</h2>
+                    <p>iMirly es una aplicación de doble plataforma que consta de:</p>
+                    
+                    <div class="components-grid">
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                </svg>
+                                <h3>App Móvil Android</h3>
+                            </div>
+                            <p>Aplicación Android nativa construida con Jetpack Compose para una experiencia de usuario moderna e intuitiva</p>
+                        </div>
+
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                                <h3>Backend Spring Boot</h3>
+                            </div>
+                            <p>API REST robusta impulsada por Java 21 y Spring Boot 4, siguiendo principios de arquitectura hexagonal</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Características Principales -->
+                <section class="content-section">
+                    <h2 id="caracteristicas-principales">Características Principales</h2>
+                    
+                    <h3 id="chat-tiempo-real">Comunicación por Chat en Tiempo Real</h3>
+                    <p>Conecta proveedores de servicios y clientes a través de un sistema de mensajería integrado que soporta:</p>
+                    <ul class="feature-list">
+                        <li>Mensajes de texto entre las partes</li>
+                        <li>Burbujas de propuesta de presupuesto dentro de las conversaciones</li>
+                        <li>Notificaciones de estado del contrato</li>
+                        <li>Confirmaciones de lectura y seguimiento de mensajes</li>
+                    </ul>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">domain/model/Mensaje.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public class Mensaje {
+    private UUID remitenteId;
+    private UUID receptorId;
+    private UUID solicitudId;
+    private String contenido;
+    private TipoMensaje tipo;
+    private LocalDateTime timestamp;
+    private boolean leido;
+}</code></pre>
+                    </div>
+
+                    <h3 id="sistema-presupuestos">Sistema de Presupuestos Inteligente</h3>
+                    <p>Flujo de trabajo de propuestas optimizado integrado directamente en el chat:</p>
+                    
+                    <div class="steps-container">
+                        <div class="step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h4>Solicitud de Servicio</h4>
+                                <p>El cliente inicia una solicitud de servicio vinculada a un anuncio del proveedor</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h4>Propuesta de Precio</h4>
+                                <p>El proveedor revisa los detalles y propone un precio dentro del chat</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h4>Aprobación del Cliente</h4>
+                                <p>El cliente revisa y acepta/rechaza la propuesta</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h4>Pago en Garantía</h4>
+                                <p>Los fondos se retienen de forma segura tras la aceptación</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 id="billetera-virtual">Integración de Billetera Virtual</h3>
+                    <p>Gestión segura de pagos con un sistema de billetera integrado:</p>
+                    <ul class="feature-list">
+                        <li>Los clientes pagan por adelantado al aceptar presupuestos</li>
+                        <li>Los fondos se retienen en garantía hasta la finalización del servicio</li>
+                        <li>Los proveedores reciben el pago tras la aprobación del cliente</li>
+                        <li>Seguimiento completo del historial de transacciones</li>
+                    </ul>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">domain/model/User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void restarSaldo(Double cantidad) {
+    if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+    }
+    this.saldo -= cantidad;
+}
+
+public void sumarSaldo(Double cantidad) {
+    if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException("La cantidad debe ser mayor que cero.");
+    }
+    this.saldo += cantidad;
+}</code></pre>
+                    </div>
+
+                    <h3 id="gestion-tareas">Gestión Dinámica de Tareas</h3>
+                    <p>Los proveedores gestionan la entrega del servicio mediante seguimiento de estado:</p>
+                    <ul class="feature-list">
+                        <li>Marcar el trabajo como "Completado" cuando finalice</li>
+                        <li>El cliente revisa y aprueba o solicita revisiones</li>
+                        <li>El flujo vuelve al estado en progreso si se necesitan revisiones</li>
+                    </ul>
+
+                    <h3 id="sistema-valoraciones">Sistema de Valoraciones Bidireccional</h3>
+                    <p>Construye confianza mediante reseñas transparentes:</p>
+                    <ul class="feature-list">
+                        <li>Valoraciones de 1-5 estrellas tras la finalización del servicio</li>
+                        <li>Tanto clientes como proveedores se valoran mutuamente</li>
+                        <li>Las valoraciones alimentan un algoritmo de confianza</li>
+                        <li>Cálculo de valoración media con recuento total de reseñas</li>
+                    </ul>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">domain/model/User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void addValoracion(Double nota) {
+    if (nota == null || nota < 0 || nota > 5)
+        throw new IllegalArgumentException("Valoración inválida");
+    this.puntuacionTotal += nota;
+    this.numeroValoraciones++;
+}
+
+public Double getValoracionMedia() {
+    if (numeroValoraciones == null || numeroValoraciones == 0)
+        return 0.0;
+    return Math.round((puntuacionTotal / numeroValoraciones) * 10.0) / 10.0;
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Arquitectura de la Plataforma -->
+                <section class="content-section">
+                    <h2 id="arquitectura-plataforma">Arquitectura de la Plataforma</h2>
+                    <p>iMirly está construido sobre una base de tecnologías modernas y escalables:</p>
+                    
+                    <h3 id="frontend-android">Frontend (Android)</h3>
+                    <ul class="tech-list">
+                        <li><strong>Lenguaje:</strong> Kotlin</li>
+                        <li><strong>Framework UI:</strong> Jetpack Compose (UI 100% declarativa)</li>
+                        <li><strong>Navegación:</strong> Compose Navigation</li>
+                        <li><strong>Redes:</strong> Retrofit + OkHttp</li>
+                        <li><strong>Gestión de Estado:</strong> ViewModels y Coroutines</li>
+                        <li><strong>Autenticación:</strong> Interceptores de token JWT</li>
+                    </ul>
+
+                    <h3 id="backend-servidor">Backend (Servidor API)</h3>
+                    <ul class="tech-list">
+                        <li><strong>Núcleo:</strong> Java 21 + Spring Boot 4.0.3</li>
+                        <li><strong>Arquitectura:</strong> Arquitectura Hexagonal/Limpia</li>
+                        <li><strong>Persistencia:</strong> Spring Data JPA + Hibernate</li>
+                        <li><strong>Base de Datos:</strong> PostgreSQL 15</li>
+                        <li><strong>Seguridad:</strong> Spring Security con JWT y BCrypt</li>
+                        <li><strong>Datos de Prueba:</strong> Seeders automáticos</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p><strong>Nota:</strong> iMirly se encuentra actualmente en estado MVP. Funcionalidades como Stripe, WebSocket y mapas interactivos están planificadas.</p>
+                    </div>
+                </section>
+
+                <!-- Categorías de Servicios -->
+                <section class="content-section">
+                    <h2 id="categorias-servicios">Categorías de Servicios</h2>
+                    <p>La plataforma soporta una amplia gama de categorías:</p>
+                    
+                    <div class="categories-grid">
+                        <div class="category-item">
+                            <h4>Servicios del Hogar</h4>
+                            <p>Electricistas, fontanería, limpieza, pintura, jardinería, mudanzas</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Belleza y Estética</h4>
+                            <p>Peluquería, maquillaje, uñas, faciales, masajes, depilación</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Educación y Clases</h4>
+                            <p>Idiomas, música, danza, dibujo, clases particulares</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Servicios de Cuidado</h4>
+                            <p>Cuidado infantil, cuidado de personas mayores</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Deportes y Salud</h4>
+                            <p>Entrenador personal, yoga, pilates, boxeo, tenis, pádel</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Servicios para Mascotas</h4>
+                            <p>Paseo, adiestramiento, peluquería, cuidado a domicilio</p>
+                        </div>
+                        <div class="category-item">
+                            <h4>Eventos y Otros</h4>
+                            <p>Fotografía, videografía, desarrollo web, soporte IT, redes sociales</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quién debería usar iMirly -->
+                <section class="content-section">
+                    <h2 id="quien-usar-imirly">¿Quién debería usar iMirly?</h2>
+                    
+                    <div class="user-types">
+                        <div class="user-type-card">
+                            <h3>Proveedores de Servicios</h3>
+                            <p>Profesionales que buscan expandir su base de clientes, gestionar reservas, recibir pagos seguros y construir reputación</p>
+                        </div>
+                        <div class="user-type-card">
+                            <h3>Clientes</h3>
+                            <p>Individuos que buscan proveedores confiables con precios transparentes y garantía de calidad</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Siguientes Pasos -->
+                <section class="content-section">
+                    <h2 id="siguientes-pasos">Siguientes Pasos</h2>
+                    <p>¿Listo para comenzar con iMirly?</p>
+                    
+                    <div class="next-steps-grid">
+                        <a href="inicio-rapido.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Guía de Inicio Rápido</h4>
+                                <p>Configura tu entorno de desarrollo y ejecuta iMirly localmente</p>
+                            </div>
+                        </a>
+
+                        <a href="arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Visión General de la Arquitectura</h4>
+                                <p>Comprende la arquitectura hexagonal y la estructura de módulos</p>
+                            </div>
+                        </a>
+                    </div>
+
+                    <div class="pagination">
+                        <a href="../index.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Bienvenida</span>
+                        </a>
+                        <a href="inicio-rapido.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Inicio Rápido →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho (Table of Contents) -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav" id="toc-nav"></nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    <script src="../js/script.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

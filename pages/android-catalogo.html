@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Android - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA CATÁLOGO */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Lista de features */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Architecture cards */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .arch-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .arch-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-purple);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .arch-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Steps numerados */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .step-item h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .step-item p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 3px solid #f59e0b;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* API Badge */
+        .api-badge {
+            display: inline-block;
+            background-color: rgba(0, 184, 148, 0.1);
+            color: #00b894;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .ui-badge {
+            display: inline-block;
+            background-color: rgba(225, 112, 85, 0.1);
+            color: #e17055;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .vm-badge {
+            display: inline-block;
+            background-color: rgba(9, 132, 227, 0.1);
+            color: #0984e3;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">App Android</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Catálogo de Servicios</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Catálogo de Servicios</h1>
+                    <p class="page-description">
+                        Explora, busca y gestiona listados de servicios en la aplicación iMirly Android
+                    </p>
+                </header>
+
+                <!-- Overview -->
+                <section class="content-section" id="overview">
+                    <h2>Visión General</h2>
+                    <p>
+                        El módulo de <strong>Catálogo de Servicios</strong> permite a los usuarios descubrir y 
+                        gestionar servicios profesionales. Implementa una arquitectura limpia con ViewModels, 
+                        Jetpack Compose y Retrofit para una experiencia fluida.
+                    </p>
+                    
+                    <ul class="feature-list">
+                        <li>Explorar categorías y subcategorías jerárquicas</li>
+                        <li>Buscar servicios por palabra clave, ubicación y categoría</li>
+                        <li>Ver detalles completos de listados de servicios</li>
+                        <li>Guardar y gestionar favoritos</li>
+                        <li>Contactar directamente a proveedores de servicios</li>
+                    </ul>
+                </section>
+
+                <!-- API Service -->
+                <section class="content-section" id="api-service">
+                    <h2>Servicio API de Catálogo</h2>
+
+                    <h3>Interfaz Retrofit</h3>
+                    <span class="api-badge">API Interface</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">network/CatalogApiService.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.network
+
+import okhttp3.ResponseBody
+import retrofit2.Response
+import retrofit2.http.*
+
+data class CategoriaResponse(
+    val id: String,
+    val nombre: String,
+    val icono: String,
+    val numAnuncios: Int? = 0
+)
+
+data class SubcategoriaResponse(
+    val id: String,
+    val categoriaId: String,
+    val nombre: String,
+    val icono: String
+)
+
+data class AnuncioResponse(
+    val id: String,
+    val titulo: String,
+    val descripcion: String,
+    val precioHora: Double,
+    val ubicacion: String,
+    val activo: Boolean,
+    val subcategoriaId: String,
+    val nombreProfesional: String? = "Profesional",
+    val valoracionProfesional: Double = 0.0,
+    val numeroValoracionesProfesional: Int = 0
+)
+
+data class CheckFavoritoResponse(
+    val isFavorito: Boolean
+)
+
+interface CatalogApiService {
+    @GET("/api/v1/catalog/categories")
+    suspend fun getCategorias(): Response<List<CategoriaResponse>>
+
+    @GET("/api/v1/catalog/categories/{categoriaId}/subcategories")
+    suspend fun getSubcategorias(
+        @Path("categoriaId") categoriaId: String
+    ): Response<List<SubcategoriaResponse>>
+
+    @GET("/api/v1/anuncios/subcategoria/{subcategoriaId}")
+    suspend fun getAnunciosBySubcategoria(
+        @Path("subcategoriaId") subcategoriaId: String
+    ): Response<List<AnuncioResponse>>
+
+    @GET("/api/v1/anuncios/search")
+    suspend fun searchAnuncios(
+        @Query("q") query: String? = null,
+        @Query("ubicacion") ubicacion: String? = null,
+        @Query("categoriaId") categoriaId: String? = null
+    ): Response<List<AnuncioResponse>>
+
+    @GET("/api/v1/anuncios/{id}")
+    suspend fun getAnuncioById(@Path("id") id: String): Response<AnuncioResponse>
+
+    @POST("/api/v1/favoritos/{anuncioId}")
+    suspend fun addFavorito(@Path("anuncioId") anuncioId: String): Response<ResponseBody>
+
+    @DELETE("/api/v1/favoritos/{anuncioId}")
+    suspend fun removeFavorito(@Path("anuncioId") anuncioId: String): Response<ResponseBody>
+
+    @GET("/api/v1/favoritos")
+    suspend fun getMisFavoritos(): Response<List<AnuncioResponse>>
+
+    @GET("/api/v1/favoritos/{anuncioId}/check")
+    suspend fun checkIsFavorito(
+        @Path("anuncioId") anuncioId: String
+    ): Response<CheckFavoritoResponse>
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            <strong>Nota:</strong> Todos los endpoints del catálogo requieren autenticación JWT. 
+                            El <code class="inline">RetrofitClient</code> inyecta automáticamente el token en el header 
+                            <code class="inline">Authorization</code>.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Home Screen -->
+                <section class="content-section" id="home-screen">
+                    <h2>Pantalla de Inicio con Categorías</h2>
+
+                    <h3>Home ViewModel</h3>
+                    <span class="vm-badge">ViewModel</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/main/HomeViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.main
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.CategoriaResponse
+import com.imirly.app.network.RetrofitClient
+import kotlinx.coroutines.launch
+
+class HomeViewModel : ViewModel() {
+    var categorias = mutableStateOf<List<CategoriaResponse>>(emptyList())
+    var isLoading = mutableStateOf(true)
+
+    init {
+        cargarCategorias()
+    }
+
+    private fun cargarCategorias() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.catalogService.getCategorias()
+                if (response.isSuccessful) {
+                    categorias.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                // Manejar error
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Home Screen UI</h3>
+                    <span class="ui-badge">Jetpack Compose</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/main/HomeScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.main
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavController
+
+@Composable
+fun HomeScreen(navController: NavController, viewModel: HomeViewModel = viewModel()) {
+    val iMirlyPurple = Color(0xFF6C5CE7)
+    val lightBackground = Color(0xFFFAFAFA)
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(lightBackground)
+            .verticalScroll(rememberScrollState())
+            .padding(24.dp)
+    ) {
+        // Encabezado
+        Text(
+            "iMirly",
+            fontSize = 28.sp,
+            fontWeight = FontWeight.ExtraBold,
+            color = iMirlyPurple
+        )
+        Text("Encuentra tu profesional ideal", fontSize = 14.sp, color = Color.Gray)
+
+        Spacer(modifier = Modifier.height(20.dp))
+
+        // Barra de Búsqueda (clicable)
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { navController.navigate("search") }
+        ) {
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                placeholder = { Text("Busca servicios...", color = Color.Gray) },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = null, tint = Color.Gray)
+                },
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                enabled = false
+            )
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        // Banner Promocional
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(24.dp),
+            color = iMirlyPurple
+        ) {
+            Column(modifier = Modifier.padding(24.dp)) {
+                Surface(
+                    color = Color.White.copy(alpha = 0.2f),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text(
+                        "✨ NUEVO",
+                        color = Color.White,
+                        fontSize = 10.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp)
+                    )
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    "Servicios locales,\nsoluciones reales.\niMirly",
+                    color = Color.White,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    lineHeight = 28.sp
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Sección de Categorías
+        Text("Categorías populares", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        if (viewModel.isLoading.value) {
+            CircularProgressIndicator(
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                color = iMirlyPurple
+            )
+        } else {
+            // Grid de 2 columnas
+            val categorias = viewModel.categorias.value
+            for (i in categorias.indices step 2) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    CategoryCard(
+                        categoria = categorias[i],
+                        modifier = Modifier
+                            .weight(1f)
+                            .clickable {
+                                navController.navigate(
+                                    "subcategories/${categorias[i].id}/${categorias[i].nombre}"
+                                )
+                            }
+                    )
+
+                    if (i + 1 < categorias.size) {
+                        CategoryCard(
+                            categoria = categorias[i + 1],
+                            modifier = Modifier
+                                .weight(1f)
+                                .clickable {
+                                    navController.navigate(
+                                        "subcategories/${categorias[i + 1].id}/${categorias[i + 1].nombre}"
+                                    )
+                                }
+                        )
+                    } else {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+    }
+}
+
+@Composable
+fun CategoryCard(categoria: CategoriaResponse, modifier: Modifier = Modifier) {
+    Surface(
+        modifier = modifier.height(180.dp),
+        shape = RoundedCornerShape(20.dp),
+        color = Color.White,
+        shadowElevation = 2.dp
+    ) {
+        Column(
+            modifier = Modifier.padding(8.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Icono de categoría (cargar desde recursos drawable)
+            // ...
+            
+            Text(
+                categoria.nombre,
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = Color(0xFF6C5CE7)
+            )
+            Text(
+                "${categoria.numAnuncios ?: 0} profesionales",
+                fontSize = 10.sp,
+                color = Color.Gray
+            )
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Search -->
+                <section class="content-section" id="search">
+                    <h2>Funcionalidad de Búsqueda</h2>
+
+                    <h3>Search ViewModel</h3>
+                    <span class="vm-badge">ViewModel</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/catalog/SearchViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.catalog
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.AnuncioResponse
+import com.imirly.app.network.RetrofitClient
+import kotlinx.coroutines.launch
+
+class SearchViewModel : ViewModel() {
+    var searchQuery = mutableStateOf("")
+    var ubicacion = mutableStateOf("")
+    var resultados = mutableStateOf<List<AnuncioResponse>>(emptyList())
+    var isLoading = mutableStateOf(false)
+
+    fun buscarAnuncios() {
+        isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.catalogService.searchAnuncios(
+                    query = searchQuery.value.ifBlank { null },
+                    ubicacion = ubicacion.value.ifBlank { null }
+                )
+                if (response.isSuccessful) {
+                    resultados.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                // Manejar error
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Detail View -->
+                <section class="content-section" id="detail">
+                    <h2>Vista de Detalle del Servicio</h2>
+
+                    <h3>Detail ViewModel</h3>
+                    <span class="vm-badge">ViewModel</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/catalog/AnuncioDetailViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.catalog
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.AnuncioResponse
+import com.imirly.app.network.CrearSolicitudRequest
+import com.imirly.app.network.RetrofitClient
+import kotlinx.coroutines.launch
+
+class AnuncioDetailViewModel : ViewModel() {
+    var anuncio = mutableStateOf<AnuncioResponse?>(null)
+    var isLoading = mutableStateOf(true)
+    var showContactDialog = mutableStateOf(false)
+    var mensajeContacto = mutableStateOf("")
+    var isSubmitting = mutableStateOf(false)
+    var requestSuccess = mutableStateOf(false)
+
+    fun cargarDetalle(id: String) {
+        isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.catalogService.getAnuncioById(id)
+                if (response.isSuccessful) {
+                    anuncio.value = response.body()
+                }
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+
+    fun enviarSolicitud(anuncioId: String) {
+        if (mensajeContacto.value.isBlank()) return
+
+        isSubmitting.value = true
+        viewModelScope.launch {
+            try {
+                val request = CrearSolicitudRequest(anuncioId, mensajeContacto.value)
+                val response = RetrofitClient.solicitudService.crearSolicitud(request)
+
+                if (response.isSuccessful) {
+                    requestSuccess.value = true
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                isSubmitting.value = false
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Detail Screen UI</h3>
+                    <span class="ui-badge">Jetpack Compose</span>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/catalog/AnuncioDetailScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun AnuncioDetailScreen(
+    navController: NavController,
+    anuncioId: String,
+    viewModel: AnuncioDetailViewModel = viewModel()
+) {
+    LaunchedEffect(anuncioId) {
+        viewModel.cargarDetalle(anuncioId)
+    }
+
+    val anuncio = viewModel.anuncio.value
+
+    if (viewModel.isLoading.value) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+    } else if (anuncio != null) {
+        Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Text(anuncio.titulo, fontSize = 24.sp, fontWeight = FontWeight.Bold)
+            Text("${anuncio.precioHora}€/hora", fontSize = 20.sp, color = Color(0xFF6C5CE7))
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            Text(anuncio.descripcion, fontSize = 16.sp)
+            
+            Spacer(modifier = Modifier.height(8.dp))
+            
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(Icons.Default.LocationOn, contentDescription = null)
+                Text(anuncio.ubicacion)
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+            
+            // Información del profesional
+            Text("Profesional: ${anuncio.nombreProfesional}")
+            Text("⭐ ${anuncio.valoracionProfesional} (${anuncio.numeroValoracionesProfesional} valoraciones)")
+            
+            Spacer(modifier = Modifier.weight(1f))
+            
+            Button(
+                onClick = { viewModel.showContactDialog.value = true },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Contactar profesional")
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Favorites -->
+                <section class="content-section" id="favorites">
+                    <h2>Sistema de Favoritos</h2>
+
+                    <h3>Añadir/Eliminar Favoritos</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Favoritos - Toggle</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun toggleFavorito(anuncioId: String, isFavorito: Boolean) {
+    viewModelScope.launch {
+        try {
+            val response = if (isFavorito) {
+                RetrofitClient.catalogService.removeFavorito(anuncioId)
+            } else {
+                RetrofitClient.catalogService.addFavorito(anuncioId)
+            }
+            
+            if (response.isSuccessful) {
+                // Actualizar interfaz
+            }
+        } catch (e: Exception) {
+            // Manejar error
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Verificar Estado de Favorito</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Favoritos - Check</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun checkFavorito(anuncioId: String) {
+    viewModelScope.launch {
+        try {
+            val response = RetrofitClient.catalogService.checkIsFavorito(anuncioId)
+            if (response.isSuccessful) {
+                val isFav = response.body()?.isFavorito ?: false
+                // Actualizar interfaz
+            }
+        } catch (e: Exception) {
+            // Manejar error
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Navigation -->
+                <section class="content-section" id="navigation">
+                    <h2>Rutas de Navegación</h2>
+                    <p>Añade estas rutas en tu <code class="inline">MainActivity.kt</code>:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MainActivity.kt - NavHost</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">NavHost(navController = navController, startDestination = "main") {
+    composable("main") { MainScreen(navController) }
+    
+    composable(
+        "subcategories/{categoriaId}/{categoriaNombre}",
+        arguments = listOf(
+            navArgument("categoriaId") { type = NavType.StringType },
+            navArgument("categoriaNombre") { type = NavType.StringType }
+        )
+    ) { backStackEntry ->
+        SubcategoriesScreen(
+            navController,
+            backStackEntry.arguments?.getString("categoriaId") ?: "",
+            backStackEntry.arguments?.getString("categoriaNombre") ?: ""
+        )
+    }
+    
+    composable("search") { SearchScreen(navController) }
+    
+    composable(
+        "anuncio_detail/{anuncioId}",
+        arguments = listOf(navArgument("anuncioId") { type = NavType.StringType })
+    ) { backStackEntry ->
+        AnuncioDetailScreen(
+            navController,
+            backStackEntry.arguments?.getString("anuncioId") ?: ""
+        )
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Testing -->
+                <section class="content-section" id="testing">
+                    <h2>Probar el Catálogo</h2>
+
+                    <ol class="steps-list">
+                        <li class="step-item">
+                            <h3>Cargar Categorías</h3>
+                            <p>Abre la pantalla de inicio y verifica que las categorías se carguen desde la API correctamente.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Navegar a Subcategorías</h3>
+                            <p>Toca una categoría y verifica que las subcategorías se muestren correctamente con sus iconos.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Buscar Servicios</h3>
+                            <p>Usa la barra de búsqueda para encontrar servicios por palabra clave o ubicación. Verifica los filtros.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Ver Detalles</h3>
+                            <p>Toca un listado de servicio y verifica que todos los detalles se muestren: precio, ubicación, valoraciones.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Probar Favoritos</h3>
+                            <p>Añade/elimina favoritos y verifica la persistencia. Comprueba que el estado se mantiene al recargar.</p>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="android-chat.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Chat en Tiempo Real</h4>
+                                <p>Contacta a los proveedores de servicios</p>
+                            </div>
+                        </a>
+
+                        <a href="android-contratos.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Contratos y Pagos</h4>
+                                <p>Gestiona solicitudes de servicios</p>
+                            </div>
+                        </a>
+
+                        <a href="android-autenticacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Autenticación</h4>
+                                <p>Revisa el sistema de login y registro</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="android-autenticacion.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Autenticación</span>
+                        </a>
+                        <a href="android-chat.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Chat en Tiempo Real →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#overview" class="toc-link">Visión General</a>
+                    <a href="#api-service" class="toc-link">Servicio API</a>
+                    <a href="#home-screen" class="toc-link">Pantalla de Inicio</a>
+                    <a href="#search" class="toc-link">Búsqueda</a>
+                    <a href="#detail" class="toc-link">Detalle del Servicio</a>
+                    <a href="#favorites" class="toc-link">Favoritos</a>
+                    <a href="#navigation" class="toc-link">Navegación</a>
+                    <a href="#testing" class="toc-link">Testing</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

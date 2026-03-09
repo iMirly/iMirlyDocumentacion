@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura Hexagonal - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA ARQUITECTURA HEXAGONAL */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Hexagon Diagram */
+        .hexagon-diagram {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-md);
+        }
+
+        .diagram-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .diagram-box {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-text-primary);
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .diagram-box.input {
+            border-color: #4ade80;
+            color: #4ade80;
+        }
+
+        .diagram-box.output {
+            border-color: #f87171;
+            color: #f87171;
+        }
+
+        .diagram-box.core {
+            border-color: var(--color-purple);
+            color: var(--color-purple-light);
+            background-color: rgba(108, 92, 231, 0.1);
+            padding: 20px 30px;
+            font-weight: 600;
+        }
+
+        .diagram-arrow {
+            color: var(--color-text-muted);
+            font-size: 1.5rem;
+        }
+
+        .diagram-label {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: var(--spacing-xs);
+        }
+
+        /* Layers */
+        .layer-section {
+            margin: var(--spacing-xl) 0;
+        }
+
+        .layer-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .layer-number {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            flex-shrink: 0;
+        }
+
+        .layer-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .layer-subtitle {
+            font-size: 1rem;
+            color: var(--color-purple-light);
+            margin-top: 4px;
+        }
+
+        /* Module Structure Tree */
+        .structure-tree {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+            overflow-x: auto;
+        }
+
+        .tree-line {
+            white-space: pre;
+        }
+
+        .tree-dir {
+            color: var(--color-purple-light);
+        }
+
+        .tree-file {
+            color: var(--color-text-secondary);
+        }
+
+        .tree-comment {
+            color: #6b7280;
+        }
+
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .benefit-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .benefit-card h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-purple);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .benefit-card p {
+            font-size: 0.9375rem;
+            color: var(--color-text-secondary);
+            margin: 0 0 var(--spacing-md) 0;
+            line-height: 1.6;
+        }
+
+        .benefit-card code {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Dependency Rule Box */
+        .dependency-box {
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.1) 0%, rgba(162, 155, 254, 0.05) 100%);
+            border: 1px solid var(--color-purple);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .dependency-flow {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .dependency-flow span {
+            color: var(--color-purple-light);
+        }
+
+        .dependency-labels {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            margin-top: var(--spacing-md);
+        }
+
+        .dependency-label {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Key Takeaways */
+        .takeaways-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .takeaways-list li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+            line-height: 1.6;
+        }
+
+        .takeaways-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Badges */
+        .domain-badge {
+            display: inline-block;
+            background-color: rgba(108, 92, 231, 0.1);
+            color: var(--color-purple-light);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .app-badge {
+            display: inline-block;
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .infra-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Backend</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Arquitectura Hexagonal</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Arquitectura Hexagonal</h1>
+                    <p class="page-description">
+                        Entendiendo el patrón Ports and Adapters en iMirly
+                    </p>
+                </header>
+
+                <!-- What is Hexagonal -->
+                <section class="content-section" id="what-is">
+                    <h2>¿Qué es la Arquitectura Hexagonal?</h2>
+                    <p>
+                        La <strong>Arquitectura Hexagonal</strong> (también conocida como <strong>Ports and Adapters</strong>) 
+                        es un patrón de diseño que separa la lógica de negocio core de las preocupaciones externas. 
+                        El "hexágono" representa el core de tu aplicación, rodeado por adapters que manejan las operaciones I/O.
+                    </p>
+
+                    <!-- Diagrama Hexagonal -->
+                    <div class="hexagon-diagram">
+                        <div class="diagram-row">
+                            <div class="diagram-box input">REST Controller</div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-box input">Input Adapter</div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-box input">Input Port</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <span class="diagram-arrow">↓</span>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box core">Application Service</div>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <span class="diagram-arrow">↓</span>
+                        </div>
+                        
+                        <div class="diagram-row">
+                            <div class="diagram-box output">Output Port</div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-box output">Output Adapter</div>
+                            <span class="diagram-arrow">→</span>
+                            <div class="diagram-box output">Database</div>
+                        </div>
+                        
+                        <div class="diagram-row" style="margin-top: var(--spacing-md);">
+                            <div class="diagram-box output" style="margin-left: auto;">JWT Provider</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- The Three Layers -->
+                <section class="content-section" id="layers">
+                    <h2>Las Tres Capas</h2>
+
+                    <!-- Layer 1: Domain -->
+                    <div class="layer-section" id="domain-layer">
+                        <div class="layer-header">
+                            <div class="layer-number">1</div>
+                            <div>
+                                <div class="layer-title">Domain Layer (El Core)</div>
+                                <div class="layer-subtitle">Lógica de negocio pura</div>
+                            </div>
+                        </div>
+                        
+                        <p>
+                            Lógica de negocio pura con <strong>cero dependencias externas</strong>. Contiene los modelos de dominio 
+                            y las interfaces de puertos de salida.
+                        </p>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">User.java (Domain Model)</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.domain.model;
+
+import java.util.UUID;
+import lombok.Getter;
+import lombok.Setter;
+import java.time.LocalDateTime;
+
+@Getter
+@Setter
+public class User {
+    private UUID id;
+    private String nombre;
+    private String email;
+    private String passwordHash;
+    private UserType tipo;
+    private String documentoIdentidad;
+    private boolean verificado;
+    private LocalDateTime fechaRegistro;
+    private Double saldo;
+    private Double puntuacionTotal;
+    private Integer numeroValoraciones;
+
+    // La lógica de negocio vive en el dominio
+    public void restarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a restar debe ser mayor que cero.");
+        }
+        if (this.saldo == null)
+            this.saldo = 0.0;
+        this.saldo -= cantidad;
+    }
+
+    public void sumarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a sumar debe ser mayor que cero.");
+        }
+        if (this.saldo == null)
+            this.saldo = 0.0;
+        this.saldo += cantidad;
+    }
+
+    public void addValoracion(Double nota) {
+        if (nota == null || nota < 0 || nota > 5)
+            throw new IllegalArgumentException("Nota inválida");
+        if (this.puntuacionTotal == null)
+            this.puntuacionTotal = 0.0;
+        if (this.numeroValoraciones == null)
+            this.numeroValoraciones = 0;
+        this.puntuacionTotal += nota;
+        this.numeroValoraciones++;
+    }
+
+    public Double getValoracionMedia() {
+        if (numeroValoraciones == null || numeroValoraciones == 0)
+            return 0.0;
+        return Math.round((puntuacionTotal / numeroValoraciones) * 10.0) / 10.0;
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="info-box">
+                            <p>
+                                Observa que la clase <code class="inline">User</code> no tiene anotaciones JPA y 
+                                <code class="inline">UserRepositoryPort</code> no tiene dependencias de Spring. 
+                                Esto es lógica de dominio pura.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Layer 2: Application -->
+                    <div class="layer-section" id="application-layer">
+                        <div class="layer-header">
+                            <div class="layer-number">2</div>
+                            <div>
+                                <div class="layer-title">Application Layer (Casos de Uso)</div>
+                                <div class="layer-subtitle">Orquestación de la lógica de dominio</div>
+                            </div>
+                        </div>
+                        
+                        <p>
+                            Orquesta la lógica de dominio implementando casos de uso. Contiene puertos de entrada (interfaces) 
+                            y servicios (implementaciones).
+                        </p>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">LoginUserUseCase.java (Input Port)</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.application.port.in;
+
+public interface LoginUserUseCase {
+    String login(LoginUserCommand command);
+}</code></pre>
+                        </div>
+
+                        <div class="info-box">
+                            <p>
+                                El servicio depende de interfaces (ports), no de implementaciones concretas. 
+                                Esta es la clave de la flexibilidad del patrón.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Layer 3: Infrastructure -->
+                    <div class="layer-section" id="infrastructure-layer">
+                        <div class="layer-header">
+                            <div class="layer-number">3</div>
+                            <div>
+                                <div class="layer-title">Infrastructure Layer (Adapters)</div>
+                                <div class="layer-subtitle">Implementación de ports e interacciones externas</div>
+                            </div>
+                        </div>
+
+                        <h3>Input Adapters (REST Controllers)</h3>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">AuthController.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.infrastructure.input.rest;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/auth")
+@RequiredArgsConstructor
+public class AuthController {
+
+    private final RegisterUserUseCase registerUserUseCase;
+    private final LoginUserUseCase loginUserUseCase;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginUserRequest request) {
+        try {
+            // 1. Mapear DTO a Command
+            LoginUserCommand command = new LoginUserCommand(
+                    request.getEmail(),
+                    request.getRawPassword()
+            );
+
+            // 2. Ejecutar Use Case
+            String token = loginUserUseCase.login(command);
+
+            // 3. Retornar Token JWT
+            return ResponseEntity.ok(token);
+            
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+        }
+    }
+}</code></pre>
+                        </div>
+
+                        <h3>Output Adapters (Persistence)</h3>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">UserRepositoryAdapter.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.infrastructure.output.persistence;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+import tfg.imirly.auth.domain.model.User;
+import tfg.imirly.auth.domain.port.out.UserRepositoryPort;
+
+@Repository
+@RequiredArgsConstructor
+public class UserRepositoryAdapter implements UserRepositoryPort {
+    
+    private final SpringDataUserRepository springDataRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public User save(User user) {
+        // 1. Traducir modelo de dominio a entidad JPA
+        UserEntity entity = userMapper.toEntity(user);
+        // 2. Guardar en PostgreSQL usando Spring Data
+        UserEntity savedEntity = springDataRepository.save(entity);
+        // 3. Traducir de vuelta a modelo de dominio
+        return userMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return springDataRepository.findByEmail(email)
+                .map(userMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return springDataRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return springDataRepository.findById(id)
+                .map(userMapper::toDomain);
+    }
+}</code></pre>
+                        </div>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">SpringDataUserRepository.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.infrastructure.output.persistence.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import tfg.imirly.auth.infrastructure.output.persistence.entity.UserEntity;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID> {
+    Optional<UserEntity> findByEmail(String email);
+    boolean existsByEmail(String email);
+}</code></pre>
+                        </div>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">UserEntity.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">package tfg.imirly.auth.infrastructure.output.persistence.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+import java.util.UUID;
+import java.time.LocalDateTime;
+import tfg.imirly.auth.domain.model.UserType;
+
+@Entity
+@Table(name = "usuarios")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    private String nombre;
+    private String email;
+
+    @Column(name = "password_hash")
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private UserType tipo;
+
+    @Column(name = "documento_identidad")
+    private String documentoIdentidad;
+
+    private boolean verificado;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
+
+    @Column(name = "saldo", columnDefinition = "DECIMAL(10,2) DEFAULT 0.0")
+    private Double saldo;
+
+    @Column(name = "puntuacion_total", columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
+    private Double puntuacionTotal = 0.0;
+
+    @Column(name = "numero_valoraciones", columnDefinition = "INTEGER DEFAULT 0")
+    private Integer numeroValoraciones = 0;
+}</code></pre>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Port and Adapter Examples -->
+                <section class="content-section" id="examples">
+                    <h2>Ejemplos de Port y Adapter</h2>
+
+                    <h3>Password Encoder Port</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">PasswordEncoderPort.java (Interface)</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">package tfg.imirly.auth.domain.port.out;
+
+public interface PasswordEncoderPort {
+    String encode(String rawPassword);
+    boolean matches(String rawPassword, String encodedPassword);
+}</code></pre>
+                    </div>
+
+                    <h3>Token Provider Port</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">TokenProviderPort.java (Interface)</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">package tfg.imirly.auth.domain.port.out;
+
+import tfg.imirly.auth.domain.model.User;
+
+public interface TokenProviderPort {
+    String generateToken(User user);
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Module Structure -->
+                <section class="content-section" id="structure">
+                    <h2>Estructura de Módulo Ejemplo: Catalog</h2>
+
+                    <div class="structure-tree">
+<div class="tree-line"><span class="tree-dir">catalog/</span></div>
+<div class="tree-line">├── <span class="tree-dir">domain/</span></div>
+<div class="tree-line">│   ├── <span class="tree-dir">model/</span></div>
+<div class="tree-line">│   │   └── <span class="tree-file">AnuncioServicio.java</span>          <span class="tree-comment"># Modelo de dominio puro</span></div>
+<div class="tree-line">│   └── <span class="tree-dir">port/out/</span></div>
+<div class="tree-line">│       └── <span class="tree-file">AnuncioRepositoryPort.java</span>    <span class="tree-comment"># Interfaz de repositorio</span></div>
+<div class="tree-line">├── <span class="tree-dir">application/</span></div>
+<div class="tree-line">│   ├── <span class="tree-dir">port/in/</span></div>
+<div class="tree-line">│   │   ├── <span class="tree-file">ManageAnuncioUseCase.java</span>     <span class="tree-comment"># Interfaz de caso de uso</span></div>
+<div class="tree-line">│   │   ├── <span class="tree-file">CreateAnuncioCommand.java</span>     <span class="tree-comment"># DTO de entrada</span></div>
+<div class="tree-line">│   │   └── <span class="tree-file">UpdateAnuncioCommand.java</span></div>
+<div class="tree-line">│   └── <span class="tree-dir">service/</span></div>
+<div class="tree-line">│       └── <span class="tree-file">ManageAnuncioService.java</span>     <span class="tree-comment"># Implementación de caso de uso</span></div>
+<div class="tree-line">└── <span class="tree-dir">infrastructure/</span></div>
+<div class="tree-line">    ├── <span class="tree-dir">input/rest/</span></div>
+<div class="tree-line">    │   └── <span class="tree-file">CatalogController.java</span>        <span class="tree-comment"># Endpoints REST</span></div>
+<div class="tree-line">    └── <span class="tree-dir">output/persistence/</span></div>
+<div class="tree-line">        ├── <span class="tree-file">AnuncioRepositoryAdapter.java</span> <span class="tree-comment"># Implementación de repositorio</span></div>
+<div class="tree-line">        └── <span class="tree-dir">entity/</span></div>
+<div class="tree-line">            └── <span class="tree-file">AnuncioEntity.java</span>            <span class="tree-comment"># Entidad JPA</span></div>
+                    </div>
+                </section>
+
+                <!-- Benefits -->
+                <section class="content-section" id="benefits">
+                    <h2>Beneficios en la Práctica</h2>
+
+                    <div class="benefits-grid">
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                Testing Fácil
+                            </h4>
+                            <p>Mock de ports en tests sin tocar la base de datos:</p>
+                            <code>UserRepositoryPort mockRepo = mock(UserRepositoryPort.class);<br>LoginUserService service = new LoginUserService(mockRepo, ...);</code>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                                </svg>
+                                Intercambiar Implementaciones
+                            </h4>
+                            <p>Cambiar de JWT a OAuth sin tocar la lógica de negocio:</p>
+                            <code>// Solo crea un nuevo adapter<br>public class OAuth2TokenAdapter implements TokenProviderPort { ... }</code>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                                Independencia de Framework
+                            </h4>
+                            <p>Los modelos de dominio funcionan sin Spring:</p>
+                            <code>User user = new User(...);<br>user.sumarSaldo(100.0); // No se necesita framework</code>
+                        </div>
+
+                        <div class="benefit-card">
+                            <h4>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                Límites Claros
+                            </h4>
+                            <p>Cada capa tiene una única responsabilidad con interfaces explícitas</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dependency Rule -->
+                <section class="content-section" id="dependency-rule">
+                    <h2>Regla de Dependencias</h2>
+                    <p>El flujo de dependencias es estrictamente hacia adentro:</p>
+
+                    <div class="dependency-box">
+                        <div class="dependency-flow">
+                            Infrastructure <span>→</span> Application <span>→</span> Domain
+                        </div>
+                        <div class="dependency-labels">
+                            <span class="dependency-label">Adapters</span>
+                            <span class="dependency-label">Ports</span>
+                        </div>
+                    </div>
+
+                    <div class="info-box" style="border-left-color: #f59e0b; background-color: rgba(245, 158, 11, 0.1);">
+                        <p>
+                            <strong>Regla Crítica:</strong> La capa de dominio nunca debe depender de capas externas. 
+                            No sabe nada sobre Spring, JPA, REST o ningún framework.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Key Takeaways -->
+                <section class="content-section" id="takeaways">
+                    <h2>Puntos Clave</h2>
+
+                    <ul class="takeaways-list">
+                        <li>Los modelos de dominio son objetos Java planos con lógica de negocio</li>
+                        <li>Los ports son interfaces que definen lo que la aplicación necesita</li>
+                        <li>Los adapters implementan ports usando tecnologías externas</li>
+                        <li>Los casos de uso orquestan la lógica de dominio a través de ports</li>
+                        <li>Las dependencias siempre apuntan hacia adentro, hacia el dominio</li>
+                    </ul>
+                </section>
+
+                <!-- Next Steps -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="backend-security.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Seguridad</h4>
+                                <p>Aprende cómo se implementa la autenticación JWT</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-database.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Base de Datos</h4>
+                                <p>Explora la capa de persistencia y entidades</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-overview.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Backend Overview</h4>
+                                <p>Vuelve a la visión general del backend</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="backend-overview.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">←  Backend Overview</span>
+                        </a>
+                        <a href="backend-setup.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Backend Setup →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#what-is" class="toc-link">¿Qué es?</a>
+                    <a href="#layers" class="toc-link">Las Tres Capas</a>
+                    <a href="#domain-layer" class="toc-link">1. Domain Layer</a>
+                    <a href="#application-layer" class="toc-link">2. Application Layer</a>
+                    <a href="#infrastructure-layer" class="toc-link">3. Infrastructure Layer</a>
+                    <a href="#examples" class="toc-link">Ejemplos Port/Adapter</a>
+                    <a href="#structure" class="toc-link">Estructura de Módulo</a>
+                    <a href="#benefits" class="toc-link">Beneficios</a>
+                    <a href="#dependency-rule" class="toc-link">Regla de Dependencias</a>
+                    <a href="#takeaways" class="toc-link">Puntos Clave</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

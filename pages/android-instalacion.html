@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instalación Android - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+    /* ESTILOS ESPECÍFICOS PARA INSTALACIÓN - CORREGIDOS */
+    /* Steps numerados principales */
+    .steps-list {
+        counter-reset: step-counter;
+        list-style: none;
+        padding: 0;
+        margin: var(--spacing-xl) 0;
+    }
+
+    .step-item {
+        position: relative;
+        padding-left: 60px;
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .step-item::before {
+        counter-increment: step-counter;
+        content: counter(step-counter);
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        background-color: var(--color-purple);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 1rem;
+        flex-shrink: 0;
+    }
+
+    .step-item h3 {
+        font-size: 1.125rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-sm);
+        color: var(--color-text-primary);
+    }
+
+    .step-item p {
+        color: var(--color-text-secondary);
+        margin-bottom: var(--spacing-md);
+        line-height: 1.6;
+    }
+
+    /* Sub-steps dentro de setup-section - CORREGIDO */
+    .setup-section .steps-list {
+        margin: var(--spacing-lg) 0 0 0;
+    }
+
+    .setup-section .step-item {
+        padding-left: 50px; /* Reducido para evitar cortes */
+        margin-bottom: var(--spacing-lg); /* Menos espacio entre items */
+    }
+
+    .setup-section .step-item::before {
+        width: 32px; /* Más pequeño para sub-steps */
+        height: 32px;
+        font-size: 0.875rem;
+        top: 2px; /* Alineación vertical */
+    }
+
+    .setup-section .step-item h3 {
+        font-size: 1rem; /* Más pequeño para sub-steps */
+        margin-bottom: var(--spacing-xs);
+    }
+
+    .setup-section .step-item p {
+        font-size: 0.9375rem;
+        margin-bottom: var(--spacing-sm);
+    }
+
+    /* Setup section container */
+    .setup-section {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: var(--spacing-xl);
+        margin-bottom: var(--spacing-xl);
+    }
+
+    .setup-section h3 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-md);
+        color: var(--color-text-primary);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+
+    .setup-section-number {
+        width: 32px;
+        height: 32px;
+        background-color: var(--color-purple);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+    }
+
+    /* Code blocks con header y sintaxis resaltada */
+    .code-block-wrapper {
+        background-color: #0d0d1a;
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        overflow: hidden;
+        margin: var(--spacing-md) 0;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .code-block-header {
+        background-color: rgba(255, 255, 255, 0.03);
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--color-border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .code-block-filename {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8125rem;
+        color: var(--color-purple-light);
+        font-weight: 600;
+    }
+
+    .code-block-copy {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid var(--color-border);
+        border-radius: 6px;
+        color: var(--color-text-secondary);
+        font-size: 0.75rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-family: var(--font-family);
+    }
+
+    .code-block-copy:hover {
+        background-color: rgba(120, 100, 215, 0.2);
+        border-color: var(--color-purple);
+        color: var(--color-text-primary);
+    }
+
+    .code-block-copy.copied {
+        background-color: rgba(34, 197, 94, 0.2);
+        border-color: #22c55e;
+        color: #22c55e;
+    }
+
+    .code-block-copy svg {
+        width: 14px;
+        height: 14px;
+    }
+
+    .code-block-wrapper pre {
+        margin: 0;
+        padding: var(--spacing-lg);
+        overflow-x: auto;
+        line-height: 1.7;
+    }
+
+    .code-block-wrapper code {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875rem;
+        line-height: 1.7;
+        color: #e4e4e7;
+        background: transparent;
+        padding: 0;
+    }
+
+    /* Sintaxis resaltada */
+    .code-keyword { color: #c678dd; }
+    .code-string { color: #98c379; }
+    .code-comment { color: #5c6370; font-style: italic; }
+    .code-function { color: #61afef; }
+    .code-number { color: #d19a66; }
+    .code-operator { color: #56b6c2; }
+    .code-class { color: #e5c07b; }
+    .code-property { color: #e06c75; }
+
+    /* Tips box */
+    .tip-box {
+        background-color: rgba(34, 197, 94, 0.1);
+        border-left: 3px solid #22c55e;
+        padding: var(--spacing-md) var(--spacing-lg);
+        margin: var(--spacing-lg) 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .tip-box-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+        color: #22c55e;
+        font-weight: 600;
+        font-size: 0.9375rem;
+    }
+
+    .tip-box p, .tip-box ul {
+        margin: 0;
+        color: var(--color-text-secondary);
+        font-size: 0.9375rem;
+    }
+
+    /* Checklist dentro de tip-box */
+    .tip-box .checklist {
+        margin-top: var(--spacing-sm);
+    }
+
+    /* Warning box */
+    .warning-box {
+        background-color: rgba(245, 158, 11, 0.1);
+        border-left: 3px solid #f59e0b;
+        padding: var(--spacing-md) var(--spacing-lg);
+        margin: var(--spacing-lg) 0;
+        border-radius: 0 8px 8px 0;
+    }
+
+    .warning-box-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-sm);
+        color: #f59e0b;
+        font-weight: 600;
+        font-size: 0.9375rem;
+    }
+
+    /* Checklist general */
+    .checklist {
+        list-style: none;
+        padding: 0;
+        margin: var(--spacing-md) 0;
+    }
+
+    .checklist li {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-sm);
+        padding: var(--spacing-xs) 0;
+        color: var(--color-text-secondary);
+        font-size: 0.9375rem;
+    }
+
+    .checklist li::before {
+        content: "✓";
+        color: #22c55e;
+        font-weight: bold;
+        flex-shrink: 0;
+        width: 20px;
+        text-align: center;
+    }
+
+    /* Troubleshooting grid */
+    .troubleshooting-grid {
+        display: grid;
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+
+    .trouble-item {
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        padding: var(--spacing-md);
+    }
+
+    .trouble-item h4 {
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--color-text-primary);
+        margin-bottom: var(--spacing-sm);
+    }
+
+    .trouble-item p {
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+        margin: 0;
+    }
+
+    /* Next steps cards */
+    .next-steps-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+
+    .next-step-card {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        background-color: var(--color-bg-card);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+        padding: var(--spacing-lg);
+        text-decoration: none;
+        color: inherit;
+        transition: all var(--transition-base);
+    }
+
+    .next-step-card:hover {
+        border-color: var(--color-purple);
+        background-color: var(--color-bg-hover);
+    }
+
+    .next-step-icon {
+        width: 40px;
+        height: 40px;
+        background-color: var(--color-bg-hover);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-purple);
+        flex-shrink: 0;
+    }
+
+    .next-step-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: var(--color-text-primary);
+    }
+
+    .next-step-content p {
+        font-size: 0.875rem;
+        color: var(--color-text-secondary);
+        margin: 0;
+    }
+
+    /* Device tabs */
+    .device-tabs {
+        display: flex;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .device-tab {
+        padding: var(--spacing-sm) var(--spacing-md);
+        background: none;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 0.9375rem;
+        font-weight: 500;
+        cursor: pointer;
+        border-bottom: 2px solid transparent;
+        transition: all var(--transition-fast);
+    }
+
+    .device-tab:hover {
+        color: var(--color-text-primary);
+    }
+
+    .device-tab.active {
+        color: var(--color-purple);
+        border-bottom-color: var(--color-purple);
+    }
+
+    .device-content {
+        display: none;
+    }
+
+    .device-content.active {
+        display: block;
+    }
+
+    /* Sub-steps usando divs - evita conflictos con ol/li */
+    .sub-steps {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-md);
+        margin: 0;
+    }
+
+    .sub-step {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+        padding: var(--spacing-sm) 0;
+    }
+
+    .sub-step-number {
+        width: 32px;
+        height: 32px;
+        background-color: var(--color-purple);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.875rem;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+
+    .sub-step-content {
+        flex: 1;
+    }
+
+    .sub-step-content h4 {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: var(--spacing-xs);
+        color: var(--color-text-primary);
+    }
+
+    .sub-step-content p {
+        font-size: 0.9375rem;
+        color: var(--color-text-secondary);
+        margin: 0;
+        line-height: 1.5;
+    }
+
+    /* Inline code */
+    code.inline {
+        background-color: rgba(120, 100, 215, 0.15);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.875em;
+        color: var(--color-purple-light);
+    }
+</style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda - CARGADO DINÁMICAMENTE -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">App Android</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Instalación</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Instalación de la App Android</h1>
+                    <p class="page-description">
+                        Configura tu entorno de desarrollo para trabajar con la aplicación iMirly Android
+                    </p>
+                </header>
+
+                <!-- Prerrequisitos -->
+                <section class="content-section" id="prerrequisitos">
+                    <h2>Prerrequisitos</h2>
+                    
+                    <ol class="steps-list">
+                        <li class="step-item">
+                            <h3>Instalar Android Studio</h3>
+                            <p>Descarga e instala <strong>Android Studio Ladybug</strong> o una versión más reciente desde el sitio oficial de Android.</p>
+                        </li>
+
+                        <li class="step-item">
+                            <h3>Instalar JDK 17</h3>
+                            <p>El proyecto requiere Java 17. Verifica tu instalación:</p>
+                            
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Terminal</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-function">java</span> -version
+<span class="code-comment"># Debería mostrar: openjdk version "17.x.x"</span></code></pre>
+                            </div>
+                        </li>
+
+                        <li class="step-item">
+                            <h3>Clonar el Repositorio</h3>
+                            <p>Clona el código fuente de iMirly:</p>
+                            
+                            <div class="code-block-wrapper">
+                                <div class="code-block-header">
+                                    <span class="code-block-filename">Terminal</span>
+                                    <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                        </svg>
+                                        Copiar
+                                    </button>
+                                </div>
+                                <pre><code><span class="code-function">git clone</span> <span class="code-string">"https://github.com/yourusername/imirly.git"</span>
+<span class="code-function">cd</span> imirly/frontend</code></pre>
+                            </div>
+                        </li>
+                    </ol>
+                </section>
+
+
+                <!-- Configuración del Proyecto -->
+                <section class="content-section" id="configuracion-proyecto">
+                    <h2>Configuración del Proyecto</h2>
+
+                    <div class="setup-section">
+                        <h3>
+                            <span class="setup-section-number">1</span>
+                            Configurar Gradle
+                        </h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">
+                            El proyecto utiliza <strong>Kotlin DSL</strong> para la configuración de Gradle. Archivos clave:
+                        </p>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">app/build.gradle.kts</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copiar
+                                </button>
+                            </div>
+                            <pre><code><span class="code-keyword">plugins</span> {
+    <span class="code-function">alias</span>(libs.plugins.android.application)
+    <span class="code-function">alias</span>(libs.plugins.kotlin.android)
+    <span class="code-function">alias</span>(libs.plugins.kotlin.compose)
+}
+
+<span class="code-keyword">android</span> {
+    namespace = <span class="code-string">"com.imirly.app"</span>
+    compileSdk = <span class="code-number">36</span>
+
+    <span class="code-property">defaultConfig</span> {
+        applicationId = <span class="code-string">"com.imirly.app"</span>
+        minSdk = <span class="code-number">26</span>
+        targetSdk = <span class="code-number">36</span>
+        versionCode = <span class="code-number">1</span>
+        versionName = <span class="code-string">"1.0"</span>
+    }
+
+    <span class="code-property">compileOptions</span> {
+        sourceCompatibility = JavaVersion.<span class="code-property">VERSION_17</span>
+        targetCompatibility = JavaVersion.<span class="code-property">VERSION_17</span>
+    }
+
+    <span class="code-property">kotlinOptions</span> {
+        jvmTarget = <span class="code-string">"17"</span>
+    }
+
+    <span class="code-property">buildFeatures</span> {
+        compose = <span class="code-keyword">true</span>
+    }
+}
+
+<span class="code-keyword">dependencies</span> {
+    <span class="code-comment">// Jetpack Compose</span>
+    <span class="code-function">implementation</span>(libs.androidx.compose.ui)
+    <span class="code-function">implementation</span>(libs.androidx.compose.material3)
+    <span class="code-function">implementation</span>(libs.androidx.activity.compose)
+    
+    <span class="code-comment">// Retrofit para llamadas API</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"com.squareup.retrofit2:retrofit:2.9.0"</span>)
+    <span class="code-function">implementation</span>(<span class="code-string">"com.squareup.retrofit2:converter-gson:2.9.0"</span>)
+    
+    <span class="code-comment">// Navigation</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"androidx.navigation:navigation-compose:2.8.0"</span>)
+    
+    <span class="code-comment">// ViewModel</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4"</span>)
+    
+    <span class="code-comment">// Material Icons Extended</span>
+    <span class="code-function">implementation</span>(<span class="code-string">"androidx.compose.material:material-icons-extended"</span>)
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <div class="setup-section">
+                        <h3>
+                            <span class="setup-section-number">2</span>
+                            Sincronizar Proyecto
+                        </h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">
+                            Después de abrir el proyecto en Android Studio:
+                        </p>
+
+                        <!-- IMPORTANTE: Usar divs en lugar de ol/li para evitar conflictos -->
+                        <div class="sub-steps">
+                            <div class="sub-step">
+                                <div class="sub-step-number">1</div>
+                                <div class="sub-step-content">
+                                    <h4>Sincronizar Gradle</h4>
+                                    <p>Haz clic en <code class="inline">File → Sync Project with Gradle Files</code> o en el botón de sincronización en la barra de herramientas.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="sub-step">
+                                <div class="sub-step-number">2</div>
+                                <div class="sub-step-content">
+                                    <h4>Descargar Dependencias</h4>
+                                    <p>Gradle descargará todas las dependencias necesarias. Esto puede tardar varios minutos en la primera ejecución.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="sub-step">
+                                <div class="sub-step-number">3</div>
+                                <div class="sub-step-content">
+                                    <h4>Verificar Build</h4>
+                                    <p>Revisa la ventana de <strong>Build</strong> para verificar que no hay errores.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Configurar Backend -->
+                <section class="content-section" id="configurar-backend">
+                    <h2>Configurar Conexión al Backend</h2>
+
+                    <div class="setup-section">
+                        <h3>Actualizar Base URL</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-lg);">
+                            Edita <code class="inline">RetrofitClient.kt</code> para apuntar a tu servidor backend:
+                        </p>
+
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">network/RetrofitClient.kt</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copiar
+                                </button>
+                            </div>
+                            <pre><code><span class="code-keyword">package</span> com.imirly.app.network
+
+<span class="code-keyword">import</span> retrofit2.Retrofit
+<span class="code-keyword">import</span> retrofit2.converter.gson.GsonConverterFactory
+<span class="code-keyword">import</span> okhttp3.OkHttpClient
+
+<span class="code-keyword">object</span> <span class="code-class">RetrofitClient</span> {
+    <span class="code-comment">// Para Android Emulator, usa 10.0.2.2 para acceder a localhost</span>
+    <span class="code-keyword">private const val</span> <span class="code-property">BASE_URL</span> = <span class="code-string">"http://10.0.2.2:8080"</span>
+    
+    <span class="code-comment">// Para dispositivo físico, usa la IP de tu computadora:</span>
+    <span class="code-comment">// private const val BASE_URL = "http://192.168.1.100:8080"</span>
+    
+    <span class="code-keyword">private val</span> <span class="code-property">okHttpClient</span> = <span class="code-class">OkHttpClient</span>.<span class="code-function">Builder</span>()
+        .<span class="code-function">addInterceptor</span> { chain ->
+            <span class="code-keyword">val</span> originalRequest = chain.<span class="code-function">request</span>()
+            <span class="code-keyword">val</span> token = <span class="code-class">TokenManager</span>.jwtToken
+            
+            <span class="code-keyword">val</span> newRequest = <span class="code-keyword">if</span> (token != <span class="code-keyword">null</span>) {
+                originalRequest.<span class="code-function">newBuilder</span>()
+                    .<span class="code-function">header</span>(<span class="code-string">"Authorization"</span>, <span class="code-string">"Bearer $token"</span>)
+                    .<span class="code-function">build</span>()
+            } <span class="code-keyword">else</span> {
+                originalRequest
+            }
+            
+            chain.<span class="code-function">proceed</span>(newRequest)
+        }
+        .<span class="code-function">build</span>()
+
+    <span class="code-keyword">val</span> <span class="code-property">apiService</span>: <span class="code-class">AuthApiService</span> <span class="code-keyword">by lazy</span> {
+        <span class="code-class">Retrofit</span>.<span class="code-function">Builder</span>()
+            .<span class="code-function">baseUrl</span>(<span class="code-property">BASE_URL</span>)
+            .<span class="code-function">client</span>(<span class="code-property">okHttpClient</span>)
+            .<span class="code-function">addConverterFactory</span>(<span class="code-class">GsonConverterFactory</span>.<span class="code-function">create</span>())
+            .<span class="code-function">build</span>()
+            .<span class="code-function">create</span>(<span class="code-class">AuthApiService</span>::<span class="code-keyword">class</span>.java)
+    }
+    
+    <span class="code-keyword">val</span> <span class="code-property">catalogService</span>: <span class="code-class">CatalogApiService</span> <span class="code-keyword">by lazy</span> {
+        <span class="code-class">Retrofit</span>.<span class="code-function">Builder</span>()
+            .<span class="code-function">baseUrl</span>(<span class="code-property">BASE_URL</span>)
+            .<span class="code-function">client</span>(<span class="code-property">okHttpClient</span>)
+            .<span class="code-function">addConverterFactory</span>(<span class="code-class">GsonConverterFactory</span>.<span class="code-function">create</span>())
+            .<span class="code-function">build</span>()
+            .<span class="code-function">create</span>(<span class="code-class">CatalogApiService</span>::<span class="code-keyword">class</span>.java)
+    }
+    
+    <span class="code-comment">// Servicios adicionales...</span>
+}</code></pre>
+                        </div>
+
+                        <div class="tip-box">
+                            <div class="tip-box-header">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                                Consejos de Red del Emulador
+                            </div>
+                            <ul class="checklist">
+                                <li><code class="inline">10.0.2.2</code> mapea a localhost en tu máquina de desarrollo</li>
+                                <li>Para dispositivos físicos, usa la dirección IP local de tu computadora</li>
+                                <li>Asegúrate de que tu backend esté ejecutándose y sea accesible</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Ejecutar Aplicación -->
+                <section class="content-section" id="ejecutar-app">
+                    <h2>Ejecutar la Aplicación</h2>
+
+                    <div class="device-tabs">
+                        <button class="device-tab active" onclick="switchTab('emulator')">Emulador Android</button>
+                        <button class="device-tab" onclick="switchTab('physical')">Dispositivo Físico</button>
+                    </div>
+
+                    <!-- Emulador -->
+                    <div id="emulator" class="device-content active">
+                        <div class="setup-section" style="margin-bottom: 0;">
+                            <ol class="steps-list">
+                                <li class="step-item">
+                                    <h3>Crear AVD</h3>
+                                    <p>Abre <code class="inline">Tools → Device Manager</code> y crea un nuevo dispositivo virtual:</p>
+                                    <ul class="checklist">
+                                        <li>Dispositivo: Pixel 5 o más reciente</li>
+                                        <li>Imagen del Sistema: Android 13 (API 33) o superior</li>
+                                    </ul>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Iniciar Emulador</h3>
+                                    <p>Haz clic en el botón de play junto a tu AVD para lanzar el emulador.</p>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Ejecutar App</h3>
+                                    <p>Haz clic en el botón <strong>Run</strong> (icono de play verde) en la barra de herramientas de Android Studio.</p>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- Dispositivo Físico -->
+                    <div id="physical" class="device-content">
+                        <div class="setup-section" style="margin-bottom: 0;">
+                            <ol class="steps-list">
+                                <li class="step-item">
+                                    <h3>Habilitar Opciones de Desarrollador</h3>
+                                    <p>En tu dispositivo Android:</p>
+                                    <ul class="checklist">
+                                        <li>Ve a <code class="inline">Configuración → Acerca del Teléfono</code></li>
+                                        <li>Toca <strong>Número de compilación</strong> 7 veces</li>
+                                        <li>Regresa a Configuración y abre <strong>Opciones de Desarrollador</strong></li>
+                                    </ul>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Habilitar Depuración USB</h3>
+                                    <p>En Opciones de Desarrollador, activa <strong>Depuración USB</strong>.</p>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Conectar Dispositivo</h3>
+                                    <p>Conecta tu dispositivo vía USB y autoriza la computadora cuando se te solicite.</p>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Actualizar BASE_URL</h3>
+                                    <p>Cambia el BASE_URL en RetrofitClient.kt a la IP local de tu computadora:</p>
+                                    <div class="code-block-wrapper" style="margin-top: var(--spacing-md);">
+                                        <div class="code-block-header">
+                                            <span class="code-block-filename">RetrofitClient.kt</span>
+                                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                                </svg>
+                                                Copiar
+                                            </button>
+                                        </div>
+                                        <pre><code><span class="code-keyword">private const val</span> <span class="code-property">BASE_URL</span> = <span class="code-string">"http://192.168.1.100:8080"</span></code></pre>
+                                    </div>
+                                </li>
+                                <li class="step-item">
+                                    <h3>Ejecutar App</h3>
+                                    <p>Selecciona tu dispositivo del menú desplegable de dispositivos y haz clic en <strong>Run</strong>.</p>
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Verificar Instalación -->
+                <section class="content-section" id="verificar-instalacion">
+                    <h2>Verificar Instalación</h2>
+                    <p class="section-description">
+                        Después de ejecutar la app, deberías ver:
+                    </p>
+
+                    <ul class="checklist" style="margin-bottom: var(--spacing-xl);">
+                        <li>Pantalla de Onboarding con la marca iMirly</li>
+                        <li>Botones de Login/Registro</li>
+                        <li>Sin errores de red en Logcat</li>
+                    </ul>
+
+                    <div class="setup-section">
+                        <h3>Revisar Logcat por Errores</h3>
+                        <p style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                            Abre <code class="inline">View → Tool Windows → Logcat</code> y filtra por:
+                        </p>
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">Filtro Logcat</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                    Copiar
+                                </button>
+                            </div>
+                            <pre><code>package:com.imirly.app</code></pre>
+                        </div>
+                        <p style="color: var(--color-text-secondary); margin-top: var(--spacing-md);">
+                            Busca errores de <code class="inline">RetrofitClient</code> o <code class="inline">ViewModel</code>.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Solución de Problemas -->
+                <section class="content-section" id="solucion-problemas">
+                    <h2>Solución de Problemas</h2>
+
+                    <div class="troubleshooting-grid">
+                        <div class="trouble-item">
+                            <h4>Build falla: 'minSdk version should not be declared'</h4>
+                            <p>Asegúrate de usar la versión de Android Studio Ladybug o más reciente. Limpia y reconstruye el proyecto.</p>
+                        </div>
+
+                        <div class="trouble-item">
+                            <h4>Error de red: Unable to resolve host</h4>
+                            <p>Verifica que el backend esté ejecutándose y que la BASE_URL sea correcta. Para emulador usa 10.0.2.2, para dispositivo físico usa la IP de tu red local.</p>
+                        </div>
+
+                        <div class="trouble-item">
+                            <h4>Retrofit: Unable to create call adapter</h4>
+                            <p>Verifica que tienes la dependencia de Gson converter correctamente añadida en build.gradle.kts.</p>
+                        </div>
+
+                        <div class="trouble-item">
+                            <h4>JWT token no persiste</h4>
+                            <p>Asegúrate de que TokenManager esté correctamente implementado con SharedPreferences o DataStore.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="android-autenticacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Autenticación</h4>
+                                <p>Implementa el login y registro de usuarios</p>
+                            </div>
+                        </a>
+
+                        <a href="android-catalogo.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Catálogo de Servicios</h4>
+                                <p>Construye la interfaz de navegación de servicios</p>
+                            </div>
+                        </a>
+
+                        <a href="android-overview.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Visión General</h4>
+                                <p>Revisa la arquitectura completa de la app</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="android-overview.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Visión General Android</span>
+                        </a>
+                        <a href="android-autenticacion.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Autenticación →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho (Table of Contents) -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#prerrequisitos" class="toc-link">Prerrequisitos</a>
+                    <a href="#configuracion-proyecto" class="toc-link">Configuración del Proyecto</a>
+                    <a href="#configurar-backend" class="toc-link">Configurar Backend</a>
+                    <a href="#ejecutar-app" class="toc-link">Ejecutar Aplicación</a>
+                    <a href="#verificar-instalacion" class="toc-link">Verificar Instalación</a>
+                    <a href="#solucion-problemas" class="toc-link">Solución de Problemas</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- CARGA EL MENÚ DINÁMICAMENTE -->
+    <script src="../js/menu-loader.js"></script>
+    <script src="../js/script.js"></script>
+    
+    <script>
+        // Función para copiar código al portapapeles
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper');
+            const codeElement = codeBlock.querySelector('code');
+            
+            // Obtener el texto sin los spans de sintaxis
+            let codeText = '';
+            codeElement.childNodes.forEach(node => {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    codeText += node.textContent;
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    codeText += node.textContent;
+                }
+            });
+            
+            // Copiar al portapapeles
+            navigator.clipboard.writeText(codeText.trim()).then(() => {
+                // Cambiar el estado del botón
+                const originalHTML = button.innerHTML;
+                button.classList.add('copied');
+                button.innerHTML = `
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    ¡Copiado!
+                `;
+                
+                // Restaurar después de 2 segundos
+                setTimeout(() => {
+                    button.classList.remove('copied');
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(err => {
+                console.error('Error al copiar:', err);
+                button.textContent = 'Error';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+
+        // Función para tabs de dispositivo
+        function switchTab(tabName) {
+            // Remover active de todos los tabs y contenidos
+            document.querySelectorAll('.device-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.device-content').forEach(content => content.classList.remove('active'));
+            
+            // Agregar active al tab seleccionado
+            event.target.classList.add('active');
+            document.getElementById(tabName).classList.add('active');
+        }
+    </script>
+</body>
+</html>

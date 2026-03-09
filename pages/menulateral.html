@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Lateral - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Sidebar Left */
+        .sidebar-left {
+            width: 280px;
+            height: 100vh;
+            background-color: var(--color-bg-secondary);
+            border-right: 1px solid var(--color-border);
+            position: fixed;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            z-index: 100;
+            padding: var(--spacing-md);
+        }
+
+        .sidebar-header {
+            padding: var(--spacing-md) var(--spacing-sm) var(--spacing-lg);
+            border-bottom: 1px solid var(--color-border);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .sidebar-logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .sidebar-logo span {
+            background: linear-gradient(135deg, var(--color-purple) 0%, var(--color-purple-light) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Search Box Styles */
+        .sidebar-search {
+            margin-top: var(--spacing-md);
+        }
+
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background-color: var(--color-bg-tertiary);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: all 200ms ease;
+        }
+
+        .search-box:hover {
+            border-color: var(--color-purple);
+        }
+
+        .search-icon {
+            color: var(--color-text-muted);
+            margin-right: 8px;
+            flex-shrink: 0;
+        }
+
+        .search-placeholder-text {
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+            flex: 1;
+        }
+
+        .search-shortcut {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-muted);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Search Modal */
+        .search-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 10000;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10vh;
+        }
+
+        .search-modal.active {
+            display: flex;
+        }
+
+        .search-container {
+            width: 90%;
+            max-width: 700px;
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .search-input {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--color-text-primary);
+            font-size: 1.125rem;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .search-input::placeholder {
+            color: var(--color-text-muted);
+        }
+
+        .search-close {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .search-close:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-hover);
+        }
+
+        .search-stats {
+            padding: 8px 20px;
+            background-color: var(--color-bg-hover);
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            display: none;
+        }
+
+        .search-stats.active {
+            display: block;
+        }
+
+        .search-results {
+            max-height: 60vh;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            display: block;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--color-border);
+            text-decoration: none;
+            color: inherit;
+            transition: background-color 150ms ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover, .search-result-item.selected {
+            background-color: var(--color-bg-hover);
+        }
+
+        .search-result-item.selected {
+            border-left: 3px solid var(--color-purple);
+            padding-left: 17px;
+        }
+
+        .result-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .result-icon {
+            color: var(--color-purple);
+        }
+
+        .result-page {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            font-size: 0.9375rem;
+        }
+
+        .result-section {
+            color: var(--color-text-muted);
+            font-size: 0.8125rem;
+        }
+
+        .result-context {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-top: 8px;
+        }
+
+        .highlight {
+            background-color: rgba(108, 92, 231, 0.3);
+            color: var(--color-text-primary);
+            border-radius: 2px;
+            padding: 0 2px;
+            font-weight: 500;
+        }
+
+        .no-results {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--color-text-muted);
+        }
+
+        .no-results-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            color: var(--color-text-muted);
+        }
+
+        .initial-state {
+            padding: 20px;
+        }
+
+        .suggestions-title {
+            color: var(--color-text-muted);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+
+        .suggestions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .suggestion-btn {
+            background: var(--color-bg-hover);
+            border: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 150ms ease;
+            font-family: inherit;
+        }
+
+        .suggestion-btn:hover {
+            border-color: var(--color-purple);
+            color: var(--color-text-primary);
+        }
+
+        /* Toggle Icon */
+        .toggle-icon {
+            width: 16px;
+            height: 16px;
+            transition: transform 200ms ease;
+            color: var(--color-text-secondary);
+        }
+
+        /* Navigation Styles */
+        .nav-section {
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .nav-toggle {
+            width: 100%;
+            background: none;
+            border: none;
+            color: var(--color-text-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 8px var(--spacing-sm);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-radius: 6px;
+            transition: background-color 150ms ease;
+            font-family: inherit;
+        }
+
+        .nav-toggle:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .nav-toggle-content {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            transition: max-height 300ms ease;
+        }
+
+        .nav-list.collapsed {
+            max-height: 0;
+        }
+
+        .nav-list.expanded {
+            max-height: 500px;
+        }
+
+        .nav-link {
+            display: block;
+            padding: 6px var(--spacing-sm) 6px 32px;
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            border-radius: 6px;
+            transition: all 150ms ease;
+        }
+
+        .nav-link:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-hover);
+        }
+
+        .nav-link.active {
+            color: var(--color-purple);
+            background-color: rgba(108, 92, 231, 0.1);
+            font-weight: 500;
+        }
+
+        /* Keyboard shortcuts hint */
+        .keyboard-hint {
+            padding: 12px 20px;
+            background-color: var(--color-bg-hover);
+            border-top: 1px solid var(--color-border);
+            font-size: 0.8125rem;
+            color: var(--color-text-muted);
+            display: flex;
+            gap: 16px;
+        }
+
+        .keyboard-hint span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .keyboard-hint kbd {
+            background-color: var(--color-bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            border: 1px solid var(--color-border);
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar-left">
+        
+        <div class="sidebar-header">
+            <a href="../index.html" class="sidebar-logo">
+                <span>iMirly</span>
+            </a>
+            
+            <!-- Search Box -->
+             <!-- 
+            <div class="sidebar-search">
+                <div class="search-box" id="searchTrigger" role="button" tabindex="0">
+                    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                    <span class="search-placeholder-text">Buscar documentación...</span>
+                    <span class="search-shortcut">Ctrl K</span>
+                </div>
+            </div>-->
+        </div>
+
+        <nav class="sidebar-nav">
+            <!-- Sección Comenzar -->
+            <div class="nav-section" data-section="comenzar">
+                <button class="nav-toggle" aria-expanded="true" data-section="comenzar">
+                    <span class="nav-toggle-content">
+                        <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        <span>Comenzar</span>
+                    </span>
+                </button>
+                <ul class="nav-list expanded" data-section="comenzar">
+                    <li><a href="introduccion.html" class="nav-link" data-page="introduccion">Introducción</a></li>
+                    <li><a href="inicio-rapido.html" class="nav-link" data-page="inicio-rapido">Inicio Rápido</a></li>
+                    <li><a href="arquitectura.html" class="nav-link" data-page="arquitectura">Arquitectura</a></li>
+                </ul>
+            </div>
+
+            <!-- Sección App Android -->
+            <div class="nav-section" data-section="android">
+                <button class="nav-toggle" aria-expanded="false" data-section="android">
+                    <span class="nav-toggle-content">
+                        <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        <span>App Android</span>
+                    </span>
+                </button>
+                <ul class="nav-list collapsed" data-section="android">
+                    <li><a href="android-overview.html" class="nav-link" data-page="android-overview">Visión General</a></li>
+                    <li><a href="android-instalacion.html" class="nav-link" data-page="android-instalacion">Instalación</a></li>
+                    <li><a href="android-autenticacion.html" class="nav-link" data-page="android-autenticacion">Autenticación</a></li>
+                    <li><a href="android-catalogo.html" class="nav-link" data-page="android-catalogo">Catálogo de Servicios</a></li>
+                    <li><a href="android-chat.html" class="nav-link" data-page="android-chat">Chat en Tiempo Real</a></li>
+                    <li><a href="android-contratos.html" class="nav-link" data-page="android-contratos">Contratos y Pagos</a></li>
+                </ul>
+            </div>
+
+            <!-- Sección API Backend -->
+            <div class="nav-section" data-section="backend">
+                <button class="nav-toggle" aria-expanded="false" data-section="backend">
+                    <span class="nav-toggle-content">
+                        <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        <span>API Backend</span>
+                    </span>
+                </button>
+                <ul class="nav-list collapsed" data-section="backend">
+                    <li><a href="backend-overview.html" class="nav-link" data-page="backend-overview">Visión General</a></li>
+                    <li><a href="backend-arquitectura.html" class="nav-link" data-page="backend-arquitectura">Arquitectura Hexagonal</a></li>
+                    <li><a href="backend-setup.html" class="nav-link" data-page="backend-setup">Configuración</a></li>
+                    <li><a href="backend-database.html" class="nav-link" data-page="backend-database">Base de Datos</a></li>
+                    <li><a href="backend-security.html" class="nav-link" data-page="backend-security">Seguridad</a></li>
+                </ul>
+            </div>
+
+            <!-- Sección Características principales -->
+            <div class="nav-section" data-section="features">
+                <button class="nav-toggle" aria-expanded="false" data-section="features">
+                    <span class="nav-toggle-content">
+                        <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        <span>Características principales</span>
+                    </span>
+                </button>
+                <ul class="nav-list collapsed" data-section="features">
+                    <li><a href="feature-chat.html" class="nav-link" data-page="feature-chat">Mensajería en tiempo real</a></li>
+                    <li><a href="feature-negociacion.html" class="nav-link" data-page="feature-negociacion">Negociación</a></li>
+                    <li><a href="feature-monedero.html" class="nav-link" data-page="feature-monedero">Monedero Virtual</a></li>
+                    <li><a href="feature-tareas.html" class="nav-link" data-page="feature-tareas">Gestión de tareas</a></li>
+                    <li><a href="feature-calificacion.html" class="nav-link" data-page="feature-calificacion">Sistema de calificación</a></li>
+                </ul>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Search Modal -->
+    <div class="search-modal" id="searchModal">
+        <div class="search-container">
+            <div class="search-header">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <input type="text" class="search-input" id="searchInput" placeholder="Buscar en la documentación..." autocomplete="off" spellcheck="false">
+                <button class="search-close" id="searchClose" type="button" aria-label="Cerrar búsqueda">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="search-stats" id="searchStats"></div>
+            
+            <div class="search-results" id="searchResults">
+                <div class="initial-state">
+                    <p class="suggestions-title">Búsquedas populares:</p>
+                    <div class="suggestions-list">
+                        <button class="suggestion-btn" data-term="autenticación">autenticación</button>
+                        <button class="suggestion-btn" data-term="chat">chat</button>
+                        <button class="suggestion-btn" data-term="pagos">pagos</button>
+                        <button class="suggestion-btn" data-term="arquitectura">arquitectura</button>
+                        <button class="suggestion-btn" data-term="Android">Android</button>
+                        <button class="suggestion-btn" data-term="JWT">JWT</button>
+                        <button class="suggestion-btn" data-term="billetera">billetera</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="keyboard-hint">
+                <span><kbd>↑</kbd> <kbd>↓</kbd> Navegar</span>
+                <span><kbd>Enter</kbd> Seleccionar</span>
+                <span><kbd>Esc</kbd> Cerrar</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Index - Contenido de cada página para búsqueda
+        const pageIndex = [
+            {
+                url: 'introduccion.html',
+                title: 'Introducción',
+                section: 'Comenzar',
+                content: [
+                    { type: 'heading', text: 'Bienvenido a iMirly', id: 'bienvenido' },
+                    { type: 'paragraph', text: 'iMirly es una plataforma integral de marketplace de servicios que reúne a proveedores de servicios y clientes en un ecosistema fluido, seguro y eficiente.' },
+                    { type: 'paragraph', text: 'Construida con arquitectura moderna y tecnologías de vanguardia, iMirly agiliza todo el ciclo de vida de la contratación de servicios.' },
+                    { type: 'heading', text: '¿Qué es iMirly?', id: 'que-es' },
+                    { type: 'paragraph', text: 'iMirly es una aplicación de doble plataforma que consta de: App Móvil Android nativa construida con Jetpack Compose y Backend Spring Boot API REST robusta impulsada por Java 21.' },
+                    { type: 'heading', text: 'Comunicación por Chat en Tiempo Real', id: 'chat' },
+                    { type: 'paragraph', text: 'Sistema de mensajería instantánea con polling automático cada 3 segundos y confirmaciones de lectura.' },
+                    { type: 'heading', text: 'Sistema de Presupuestos Inteligente', id: 'presupuestos' },
+                    { type: 'paragraph', text: 'Negociación de precios en tiempo real dentro del chat con aceptación digital y seguimiento de estado.' },
+                    { type: 'heading', text: 'Integración de Billetera Virtual', id: 'billetera' },
+                    { type: 'paragraph', text: 'Sistema de pagos seguro con depósito en garantía. El dinero se mantiene seguro hasta que el trabajo se completa satisfactoriamente.' },
+                    { type: 'heading', text: 'Gestión Dinámica de Tareas', id: 'tareas' },
+                    { type: 'paragraph', text: 'Flujo de trabajo completo desde solicitud hasta finalización con estados bien definidos y notificaciones automáticas.' }
+                ]
+            },
+            {
+                url: 'inicio-rapido.html',
+                title: 'Inicio Rápido',
+                section: 'Comenzar',
+                content: [
+                    { type: 'heading', text: 'Requisitos Previos', id: 'requisitos' },
+                    { type: 'paragraph', text: 'Antes de comenzar, asegúrate de tener instalado: Android Studio Hedgehog o posterior, Java JDK 21, Node.js 18+ y PostgreSQL 15+.' },
+                    { type: 'heading', text: 'Configuración del Backend', id: 'config-backend' },
+                    { type: 'paragraph', text: 'Clona el repositorio del backend, configura la base de datos PostgreSQL y ejecuta la aplicación Spring Boot.' },
+                    { type: 'heading', text: 'Configuración de Android', id: 'config-android' },
+                    { type: 'paragraph', text: 'Abre el proyecto en Android Studio, sincroniza con Gradle y ejecuta en un emulador o dispositivo físico.' }
+                ]
+            },
+            {
+                url: 'arquitectura.html',
+                title: 'Arquitectura',
+                section: 'Comenzar',
+                content: [
+                    { type: 'heading', text: 'Visión General de la Arquitectura', id: 'vision-general' },
+                    { type: 'paragraph', text: 'iMirly sigue una arquitectura de microservicios con separación clara entre frontend Android y backend API REST.' },
+                    { type: 'heading', text: 'Arquitectura Hexagonal', id: 'hexagonal' },
+                    { type: 'paragraph', text: 'El backend implementa arquitectura hexagonal (puertos y adaptadores) para máxima testabilidad y mantenibilidad.' },
+                    { type: 'heading', text: 'Comunicación en Tiempo Real', id: 'tiempo-real' },
+                    { type: 'paragraph', text: 'Sistema de polling optimizado con corrutinas de Kotlin para actualizaciones en tiempo real sin WebSocket.' }
+                ]
+            },
+            {
+                url: 'android-overview.html',
+                title: 'Visión General Android',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Tecnologías Principales', id: 'tech-stack' },
+                    { type: 'paragraph', text: 'Jetpack Compose para UI declarativa, Kotlin Coroutines para asincronía, Retrofit para networking y Room para persistencia local.' },
+                    { type: 'heading', text: 'Estructura del Proyecto', id: 'estructura' },
+                    { type: 'paragraph', text: 'Organización en capas: UI, ViewModel, Repository, Data Sources. MVVM como patrón de arquitectura principal.' }
+                ]
+            },
+            {
+                url: 'android-instalacion.html',
+                title: 'Instalación Android',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Requisitos del Sistema', id: 'requisitos' },
+                    { type: 'paragraph', text: 'Android Studio Hedgehog 2023.1.1 o superior, JDK 21, SDK Android 34, emulador o dispositivo físico con Android 8.0+' },
+                    { type: 'heading', text: 'Configuración del Proyecto', id: 'configuracion' },
+                    { type: 'paragraph', text: 'Importar proyecto desde GitHub, sincronizar Gradle, configurar variables locales y ejecutar primera compilación.' }
+                ]
+            },
+            {
+                url: 'android-autenticacion.html',
+                title: 'Autenticación Android',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Flujo de Autenticación', id: 'flujo' },
+                    { type: 'paragraph', text: 'Sistema de login con JWT tokens, refresh automático, persistencia segura de credenciales con EncryptedSharedPreferences.' },
+                    { type: 'heading', text: 'Registro de Usuarios', id: 'registro' },
+                    { type: 'paragraph', text: 'Formulario de registro con validación en tiempo real, verificación de email y creación de perfil.' },
+                    { type: 'heading', text: 'Seguridad', id: 'seguridad' },
+                    { type: 'paragraph', text: 'Encriptación de tokens, auto-logout por inactividad, protección contra screenshots en campos sensibles.' }
+                ]
+            },
+            {
+                url: 'android-catalogo.html',
+                title: 'Catálogo de Servicios',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Exploración de Servicios', id: 'exploracion' },
+                    { type: 'paragraph', text: 'Lista categorizada de servicios con filtros por ubicación, precio, calificación y disponibilidad.' },
+                    { type: 'heading', text: 'Perfil del Proveedor', id: 'perfil' },
+                    { type: 'paragraph', text: 'Vista detallada con información del proveedor, servicios ofrecidos, calificaciones y reseñas.' },
+                    { type: 'heading', text: 'Búsqueda Avanzada', id: 'busqueda' },
+                    { type: 'paragraph', text: 'Búsqueda por texto con autocompletado, filtros dinámicos y ordenamiento por relevancia.' }
+                ]
+            },
+            {
+                url: 'android-chat.html',
+                title: 'Chat en Tiempo Real',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Mensajería Instantánea', id: 'mensajeria' },
+                    { type: 'paragraph', text: 'Chat en tiempo real con polling cada 3 segundos, confirmaciones de lectura y tipos de mensajes especiales.' },
+                    { type: 'heading', text: 'Tipos de Mensaje', id: 'tipos' },
+                    { type: 'paragraph', text: 'TEXTO, PROPUESTA_PRECIO, PRESUPUESTO_ACEPTADO, PAGO_REALIZADO, TRABAJO_FINALIZADO, VALORACION.' },
+                    { type: 'heading', text: 'Negociación en Chat', id: 'negociacion' },
+                    { type: 'paragraph', text: 'Envío y aceptación de presupuestos directamente en la conversación con botones de acción.' }
+                ]
+            },
+            {
+                url: 'android-contratos.html',
+                title: 'Contratos y Pagos',
+                section: 'App Android',
+                content: [
+                    { type: 'heading', text: 'Gestión de Contratos', id: 'gestion' },
+                    { type: 'paragraph', text: 'Ciclo de vida completo: solicitud, aceptación, pago, ejecución y finalización con estados bien definidos.' },
+                    { type: 'heading', text: 'Sistema de Pagos', id: 'pagos' },
+                    { type: 'paragraph', text: 'Integración con pasarelas de pago, depósito en garantía y liberación de fondos post-aprobación.' }
+                ]
+            },
+            {
+                url: 'backend-overview.html',
+                title: 'Visión General Backend',
+                section: 'API Backend',
+                content: [
+                    { type: 'heading', text: 'Stack Tecnológico', id: 'stack' },
+                    { type: 'paragraph', text: 'Java 21, Spring Boot 3.2, PostgreSQL 15, Redis para caché, Docker para despliegue.' },
+                    { type: 'heading', text: 'Estructura del Proyecto', id: 'estructura' },
+                    { type: 'paragraph', text: 'Organización en módulos: domain, application, infrastructure. Principios SOLID y Clean Code.' }
+                ]
+            },
+            {
+                url: 'backend-arquitectura.html',
+                title: 'Arquitectura Hexagonal',
+                section: 'API Backend',
+                content: [
+                    { type: 'heading', text: 'Puertos y Adaptadores', id: 'puertos' },
+                    { type: 'paragraph', text: 'Domain al centro, Application con casos de uso, Infrastructure con adaptadores externos.' },
+                    { type: 'heading', text: 'Inversión de Dependencias', id: 'dependency-inversion' },
+                    { type: 'paragraph', text: 'El dominio no depende de frameworks. Interfaces definidas en domain, implementadas en infrastructure.' },
+                    { type: 'heading', text: 'Casos de Uso', id: 'casos-uso' },
+                    { type: 'paragraph', text: 'Cada operación de negocio es un caso de uso independiente con entrada, procesamiento y salida claros.' }
+                ]
+            },
+            {
+                url: 'backend-setup.html',
+                title: 'Configuración Backend',
+                section: 'API Backend',
+                content: [
+                    { type: 'heading', text: 'Variables de Entorno', id: 'env' },
+                    { type: 'paragraph', text: 'Configuración de base de datos, JWT secret, puertos y perfiles de Spring Boot.' },
+                    { type: 'heading', text: 'Docker Compose', id: 'docker' },
+                    { type: 'paragraph', text: 'Orquestación de servicios: app Spring Boot, PostgreSQL, Redis y Nginx reverse proxy.' }
+                ]
+            },
+            {
+                url: 'backend-database.html',
+                title: 'Base de Datos',
+                section: 'API Backend',
+                content: [
+                    { type: 'heading', text: 'Modelo Entidad-Relación', id: 'er' },
+                    { type: 'paragraph', text: 'Usuarios, Servicios, Contratos, Mensajes, Transacciones y Valoraciones con relaciones bien definidas.' },
+                    { type: 'heading', text: 'Migraciones con Flyway', id: 'flyway' },
+                    { type: 'paragraph', text: 'Control de versiones de esquema de base de datos con scripts SQL versionados.' },
+                    { type: 'heading', text: 'Índices y Optimización', id: 'indices' },
+                    { type: 'paragraph', text: 'Índices en campos de búsqueda frecuente, particionamiento de tablas grandes y query optimization.' }
+                ]
+            },
+            {
+                url: 'backend-security.html',
+                title: 'Seguridad Backend',
+                section: 'API Backend',
+                content: [
+                    { type: 'heading', text: 'Autenticación JWT', id: 'jwt' },
+                    { type: 'paragraph', text: 'Tokens de acceso y refresh, expiración configurable, blacklist de tokens revocados.' },
+                    { type: 'heading', text: 'Autorización RBAC', id: 'rbac' },
+                    { type: 'paragraph', text: 'Control de acceso basado en roles: CLIENTE, PROVEEDOR, ADMIN con permisos granulares.' },
+                    { type: 'heading', text: 'Protección contra Ataques', id: 'proteccion' },
+                    { type: 'paragraph', text: 'Rate limiting, protección CSRF, sanitización de inputs, headers de seguridad HTTP.' }
+                ]
+            },
+            {
+                url: 'feature-chat.html',
+                title: 'Mensajería en Tiempo Real',
+                section: 'Características principales',
+                content: [
+                    { type: 'heading', text: 'Visión General', id: 'vision-general' },
+                    { type: 'paragraph', text: 'Sistema de chat en tiempo real que permite comunicación directa entre clientes y proveedores de servicios.' },
+                    { type: 'heading', text: 'Polling Automático', id: 'polling' },
+                    { type: 'paragraph', text: 'Actualización cada 3 segundos usando corrutinas de Kotlin. Eficiente en batería y datos.' },
+                    { type: 'heading', text: 'Confirmaciones de Lectura', id: 'lectura' },
+                    { type: 'paragraph', text: 'Doble check azul cuando el mensaje es leído por el destinatario.' },
+                    { type: 'heading', text: 'Mensajes Especiales', id: 'especiales' },
+                    { type: 'paragraph', text: 'Propuestas de presupuesto, confirmaciones de pago, finalización de trabajo y valoraciones.' }
+                ]
+            },
+            {
+                url: 'feature-negociacion.html',
+                title: 'Negociación',
+                section: 'Características principales',
+                content: [
+                    { type: 'heading', text: 'Propuesta de Presupuesto', id: 'propuesta' },
+                    { type: 'paragraph', text: 'El proveedor envía precio y descripción del trabajo. El cliente puede aceptar, rechazar o contraofertar.' },
+                    { type: 'heading', text: 'Aceptación Digital', id: 'aceptacion' },
+                    { type: 'paragraph', text: 'Al aceptar, el contrato cambia a estado PENDIENTE_PAGO y se bloquea el monto en la billetera.' },
+                    { type: 'heading', text: 'Historial de Negociación', id: 'historial' },
+                    { type: 'paragraph', text: 'Todas las propuestas quedan registradas en el chat para referencia futura.' }
+                ]
+            },
+            {
+                url: 'feature-monedero.html',
+                title: 'Monedero Virtual',
+                section: 'Características principales',
+                content: [
+                    { type: 'heading', text: 'Depósito en Garantía', id: 'escrow' },
+                    { type: 'paragraph', text: 'El dinero se retiene de forma segura durante la prestación del servicio. Liberación solo tras aprobación.' },
+                    { type: 'heading', text: 'Ingreso de Fondos', id: 'ingreso' },
+                    { type: 'paragraph', text: 'Recarga mediante tarjetas de crédito, transferencia bancaria o plataformas de pago locales.' },
+                    { type: 'heading', text: 'Retiro de Fondos', id: 'retiro' },
+                    { type: 'paragraph', text: 'Transferencia a cuenta bancaria registrada. Procesamiento en 24-48 horas hábiles.' },
+                    { type: 'heading', text: 'Historial de Transacciones', id: 'transacciones' },
+                    { type: 'paragraph', text: 'Registro completo de ingresos, retiros, pagos por servicios y cobros recibidos.' }
+                ]
+            },
+            {
+                url: 'feature-tareas.html',
+                title: 'Gestión de Tareas',
+                section: 'Características principales',
+                content: [
+                    { type: 'heading', text: 'Estados del Servicio', id: 'estados' },
+                    { type: 'paragraph', text: 'PENDIENTE → ACEPTADO → PENDIENTE_PAGO → PAGADO → EN_CURSO → REVISION_PENDIENTE → COMPLETADO' },
+                    { type: 'heading', text: 'Aprobación de Trabajo', id: 'aprobacion' },
+                    { type: 'paragraph', text: 'El cliente revisa el trabajo completado y aprueba o solicita correcciones.' },
+                    { type: 'heading', text: 'Liberación de Pago', id: 'liberacion' },
+                    { type: 'paragraph', text: 'Al aprobar, el dinero en garantía se transfiere automáticamente al saldo del proveedor.' }
+                ]
+            },
+            {
+                url: 'feature-calificacion.html',
+                title: 'Sistema de Calificación',
+                section: 'Características principales',
+                content: [
+                    { type: 'heading', text: 'Valoración por Estrellas', id: 'estrellas' },
+                    { type: 'paragraph', text: 'Sistema de 1 a 5 estrellas con cálculo automático de promedio. Solo clientes pueden valorar.' },
+                    { type: 'heading', text: 'Impacto en Perfil', id: 'impacto' },
+                    { type: 'paragraph', text: 'La calificación promedio se muestra públicamente en el perfil del proveedor.' },
+                    { type: 'heading', text: 'Una Valoración por Servicio', id: 'una-sola' },
+                    { type: 'paragraph', text: 'Sistema previene valoraciones múltiples. Solo disponible después de completar el servicio.' }
+                ]
+            }
+        ];
+
+        // Search Modal Elements
+        const searchModal = document.getElementById('searchModal');
+        const searchTrigger = document.getElementById('searchTrigger');
+        const searchInput = document.getElementById('searchInput');
+        const searchClose = document.getElementById('searchClose');
+        const searchResults = document.getElementById('searchResults');
+        const searchStats = document.getElementById('searchStats');
+
+        let selectedIndex = -1;
+        let currentResults = [];
+
+        // Open search modal
+        function openSearch() {
+            searchModal.classList.add('active');
+            searchInput.value = '';
+            selectedIndex = -1;
+            currentResults = [];
+            showInitialState();
+            // Pequeño delay para asegurar que el modal esté visible antes de enfocar
+            setTimeout(() => {
+                searchInput.focus();
+            }, 50);
+        }
+
+        // Close search modal
+        function closeSearch() {
+            searchModal.classList.remove('active');
+            selectedIndex = -1;
+            currentResults = [];
+        }
+
+        // Show initial state with suggestions
+        function showInitialState() {
+            searchStats.classList.remove('active');
+            searchResults.innerHTML = `
+                <div class="initial-state">
+                    <p class="suggestions-title">Búsquedas populares:</p>
+                    <div class="suggestions-list">
+                        <button class="suggestion-btn" data-term="autenticación">autenticación</button>
+                        <button class="suggestion-btn" data-term="chat">chat</button>
+                        <button class="suggestion-btn" data-term="pagos">pagos</button>
+                        <button class="suggestion-btn" data-term="arquitectura">arquitectura</button>
+                        <button class="suggestion-btn" data-term="Android">Android</button>
+                        <button class="suggestion-btn" data-term="JWT">JWT</button>
+                        <button class="suggestion-btn" data-term="billetera">billetera</button>
+                    </div>
+                </div>
+            `;
+            
+            // Re-attach suggestion listeners
+            document.querySelectorAll('.suggestion-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const term = this.getAttribute('data-term');
+                    searchInput.value = term;
+                    performSearch(term);
+                });
+            });
+        }
+
+        // Perform search
+        function performSearch(query) {
+            if (!query.trim()) {
+                showInitialState();
+                return;
+            }
+
+            const normalizedQuery = query.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const results = [];
+
+            pageIndex.forEach(page => {
+                page.content.forEach((item, index) => {
+                    const normalizedText = item.text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    
+                    if (normalizedText.includes(normalizedQuery)) {
+                        const matchIndex = normalizedText.indexOf(normalizedQuery);
+                        const contextStart = Math.max(0, matchIndex - 40);
+                        const contextEnd = Math.min(item.text.length, matchIndex + normalizedQuery.length + 40);
+                        let context = item.text.substring(contextStart, contextEnd);
+                        
+                        if (contextStart > 0) context = '...' + context;
+                        if (contextEnd < item.text.length) context = context + '...';
+                        
+                        results.push({
+                            pageTitle: page.title,
+                            pageUrl: page.url,
+                            section: page.section,
+                            type: item.type,
+                            text: item.text,
+                            context: context,
+                            id: item.id || `section-${index}`
+                        });
+                    }
+                });
+            });
+
+            currentResults = results;
+            displayResults(results, query);
+        }
+
+        // Display search results
+        function displayResults(results, query) {
+            if (results.length === 0) {
+                searchStats.classList.remove('active');
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <svg class="no-results-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                            <line x1="8" y1="8" x2="14" y2="14"></line>
+                            <line x1="14" y1="8" x2="8" y2="14"></line>
+                        </svg>
+                        <p>No se encontraron resultados para "<strong>${escapeHtml(query)}</strong>"</p>
+                        <p style="font-size: 0.8125rem; margin-top: 8px;">Prueba con otros términos</p>
+                    </div>
+                `;
+                return;
+            }
+
+            searchStats.innerHTML = `<strong>${results.length}</strong> resultado${results.length !== 1 ? 's' : ''}`;
+            searchStats.classList.add('active');
+
+            searchResults.innerHTML = results.map((result, index) => `
+                <div class="search-result-item" data-index="${index}" data-url="${result.pageUrl}#${result.id}">
+                    <div class="result-header">
+                        <svg class="result-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            ${result.type === 'heading' 
+                                ? '<path d="M4 12h16M4 18h16M4 6h16"></path>' 
+                                : '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline>'}
+                        </svg>
+                        <span class="result-page">${escapeHtml(result.pageTitle)}</span>
+                        <span style="color: var(--color-text-muted);">•</span>
+                        <span class="result-section">${escapeHtml(result.section)}</span>
+                    </div>
+                    <div class="result-context">
+                        ${highlightText(escapeHtml(result.context), query)}
+                    </div>
+                </div>
+            `).join('');
+
+            // Add click handlers
+            document.querySelectorAll('.search-result-item').forEach((item, idx) => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    navigateToResult(currentResults[idx]);
+                });
+                
+                item.addEventListener('mouseenter', function() {
+                    selectedIndex = parseInt(this.getAttribute('data-index'));
+                    updateSelection();
+                });
+            });
+        }
+
+        // Navigate to result
+        function navigateToResult(result) {
+            const targetUrl = result.pageUrl + '#' + result.id;
+            window.location.href = targetUrl;
+            closeSearch();
+        }
+
+        // Highlight matching text
+        function highlightText(text, query) {
+            const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        // Escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Escape regex special characters
+        function escapeRegex(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Update visual selection
+        function updateSelection() {
+            document.querySelectorAll('.search-result-item').forEach((item, idx) => {
+                if (idx === selectedIndex) {
+                    item.classList.add('selected');
+                    item.scrollIntoView({ block: 'nearest' });
+                } else {
+                    item.classList.remove('selected');
+                }
+            });
+        }
+
+        // Event listeners
+        searchTrigger.addEventListener('click', openSearch);
+        
+        // También permitir abrir con Enter/Space cuando tiene foco
+        searchTrigger.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openSearch();
+            }
+        });
+        
+        searchClose.addEventListener('click', closeSearch);
+        
+        searchInput.addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            // Abrir búsqueda con Ctrl+K
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                if (!searchModal.classList.contains('active')) {
+                    openSearch();
+                }
+                return;
+            }
+
+            // Solo procesar teclas si el modal está abierto
+            if (!searchModal.classList.contains('active')) return;
+
+            if (e.key === 'Escape') {
+                e.preventDefault();
+                closeSearch();
+                return;
+            }
+
+            const items = document.querySelectorAll('.search-result-item');
+            if (items.length === 0) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                selectedIndex = Math.min(selectedIndex + 1, items.length - 1);
+                updateSelection();
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                selectedIndex = Math.max(selectedIndex - 1, 0);
+                updateSelection();
+            } else if (e.key === 'Enter') {
+                e.preventDefault();
+                if (selectedIndex >= 0 && currentResults[selectedIndex]) {
+                    navigateToResult(currentResults[selectedIndex]);
+                }
+            }
+        });
+
+        // Close when clicking outside
+        searchModal.addEventListener('click', (e) => {
+            if (e.target === searchModal) {
+                closeSearch();
+            }
+        });
+
+        // Prevent closing when clicking inside container
+        document.querySelector('.search-container').addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
+        // Navigation toggle functionality
+        document.querySelectorAll('.nav-toggle').forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const section = toggle.dataset.section;
+                const list = document.querySelector(`.nav-list[data-section="${section}"]`);
+                const icon = toggle.querySelector('.toggle-icon');
+                const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+                
+                toggle.setAttribute('aria-expanded', !isExpanded);
+                
+                if (isExpanded) {
+                    list.classList.add('collapsed');
+                    list.classList.remove('expanded');
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    list.classList.remove('collapsed');
+                    list.classList.add('expanded');
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Highlight current page
+        const currentPage = window.location.pathname.split('/').pop().replace('.html', '');
+        document.querySelectorAll('.nav-link').forEach(link => {
+            if (link.dataset.page === currentPage) {
+                link.classList.add('active');
+                const parentSection = link.closest('.nav-section');
+                if (parentSection) {
+                    const sectionName = parentSection.dataset.section;
+                    const list = document.querySelector(`.nav-list[data-section="${sectionName}"]`);
+                    const toggle = document.querySelector(`.nav-toggle[data-section="${sectionName}"]`);
+                    const icon = toggle?.querySelector('.toggle-icon');
+                    
+                    if (list) {
+                        list.classList.remove('collapsed');
+                        list.classList.add('expanded');
+                    }
+                    if (toggle) {
+                        toggle.setAttribute('aria-expanded', 'true');
+                    }
+                    if (icon) {
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

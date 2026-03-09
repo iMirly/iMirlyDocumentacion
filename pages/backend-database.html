@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Datos - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA BASE DE DATOS */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Tablas */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: var(--spacing-lg) 0;
+            font-size: 0.875rem;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border: 1px solid var(--color-border);
+        }
+
+        .data-table th {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-primary);
+            font-weight: 600;
+        }
+
+        .data-table td {
+            color: var(--color-text-secondary);
+        }
+
+        .data-table tr:hover td {
+            background-color: var(--color-bg-hover);
+        }
+
+        /* Badges */
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .sql-badge {
+            display: inline-block;
+            background-color: rgba(0, 150, 199, 0.1);
+            color: #0096c7;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .properties-badge {
+            display: inline-block;
+            background-color: rgba(106, 176, 76, 0.1);
+            color: #6ab04c;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .terminal-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .xml-badge {
+            display: inline-block;
+            background-color: rgba(227, 79, 38, 0.1);
+            color: #e34f26;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* Comparación lado a lado */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .comparison-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .comparison-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-md);
+            color: var(--color-text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .comparison-card h4 svg {
+            color: var(--color-purple);
+        }
+
+        /* Anotaciones grid */
+        .annotations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .annotation-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .annotation-card code {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        .annotation-card h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .annotation-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Backend</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Base de Datos</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Base de Datos</h1>
+                    <p class="page-description">
+                        Esquema PostgreSQL y configuración JPA
+                    </p>
+                </header>
+
+                <!-- Configuración de Base de Datos -->
+                <section class="content-section" id="configuracion">
+                    <h2>Configuración de Base de Datos</h2>
+                    <p>Desde <code class="inline">application.properties</code>:</p>
+
+                    <span class="properties-badge">Properties</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">application.properties</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-properties">spring.datasource.url=jdbc:postgresql://localhost:5432/imirly_db
+spring.datasource.username=user_imirly
+spring.datasource.password=password_imirly
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p><code class="inline">spring.jpa.show-sql=true</code> registra todas las consultas SQL en la consola, útil para depuración.</p>
+                    </div>
+                </section>
+
+                <!-- Gestión de Esquema -->
+                <section class="content-section" id="gestion-esquema">
+                    <h2>Gestión de Esquema</h2>
+                    <p>La aplicación utiliza la función auto-DDL de Hibernate:</p>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Modo</th>
+                                <th>Comportamiento</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="inline">create</code></td>
+                                <td>Elimina y recrea las tablas al iniciar</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">create-drop</code></td>
+                                <td>Crea tablas al iniciar, las elimina al cerrar</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">update</code></td>
+                                <td>Actualiza el esquema para coincidir con las entidades (añade columnas, nunca elimina)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">validate</code></td>
+                                <td>Valida que el esquema coincida con las entidades (recomendado para producción)</td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">none</code></td>
+                                <td>Sin gestión de esquema</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Producción
+                        </div>
+                        <p>En producción: Usa siempre <code class="inline">validate</code> o <code class="inline">none</code> y gestiona el esquema con herramientas de migración como Flyway o Liquibase.</p>
+                    </div>
+                </section>
+
+                <!-- Mapeo Entidad-Tabla -->
+                <section class="content-section" id="mapeo-entidad">
+                    <h2>Mapeo Entidad-Tabla</h2>
+
+                    <h3>Tabla de Usuarios</h3>
+                    <p>Desde <code class="inline">UserEntity.java</code>:</p>
+
+                    <!-- Entidad JPA -->
+                    <div class="comparison-card" style="margin-bottom: var(--spacing-lg);">
+                        <h4>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                            </svg>
+                            UserEntity.java (Entidad JPA)
+                        </h4>
+                        <span class="java-badge">Java</span>
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">UserEntity.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">@Entity
+@Table(name = "usuarios")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    private String nombre;
+    private String email;
+
+    @Column(name = "password_hash")
+    private String passwordHash;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private UserType tipo;
+
+    @Column(name = "documento_identidad")
+    private String documentoIdentidad;
+
+    private boolean verificado;
+
+    @Column(name = "fecha_registro")
+    private LocalDateTime fechaRegistro;
+
+    @Column(name = "saldo", columnDefinition = "DECIMAL(10,2) DEFAULT 0.0")
+    private Double saldo;
+
+    @Column(name = "puntuacion_total", columnDefinition = "DOUBLE PRECISION DEFAULT 0.0")
+    private Double puntuacionTotal = 0.0;
+
+    @Column(name = "numero_valoraciones", columnDefinition = "INTEGER DEFAULT 0")
+    private Integer numeroValoraciones = 0;
+}</code></pre>
+                        </div>
+                    </div>
+
+                    <!-- Esquema SQL -->
+                    <div class="comparison-card">
+                        <h4>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                            </svg>
+                            Esquema SQL Generado
+                        </h4>
+                        <span class="sql-badge">SQL</span>
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">schema.sql</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-sql">CREATE TABLE usuarios (
+    id UUID PRIMARY KEY,
+    nombre VARCHAR(255),
+    email VARCHAR(255),
+    password_hash VARCHAR(255),
+    tipo_usuario VARCHAR(50),
+    documento_identidad VARCHAR(255),
+    verificado BOOLEAN,
+    fecha_registro TIMESTAMP,
+    saldo DECIMAL(10,2) DEFAULT 0.0,
+    puntuacion_total DOUBLE PRECISION DEFAULT 0.0,
+    numero_valoraciones INTEGER DEFAULT 0
+);</code></pre>
+                        </div>
+                    </div>
+
+                    <h3>Mapeo de Enum</h3>
+                    <p>El enum <code class="inline">UserType</code> se almacena como cadena en la base de datos:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Mapeo de Enum</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Enumerated(EnumType.STRING)
+@Column(name = "tipo_usuario")
+private UserType tipo;</code></pre>
+                    </div>
+
+                    <p>Valores posibles:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><code class="inline">PROFESIONAL</code> - Proveedor de servicios</li>
+                        <li><code class="inline">CLIENTE</code> - Consumidor de servicios</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>Usar <code class="inline">EnumType.STRING</code> en lugar de <code class="inline">EnumType.ORDINAL</code> hace la base de datos más legible y resistente a reordenamientos del enum.</p>
+                    </div>
+                </section>
+
+                <!-- Patrón Repository -->
+                <section class="content-section" id="patron-repository">
+                    <h2>Patrón Repository</h2>
+
+                    <h3>Repositorio Spring Data JPA</h3>
+                    <p>Desde <code class="inline">SpringDataUserRepository.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SpringDataUserRepository.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">package tfg.imirly.auth.infrastructure.output.persistence.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import tfg.imirly.auth.infrastructure.output.persistence.entity.UserEntity;
+import java.util.Optional;
+import java.util.UUID;
+
+public interface SpringDataUserRepository extends JpaRepository<UserEntity, UUID> {
+    Optional<UserEntity> findByEmail(String email);
+    boolean existsByEmail(String email);
+}</code></pre>
+                    </div>
+
+                    <h3>Consultas Generadas</h3>
+                    <p>Spring Data JPA genera automáticamente las consultas SQL:</p>
+
+                    <span class="sql-badge">SQL</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Consultas Generadas</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-sql">-- findByEmail
+SELECT * FROM usuarios WHERE email = ?;
+
+-- existsByEmail
+SELECT EXISTS(SELECT 1 FROM usuarios WHERE email = ?);
+
+-- save (heredado de JpaRepository)
+INSERT INTO usuarios (...) VALUES (...);
+-- o UPDATE si la entidad ya existe
+
+-- findById (heredado)
+SELECT * FROM usuarios WHERE id = ?;</code></pre>
+                    </div>
+
+                    <h3>Adaptador de Repositorio</h3>
+                    <p>El adaptador traduce entre modelos de dominio y entidades JPA:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">UserRepositoryAdapter.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Repository
+@RequiredArgsConstructor
+public class UserRepositoryAdapter implements UserRepositoryPort {
+    
+    private final SpringDataUserRepository springDataRepository;
+    private final UserMapper userMapper;
+
+    @Override
+    public User save(User user) {
+        // 1. Dominio → Entidad
+        UserEntity entity = userMapper.toEntity(user);
+        // 2. Guardar en base de datos
+        UserEntity savedEntity = springDataRepository.save(entity);
+        // 3. Entidad → Dominio
+        return userMapper.toDomain(savedEntity);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return springDataRepository.findByEmail(email)
+                .map(userMapper::toDomain);
+    }
+
+    @Override
+    public boolean existsByEmail(String email) {
+        return springDataRepository.existsByEmail(email);
+    }
+
+    @Override
+    public Optional<User> findById(UUID id) {
+        return springDataRepository.findById(id)
+                .map(userMapper::toDomain);
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Modelo de Dominio vs Entidad -->
+                <section class="content-section" id="dominio-vs-entidad">
+                    <h2>Modelo de Dominio vs Entidad</h2>
+
+                    <!-- Modelo de Dominio -->
+                    <div class="comparison-card" style="margin-bottom: var(--spacing-lg);">
+                        <h4>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                            </svg>
+                            Modelo de Dominio (Java Puro)
+                        </h4>
+                        <span class="java-badge">Java</span>
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">User.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">@Getter
+@Setter
+public class User {
+    private UUID id;
+    private String nombre;
+    private String email;
+    private String passwordHash;
+    private UserType tipo;
+    private String documentoIdentidad;
+    private boolean verificado;
+    private LocalDateTime fechaRegistro;
+    private Double saldo;
+    private Double puntuacionTotal;
+    private Integer numeroValoraciones;
+
+    // Lógica de negocio en el modelo de dominio
+    public void restarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a restar debe ser mayor que cero.");
+        }
+        if (this.saldo == null)
+            this.saldo = 0.0;
+        this.saldo -= cantidad;
+    }
+
+    public void sumarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException("La cantidad a sumar debe ser mayor que cero.");
+        }
+        if (this.saldo == null)
+            this.saldo = 0.0;
+        this.saldo += cantidad;
+    }
+
+    public Double getValoracionMedia() {
+        if (numeroValoraciones == null || numeroValoraciones == 0)
+            return 0.0;
+        return Math.round((puntuacionTotal / numeroValoraciones) * 10.0) / 10.0;
+    }
+}</code></pre>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-top: var(--spacing-md);">
+                            Sin anotaciones JPA, solo lógica de negocio pura.
+                        </p>
+                    </div>
+
+                    <!-- Entidad JPA -->
+                    <div class="comparison-card">
+                        <h4>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                            </svg>
+                            Entidad JPA (Infraestructura)
+                        </h4>
+                        <span class="java-badge">Java</span>
+                        <div class="code-block-wrapper">
+                            <div class="code-block-header">
+                                <span class="code-block-filename">UserEntity.java</span>
+                                <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2">
+                                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <pre><code class="language-java">@Entity
+@Table(name = "usuarios")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
+    private String nombre;
+    private String email;
+    
+    @Column(name = "password_hash")
+    private String passwordHash;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_usuario")
+    private UserType tipo;
+    
+    // ... campos con anotaciones JPA
+}</code></pre>
+                        </div>
+                        <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-top: var(--spacing-md);">
+                            Solo contiene anotaciones de persistencia, sin lógica de negocio.
+                        </p>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z">
+                                </path>
+                                <line x1="12" y1="9" x2="12" y2="13"></line>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Separación Crítica
+                        </div>
+                        <p>Los modelos de dominio contienen la lógica de negocio, las entidades son solo contenedores de datos para persistencia.</p>
+                    </div>
+                </section>
+
+                <!-- Entidades del Módulo Catálogo -->
+                <section class="content-section" id="entidades-catalogo">
+                    <h2>Entidades del Módulo Catálogo</h2>
+
+                    <h3>Anuncios de Servicio</h3>
+                    <p>Desde <code class="inline">AnuncioServicio.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">AnuncioServicio.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class AnuncioServicio {
+    private UUID id;
+    private UUID proveedorId; // Referencia a Usuario
+    private UUID subcategoriaId; // Referencia a subcategoría
+    private String titulo;
+    private String descripcion;
+    private BigDecimal precioHora;
+    private String ubicacion;
+    private boolean activo;
+    private String nombreProfesional;
+    private Double valoracionProfesional;
+    private Integer numeroValoracionesProfesional;
+
+    // Constructor para nuevos anuncios
+    public AnuncioServicio(UUID proveedorId, UUID subcategoriaId, String titulo, 
+                          String descripcion, BigDecimal precioHora, String ubicacion) {
+        this.proveedorId = proveedorId;
+        this.subcategoriaId = subcategoriaId;
+        this.titulo = titulo;
+        this.descripcion = descripcion;
+        this.precioHora = precioHora;
+        this.ubicacion = ubicacion;
+        this.activo = true;
+        this.valoracionProfesional = 0.0;
+        this.numeroValoracionesProfesional = 0;
+    }
+
+    // Lógica de negocio
+    public void pausarAnuncio() {
+        this.activo = false;
+    }
+
+    public void reactivarAnuncio() {
+        this.activo = true;
+    }
+}</code></pre>
+                    </div>
+
+                    <p>Esto crea una tabla como:</p>
+
+                    <span class="sql-badge">SQL</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Esquema Generado</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-sql">CREATE TABLE anuncios_servicio (
+    id UUID PRIMARY KEY,
+    proveedor_id UUID REFERENCES usuarios(id),
+    subcategoria_id UUID,
+    titulo VARCHAR(255) NOT NULL,
+    descripcion TEXT,
+    precio_hora DECIMAL(10,2) NOT NULL,
+    ubicacion VARCHAR(255),
+    activo BOOLEAN DEFAULT TRUE,
+    nombre_profesional VARCHAR(255),
+    valoracion_profesional DOUBLE PRECISION DEFAULT 0.0,
+    numero_valoraciones_profesional INTEGER DEFAULT 0
+);
+
+CREATE INDEX idx_anuncios_proveedor ON anuncios_servicio(proveedor_id);
+CREATE INDEX idx_anuncios_subcategoria ON anuncios_servicio(subcategoria_id);
+CREATE INDEX idx_anuncios_activo ON anuncios_servicio(activo);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Consultas en Acción -->
+                <section class="content-section" id="consultas-accion">
+                    <h2>Consultas en Acción</h2>
+
+                    <h3>Registro de Usuario</h3>
+                    <p>Desde <code class="inline">LoginUserService.java</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">LoginUserService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Override
+public String login(LoginUserCommand command) {
+    // Esto genera: SELECT * FROM usuarios WHERE email = ?
+    User user = userRepositoryPort.findByEmail(command.getEmail())
+            .orElseThrow(() -> new IllegalArgumentException("Credenciales inválidas"));
+
+    if (!passwordEncoderPort.matches(command.getRawPassword(), user.getPasswordHash())) {
+        throw new IllegalArgumentException("Credenciales inválidas");
+    }
+
+    return tokenProviderPort.generateToken(user);
+}</code></pre>
+                    </div>
+
+                    <p>SQL Generado:</p>
+
+                    <span class="sql-badge">SQL</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Consulta SQL</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-sql">SELECT id, nombre, email, password_hash, tipo_usuario, documento_identidad, 
+       verificado, fecha_registro, saldo, puntuacion_total, numero_valoraciones
+FROM usuarios 
+WHERE email = 'user@example.com';</code></pre>
+                    </div>
+                </section>
+
+                <!-- Gestión de Transacciones -->
+                <section class="content-section" id="transacciones">
+                    <h2>Gestión de Transacciones</h2>
+                    <p>Spring gestiona automáticamente las transacciones para las clases <code class="inline">@Service</code>:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Gestión de Transacciones</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+@Transactional // Todos los métodos ejecutan en una transacción
+public class ManageAnuncioService implements ManageAnuncioUseCase {
+    
+    @Override
+    public AnuncioServicio publicarAnuncio(CreateAnuncioCommand command) {
+        // Este método completo ejecuta en una sola transacción
+        User user = userRepositoryPort.findById(command.getProveedorId())
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
+        
+        AnuncioServicio anuncio = new AnuncioServicio(...);
+        return anuncioRepositoryPort.save(anuncio);
+        
+        // Si ocurre cualquier excepción, la transacción se revierte
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>Añade <code class="inline">@Transactional</code> a métodos que necesiten atomicidad. Por defecto, Spring revierte la transacción en <code class="inline">RuntimeException</code>.</p>
+                    </div>
+                </section>
+
+                <!-- Connection Pooling -->
+                <section class="content-section" id="connection-pooling">
+                    <h2>Connection Pooling</h2>
+                    <p>Spring Boot usa HikariCP por defecto (el pool de conexiones más rápido):</p>
+
+                    <span class="properties-badge">Properties</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Configuración del Pool</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-properties"># Opcional: Configurar pool de conexiones
+spring.datasource.hikari.maximum-pool-size=10
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=30000
+spring.datasource.hikari.idle-timeout=600000
+spring.datasource.hikari.max-lifetime=1800000</code></pre>
+                    </div>
+                </section>
+
+                <!-- Migraciones de Base de Datos -->
+                <section class="content-section" id="migraciones">
+                    <h2>Migraciones de Base de Datos (Futuro)</h2>
+                    <p>Para producción, considera usar Flyway o Liquibase:</p>
+
+                    <div class="comparison-grid">
+                        <div class="comparison-card">
+                            <h4>Flyway</h4>
+                            <span class="xml-badge">XML</span>
+                            <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                                Añade al pom.xml:
+                            </p>
+                            <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.flywaydb&lt;/groupId&gt;
+    &lt;artifactId&gt;flyway-core&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                        </div>
+
+                        <div class="comparison-card">
+                            <h4>Liquibase</h4>
+                            <span class="xml-badge">XML</span>
+                            <p style="font-size: 0.875rem; color: var(--color-text-secondary); margin-bottom: var(--spacing-md);">
+                                Añade al pom.xml:
+                            </p>
+                            <pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.liquibase&lt;/groupId&gt;
+    &lt;artifactId&gt;liquibase-core&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre>
+                        </div>
+                    </div>
+
+                    <p>Crea archivos de migración en <code class="inline">src/main/resources/db/migration/</code>:</p>
+
+                    <span class="sql-badge">SQL</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">V1__create_usuarios_table.sql</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-sql">-- V1__create_usuarios_table.sql
+CREATE TABLE usuarios (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    nombre VARCHAR(255),
+    email VARCHAR(255) UNIQUE NOT NULL,
+    ...
+);</code></pre>
+                    </div>
+                </section>
+
+                <!-- Anotaciones JPA Útiles -->
+                <section class="content-section" id="anotaciones-jpa">
+                    <h2>Anotaciones JPA Útiles</h2>
+
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Anotación</th>
+                                <th>Propósito</th>
+                                <th>Ejemplo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code class="inline">@Entity</code></td>
+                                <td>Marca una clase como entidad JPA</td>
+                                <td><code class="inline">@Entity</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@Table</code></td>
+                                <td>Especifica el nombre de la tabla</td>
+                                <td><code class="inline">@Table(name = "usuarios")</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@Id</code></td>
+                                <td>Clave primaria</td>
+                                <td><code class="inline">@Id</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@GeneratedValue</code></td>
+                                <td>Generación automática de ID</td>
+                                <td><code class="inline">@GeneratedValue(strategy = GenerationType.UUID)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@Column</code></td>
+                                <td>Mapeo de columna</td>
+                                <td><code class="inline">@Column(name = "password_hash")</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@Enumerated</code></td>
+                                <td>Estrategia de almacenamiento de enum</td>
+                                <td><code class="inline">@Enumerated(EnumType.STRING)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@Temporal</code></td>
+                                <td>Mapeo de fecha/hora</td>
+                                <td><code class="inline">@Temporal(TemporalType.TIMESTAMP)</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@ManyToOne</code></td>
+                                <td>Relación muchos a uno</td>
+                                <td><code class="inline">@ManyToOne</code></td>
+                            </tr>
+                            <tr>
+                                <td><code class="inline">@OneToMany</code></td>
+                                <td>Relación uno a muchos</td>
+                                <td><code class="inline">@OneToMany(mappedBy = "user")</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- Logging SQL -->
+                <section class="content-section" id="logging-sql">
+                    <h2>Logging SQL</h2>
+                    <p>Ver consultas SQL generadas:</p>
+
+                    <span class="properties-badge">Properties</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Configuración de Logging</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-properties"># Mostrar SQL
+spring.jpa.show-sql=true
+
+# Formatear SQL para legibilidad
+spring.jpa.properties.hibernate.format_sql=true
+
+# Mostrar parámetros de binding
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=TRACE</code></pre>
+                    </div>
+
+                    <p>Salida:</p>
+
+                    <span class="terminal-badge">Terminal</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Salida de Consola</span>
+                        </div>
+                        <pre><code class="language-text">Hibernate: 
+    select
+        u1_0.id,
+        u1_0.nombre,
+        u1_0.email,
+        u1_0.password_hash,
+        ...
+    from
+        usuarios u1_0 
+    where
+        u1_0.email=?
+Binding parameter [1] as [VARCHAR] - [user@example.com]</code></pre>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="backend-security.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Seguridad</h4>
+                                <p>Aprende sobre autenticación y JWT</p>
+                            </div>
+                        </a>
+
+                        <a href="arquitectura.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Arquitectura Hexagonal</h4>
+                                <p>Comprende el patrón repository</p>
+                            </div>
+                        </a>
+
+                        <a href="backend-setup.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Configuración Backend</h4>
+                                <p>Vuelve a la configuración del backend</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="backend-setup.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Configuración Backend</span>
+                        </a>
+                        <a href="backend-security.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Seguridad →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#configuracion" class="toc-link">Configuración</a>
+                    <a href="#gestion-esquema" class="toc-link">Gestión de Esquema</a>
+                    <a href="#mapeo-entidad" class="toc-link">Mapeo Entidad-Tabla</a>
+                    <a href="#patron-repository" class="toc-link">Patrón Repository</a>
+                    <a href="#dominio-vs-entidad" class="toc-link">Dominio vs Entidad</a>
+                    <a href="#entidades-catalogo" class="toc-link">Entidades Catálogo</a>
+                    <a href="#consultas-accion" class="toc-link">Consultas en Acción</a>
+                    <a href="#transacciones" class="toc-link">Transacciones</a>
+                    <a href="#connection-pooling" class="toc-link">Connection Pooling</a>
+                    <a href="#migraciones" class="toc-link">Migraciones</a>
+                    <a href="#anotaciones-jpa" class="toc-link">Anotaciones JPA</a>
+                    <a href="#logging-sql" class="toc-link">Logging SQL</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-xml-doc.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-properties.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

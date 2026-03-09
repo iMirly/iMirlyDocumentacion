@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Negociación de Presupuesto - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA NEGOCIACIÓN DE PRESUPUESTO */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Badges */
+        .kotlin-badge {
+            display: inline-block;
+            background-color: rgba(127, 82, 255, 0.1);
+            color: #7f52ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .http-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* User flow steps */
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-step-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .flow-step-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .flow-step-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Budget bubble preview */
+        .budget-preview {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+            max-width: 400px;
+        }
+
+        .budget-bubble {
+            background-color: #FFF9E6;
+            border: 1px solid #FFB800;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .budget-header {
+            color: #FFB800;
+            font-weight: 700;
+            font-size: 0.875rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .budget-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1a1a2e;
+            margin-bottom: 4px;
+        }
+
+        .budget-desc {
+            font-size: 0.875rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .budget-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .btn-accept {
+            background-color: var(--color-purple);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .btn-reject {
+            background-color: transparent;
+            color: #ef4444;
+            border: 1px solid #ef4444;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Status indicators */
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .status-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .status-badge.pending {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+        }
+
+        .status-badge.paid {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .status-badge.rejected {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .status-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* State diagram */
+        .state-flow {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+            text-align: center;
+        }
+
+        .state-boxes {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: var(--spacing-md);
+            flex-wrap: wrap;
+        }
+
+        .state-box {
+            background-color: var(--color-bg-hover);
+            border: 2px solid var(--color-border);
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 0.875rem;
+            color: var(--color-text-primary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .state-box.active {
+            background-color: rgba(16, 185, 129, 0.1);
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .state-arrow {
+            color: var(--color-text-muted);
+            font-size: 1.25rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Características</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Negociación de Presupuesto</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Negociación de Presupuesto</h1>
+                    <p class="page-description">
+                        Propuestas de precios en el chat con botones interactivos de aceptar/rechazar e integración de depósito de garantía
+                    </p>
+                </header>
+
+                <!-- Descripción General -->
+                <section class="content-section" id="descripcion-general">
+                    <h2>Descripción General</h2>
+                    <p>La negociación de presupuestos en iMirly se realiza directamente en la interfaz de chat. Los proveedores de servicios pueden enviar propuestas de presupuesto como burbujas de mensaje especiales con botones de acción integrados, lo que permite a los clientes aceptarlas, pagarlas o solicitar revisiones sin problemas.</p>
+                </section>
+
+                <!-- Flujo de Usuario -->
+                <section class="content-section" id="flujo-usuario">
+                    <h2>Flujo de Usuario</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">1</div>
+                            <h4>Proveedor envía presupuesto</h4>
+                            <p>El proveedor de servicios toca el ícono de presupuesto en el chat e ingresa el precio total y una descripción opcional.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">2</div>
+                            <h4>Cliente revisa propuesta</h4>
+                            <p>El cliente ve una burbuja de presupuesto amarilla con el precio claramente visible y botones de acción.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">3</div>
+                            <h4>Cliente decide</h4>
+                            <p>El cliente puede: Aceptar y pagar (el dinero va al depósito en garantía) o Rechazar y solicitar una nueva cotización.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">4</div>
+                            <h4>Actualizaciones de estado</h4>
+                            <p>Tras la aceptación, el contrato pasa al estado PAGADO y el proveedor puede comenzar a trabajar.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Android -->
+                <section class="content-section" id="implementacion-android">
+                    <h2>Implementación Android</h2>
+
+                    <h3>Diálogo de Entrada de Presupuesto</h3>
+                    <p>Los proveedores ingresan información presupuestaria a través de un cuadro de diálogo:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatInputBar.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun ChatInputBar(
+    viewModel: ChatViewModel, 
+    otroUsuarioId: String, 
+    solicitudId: String, 
+    soyElProveedor: Boolean, 
+    primaryColor: Color
+) {
+    var showDialogPrecio by remember { mutableStateOf(false) }
+    var precioTemp by remember { mutableStateOf("") }
+    var descTemp by remember { mutableStateOf("") }
+    
+    Surface(color = Color.White, shadowElevation = 8.dp) {
+        Row(modifier = Modifier.fillMaxWidth().padding(8.dp)) {
+            if (soyElProveedor) {
+                IconButton(onClick = { showDialogPrecio = true }) {
+                    Icon(Icons.Default.Assignment, 
+                         contentDescription = "Hacer Oferta", 
+                         tint = primaryColor)
+                }
+            }
+            
+            OutlinedTextField(
+                value = viewModel.inputText.value,
+                onValueChange = { viewModel.inputText.value = it },
+                placeholder = { Text("Escribe un mensaje...") },
+                modifier = Modifier.weight(1f)
+            )
+            
+            FloatingActionButton(
+                onClick = { viewModel.enviarMensaje(otroUsuarioId) },
+                containerColor = primaryColor
+            ) {
+                Icon(Icons.Default.Send, contentDescription = "Enviar")
+            }
+        }
+    }
+    
+    // Diálogo de presupuesto
+    if (showDialogPrecio) {
+        AlertDialog(
+            onDismissRequest = { showDialogPrecio = false },
+            title = { Text("Enviar Presupuesto") },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = precioTemp,
+                        onValueChange = { precioTemp = it },
+                        label = { Text("Precio total (€)") },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    OutlinedTextField(
+                        value = descTemp,
+                        onValueChange = { descTemp = it },
+                        label = { Text("Descripción (opcional)") },
+                        maxLines = 3
+                    )
+                }
+            },
+            confirmButton = {
+                Button(onClick = {
+                    val finalString = "$precioTemp|$descTemp"
+                    viewModel.enviarPresupuesto(otroUsuarioId, solicitudId, finalString)
+                    showDialogPrecio = false
+                    precioTemp = ""
+                    descTemp = ""
+                }) { Text("Enviar") }
+            }
+        )
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Envío de Propuesta de Presupuesto</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun enviarPresupuesto(
+    receptorId: String, 
+    solicitudId: String, 
+    presupuestoContenido: String
+) {
+    if (presupuestoContenido.isBlank() || presupuestoContenido.startsWith("|")) return
+    
+    viewModelScope.launch {
+        try {
+            val request = EnviarMensajeRequest(
+                receptorId = receptorId,
+                contenido = presupuestoContenido, // Formato: "50.0|Descripción"
+                solicitudId = solicitudId,
+                tipo = "PROPUESTA_PRECIO"
+            )
+            val response = RetrofitClient.mensajeService.enviarMensaje(request)
+            if (response.isSuccessful) {
+                cargarConversacion(receptorId)
+            }
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error sending budget", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Interfaz de Usuario de Burbuja Presupuestaria</h3>
+                    <p>Las propuestas presupuestarias aparecen como burbujas amarillas especiales:</p>
+
+                    <div class="budget-preview">
+                        <div class="budget-bubble">
+                            <div class="budget-header">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="6" x2="12" y2="12"></line>
+                                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                </svg>
+                                Presupuesto Acordado
+                            </div>
+                            <div class="budget-price">150.00 €</div>
+                            <div class="budget-desc">Reparación completa de fontanería incluyendo materiales</div>
+                            <div class="budget-buttons">
+                                <div class="btn-accept">Aceptar y Pagar</div>
+                                <div class="btn-reject">Rechazar Oferta</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatBubble.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">if (mensaje.tipo == "PROPUESTA_PRECIO") {
+    // Parsear precio y descripción
+    val partes = mensaje.contenido.split("|")
+    val precio = partes.getOrNull(0) ?: mensaje.contenido
+    val descripcion = partes.getOrNull(1) ?: ""
+    
+    Text("Presupuesto Acordado", 
+         fontWeight = FontWeight.Bold, 
+         color = Color(0xFFFFB800))
+    Spacer(modifier = Modifier.height(8.dp))
+    
+    Text("$precio €", 
+         fontSize = 24.sp, 
+         fontWeight = FontWeight.ExtraBold, 
+         color = Color.Black)
+    
+    if (descripcion.isNotBlank()) {
+        Spacer(modifier = Modifier.height(4.dp))
+        Text(descripcion, fontSize = 14.sp, color = Color.DarkGray)
+    }
+    
+    Spacer(modifier = Modifier.height(8.dp))
+    
+    if (!isMine && !yaRespondido) {
+        Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Button(
+                onClick = onPagarClick,
+                colors = ButtonDefaults.buttonColors(containerColor = primaryColor),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Aceptar y Pagar")
+            }
+            OutlinedButton(
+                onClick = onRechazarClick,
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.Red),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Rechazar Oferta")
+            }
+        }
+    } else if (isMine) {
+        Text("Esperando pago del cliente...", 
+             color = Color.Gray, 
+             fontSize = 12.sp)
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Aceptar y Pagar</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun aceptarYPagar(solicitudId: String, otroUsuarioId: String) {
+    viewModelScope.launch {
+        try {
+            val responsePago = RetrofitClient.solicitudService
+                .pagarSolicitud(solicitudId)
+            
+            if (responsePago.isSuccessful) {
+                val requestMsg = EnviarMensajeRequest(
+                    receptorId = otroUsuarioId,
+                    contenido = "He aceptado el presupuesto y he realizado el pago. El dinero está retenido de forma segura en iMirly. Ya puedes empezar el trabajo.",
+                    solicitudId = solicitudId,
+                    tipo = "PRESUPUESTO_ACEPTADO"
+                )
+                RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+                cargarConversacion(otroUsuarioId)
+            }
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error accepting budget", e)
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Rechazando el Presupuesto</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun rechazarPresupuesto(solicitudId: String, otroUsuarioId: String) {
+    viewModelScope.launch {
+        try {
+            val requestEstado = CambiarEstadoRequest("ACEPTADO")
+            val response = RetrofitClient.solicitudService
+                .cambiarEstadoSolicitud(solicitudId, requestEstado)
+            
+            if (response.isSuccessful) {
+                val requestMsg = EnviarMensajeRequest(
+                    receptorId = otroUsuarioId,
+                    contenido = "He rechazado la oferta. Por favor, revisa el precio y envíame un nuevo presupuesto.",
+                    solicitudId = solicitudId,
+                    tipo = "PRESUPUESTO_RECHAZADO"
+                )
+                RetrofitClient.mensajeService.enviarMensaje(requestMsg)
+                cargarConversacion(otroUsuarioId)
+            }
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error rejecting budget", e)
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Implementación Backend -->
+                <section class="content-section" id="implementacion-backend">
+                    <h2>Implementación Backend</h2>
+
+                    <h3>Gestión del Estado del Contrato</h3>
+                    <p>Las propuestas presupuestarias actualizan el estado del contrato:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContrato.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public class SolicitudContrato {
+    private UUID id;
+    private UUID clienteId;
+    private UUID proveedorId;
+    private UUID anuncioId;
+    private EstadoSolicitud estado;
+    private Double precioAcordado;
+    
+    // Proveedor propone precio
+    public void proponerPrecio(Double precio) {
+        this.precioAcordado = precio;
+        this.estado = EstadoSolicitud.PENDIENTE_PAGO;
+    }
+    
+    // Cliente acepta y paga
+    public void pagarPresupuesto() {
+        if (this.estado != EstadoSolicitud.PENDIENTE_PAGO) {
+            throw new IllegalStateException(
+                "Solo se puede pagar una solicitud pendiente de pago."
+            );
+        }
+        this.estado = EstadoSolicitud.PAGADO;
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Estados del Contrato</h3>
+                    <div class="status-grid">
+                        <div class="status-card">
+                            <span class="status-badge pending">PENDIENTE</span>
+                            <p>Solicitud inicial</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge pending">ACEPTADO</span>
+                            <p>Proveedor aceptó</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge pending">EN_CURSO</span>
+                            <p>Trabajo en progreso</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge paid">COMPLETADO</span>
+                            <p>Trabajo completado y pagado</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge rejected">RECHAZADO</span>
+                            <p>Solicitud rechazada</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge pending">PENDIENTE_PAGO</span>
+                            <p>Presupuesto enviado, esperando pago</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge paid">PAGADO</span>
+                            <p>Pagado, dinero en depósito</p>
+                        </div>
+                        <div class="status-card">
+                            <span class="status-badge pending">REVISION_PENDIENTE</span>
+                            <p>Trabajo hecho, esperando aprobación del cliente</p>
+                        </div>
+                    </div>
+
+                    <h3>Manejo del Presupuesto del Servicio de Mensajes</h3>
+                    <p>Cuando se envía un mensaje de presupuesto, el servicio actualiza el contrato:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Transactional
+public Mensaje enviarMensaje(EnviarMensajeCommand command) {
+    if (command.getTipo() == TipoMensaje.PROPUESTA_PRECIO) {
+        actualizarSolicitudConPrecio(command);
+    }
+    
+    Mensaje nuevoMensaje = new Mensaje(
+        command.getRemitenteId(),
+        command.getReceptorId(),
+        command.getSolicitudId(),
+        command.getContenido(),
+        command.getTipo()
+    );
+    
+    return repositoryPort.save(nuevoMensaje);
+}
+
+private void actualizarSolicitudConPrecio(EnviarMensajeCommand command) {
+    SolicitudContrato solicitud = solicitudRepositoryPort
+        .findById(command.getSolicitudId())
+        .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada"));
+    
+    try {
+        // Parsear formato "50.0|Descripción"
+        String[] partes = command.getContenido().split("\\|");
+        Double precio = Double.parseDouble(partes[0].trim());
+        
+        solicitud.proponerPrecio(precio);
+        solicitudRepositoryPort.save(solicitud);
+    } catch (Exception e) {
+        throw new IllegalArgumentException("El formato del presupuesto es incorrecto.");
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Endpoint de API de Pago</h3>
+                    <span class="http-badge">POST</span>
+                    <code class="inline">/api/v1/solicitudes/{id}/pagar</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PostMapping("/{id}/pagar")
+public ResponseEntity<?> pagarSolicitud(@PathVariable UUID id) {
+    try {
+        String tokenUserId = SecurityContextHolder.getContext()
+            .getAuthentication().getCredentials();
+        UUID clienteId = UUID.fromString(tokenUserId);
+        
+        SolicitudContrato pagada = useCase.pagarSolicitud(id, clienteId);
+        return ResponseEntity.ok(pagada);
+    } catch (IllegalArgumentException | IllegalStateException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Procesamiento de Pagos con Depósito en Garantía</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+public class SolicitudContratoService {
+    
+    @Override
+    @Transactional
+    public SolicitudContrato pagarSolicitud(UUID solicitudId, UUID clienteId) {
+        // 1. Buscar contrato
+        SolicitudContrato solicitud = repositoryPort.findById(solicitudId)
+            .orElseThrow(() -> new IllegalArgumentException("Solicitud no encontrada."));
+        
+        // 2. Verificar que el cliente es dueño del contrato
+        if (!solicitud.getClienteId().equals(clienteId)) {
+            throw new IllegalStateException(
+                "No tienes permiso para pagar esta solicitud."
+            );
+        }
+        
+        // 3. Obtener usuario cliente
+        User cliente = userRepository.findById(clienteId)
+            .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado."));
+        
+        // 4. Deducir saldo y crear transacción
+        cliente.restarSaldo(solicitud.getPrecioAcordado());
+        userRepository.save(cliente);
+        
+        TransaccionEntity tr = new TransaccionEntity(
+            null, cliente.getId(), 
+            solicitud.getPrecioAcordado(), 
+            "SERVICIO_PAGADO",
+            "Pago de presupuesto en iMirly", 
+            LocalDateTime.now()
+        );
+        transaccionRepository.save(tr);
+        
+        // 5. Actualizar estado del contrato a PAGADO (dinero en depósito)
+        solicitud.pagarPresupuesto();
+        return repositoryPort.save(solicitud);
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                            </svg>
+                            Depósito en Garantía
+                        </div>
+                        <p>El dinero se retiene en depósito (el contrato indica "PAGADO") hasta que el cliente aprueba el trabajo finalizado. El proveedor no recibe el pago hasta que el cliente confirma su satisfacción.</p>
+                    </div>
+                </section>
+
+                <!-- Diseño Visual -->
+                <section class="content-section" id="diseno-visual">
+                    <h2>Diseño Visual</h2>
+
+                    <h3>Apariencia de la Burbuja Presupuestaria</h3>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Fondo:</strong> Amarillo suave (#FFF9E6) para resaltar</li>
+                        <li><strong>Cabecera:</strong> "Presupuesto Acordado" en oro (#FFB800)</li>
+                        <li><strong>Precio:</strong> Texto grande y en negrita (24sp) en negro</li>
+                        <li><strong>Descripción:</strong> Texto gris más pequeño debajo del precio</li>
+                        <li><strong>Botones:</strong> Ancho completo, apilados verticalmente</li>
+                        <li><strong>Sombra:</strong> Elevación de 4dp para prominencia</li>
+                    </ul>
+
+                    <h3>Indicadores de Respuesta</h3>
+                    <p>Una vez que se responde a un presupuesto:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Aceptado:</strong> Aparece el mensaje verde "Presupuesto Aceptado"</li>
+                        <li><strong>Rechazado:</strong> Aparece mensaje rojo "Presupuesto Rechazado"</li>
+                        <li>La burbuja presupuestaria original muestra el texto "Oferta respondida" en gris</li>
+                        <li>Los botones de acción están ocultos para evitar acciones duplicadas</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>La interfaz de usuario detecta de forma inteligente si se ha respondido a un presupuesto comprobando si hay mensajes más nuevos con tipos distintos de TEXTO, lo que evita respuestas duplicadas.</p>
+                    </div>
+                </section>
+
+                <!-- Manejo de Errores -->
+                <section class="content-section" id="manejo-errores">
+                    <h2>Manejo de Errores</h2>
+
+                    <h3>Saldo Insuficiente</h3>
+                    <p>Si el cliente no tiene saldo suficiente:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void restarSaldo(Double cantidad) {
+    if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException(
+            "La cantidad a restar debe ser mayor que cero."
+        );
+    }
+    if (this.saldo == null) this.saldo = 0.0;
+    this.saldo -= cantidad;
+}</code></pre>
+                    </div>
+
+                    <p>Los clientes deben tener saldo suficiente antes de aceptar un presupuesto. Si no tienen saldo suficiente, deben agregar fondos a través de la función <a href="feature-wallet.html" style="color: var(--color-purple);">Monedero Virtual</a>.</p>
+
+                    <h3>Transiciones de Estado No Válidas</h3>
+                    <p>El modelo de dominio impone transiciones de estado válidas:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContrato.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void pagarPresupuesto() {
+    if (this.estado != EstadoSolicitud.PENDIENTE_PAGO) {
+        throw new IllegalStateException(
+            "Solo se puede pagar una solicitud pendiente de pago."
+        );
+    }
+    this.estado = EstadoSolicitud.PAGADO;
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Puntos de Integración -->
+                <section class="content-section" id="integracion">
+                    <h2>Puntos de Integración</h2>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Mensajes:</strong> Las propuestas de presupuesto son tipos de mensajes especiales</li>
+                        <li><strong>Monedero Virtual:</strong> El pago se descuenta del saldo del cliente</li>
+                        <li><strong>Gestión de Tareas:</strong> Los cambios en el estado del contrato habilitan el flujo de trabajo</li>
+                        <li><strong>Historial de Transacciones:</strong> Los pagos aparecen en el historial de la billetera</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>Consulta <a href="feature-tasks.html" style="color: var(--color-purple);">Gestión de Tareas</a> para conocer el ciclo de vida laboral completo después de la aceptación del presupuesto.</p>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="feature-wallet.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Monedero Virtual</h4>
+                                <p>Sistema de pagos y depósitos de garantía</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-tasks.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"></path>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Gestión de Tareas</h4>
+                                <p>Ciclo de vida del trabajo post-aceptación</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-messaging.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Mensajería</h4>
+                                <p>Vuelve al sistema de mensajería en tiempo real</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="feature-messaging.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Mensajería en Tiempo Real</span>
+                        </a>
+                        <a href="feature-wallet.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Monedero Virtual →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#descripcion-general" class="toc-link">Descripción General</a>
+                    <a href="#flujo-usuario" class="toc-link">Flujo de Usuario</a>
+                    <a href="#implementacion-android" class="toc-link">Implementación Android</a>
+                    <a href="#implementacion-backend" class="toc-link">Implementación Backend</a>
+                    <a href="#diseno-visual" class="toc-link">Diseño Visual</a>
+                    <a href="#manejo-errores" class="toc-link">Manejo de Errores</a>
+                    <a href="#integracion" class="toc-link">Puntos de Integración</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

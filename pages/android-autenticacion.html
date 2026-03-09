@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autenticación Android - iMirly Documentation</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js para syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA AUTENTICACIÓN */
+
+        /* Override Prism.js para que coincida con tu tema */
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        /* Code block con header */
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Lista de features */
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-md) 0;
+        }
+
+        .feature-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .feature-list li::before {
+            content: "•";
+            position: absolute;
+            left: 0.5rem;
+            color: var(--color-purple);
+            font-weight: bold;
+        }
+
+        /* Architecture cards */
+        .arch-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .arch-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+        }
+
+        .arch-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-purple);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .arch-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Steps numerados */
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+            padding: 0;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .step-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .step-item::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .step-item h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-text-primary);
+        }
+
+        .step-item p {
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.1);
+            border-left: 3px solid #f59e0b;
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Inline code */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Breadcrumb -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">App Android</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Autenticación</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Autenticación</h1>
+                    <p class="page-description">
+                        Implementa autenticación segura basada en JWT en la aplicación iMirly Android
+                    </p>
+                </header>
+
+                <!-- Overview -->
+                <section class="content-section" id="overview">
+                    <h2>Visión General</h2>
+                    <p>
+                        La aplicación iMirly Android utiliza autenticación <strong>JWT (JSON Web Token)</strong> con 
+                        inyección automática de tokens mediante interceptores de OkHttp. El flujo de autenticación incluye:
+                    </p>
+                    
+                    <ul class="feature-list">
+                        <li>Registro de usuarios con validación</li>
+                        <li>Login con email y contraseña</li>
+                        <li>Almacenamiento e inyección automática de tokens</li>
+                        <li>Identificación de usuarios basada en tokens</li>
+                    </ul>
+                </section>
+
+                <!-- Arquitectura -->
+                <section class="content-section" id="arquitectura">
+                    <h2>Arquitectura de Autenticación</h2>
+
+                    <h3>Token Manager</h3>
+                    <p>El <code class="inline">TokenManager</code> gestiona el almacenamiento y extracción de JWT:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">network/TokenManager.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.network
+
+import android.util.Base64
+import org.json.JSONObject
+
+object TokenManager {
+    var jwtToken: String? = null
+
+    // Extract user ID from JWT payload
+    fun getUserId(): String? {
+        val token = jwtToken ?: return null
+        return try {
+            val parts = token.split(".")
+            if (parts.size != 3) return null
+            
+            // Decode the payload (middle part)
+            val payload = String(Base64.decode(parts[1], Base64.URL_SAFE))
+            val json = JSONObject(payload)
+            json.getString("sub") // Subject contains user ID
+        } catch (e: Exception) {
+            null
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Inyección Automática de Tokens</h3>
+                    <p>El <code class="inline">RetrofitClient</code> añade automáticamente tokens JWT a todas las peticiones:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">network/RetrofitClient.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.network
+
+import okhttp3.Interceptor
+import okhttp3.OkHttpClient
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+
+object RetrofitClient {
+    private const val BASE_URL = "http://10.0.2.2:8080"
+
+    private val okHttpClient = OkHttpClient.Builder()
+        .addInterceptor(Interceptor { chain ->
+            val originalRequest = chain.request()
+            val token = TokenManager.jwtToken
+
+            val newRequest = if (token != null) {
+                originalRequest.newBuilder()
+                    .header("Authorization", "Bearer $token")
+                    .build()
+            } else {
+                originalRequest
+            }
+
+            chain.proceed(newRequest)
+        })
+        .build()
+
+    val apiService: AuthApiService by lazy {
+        Retrofit.Builder()
+            .baseUrl(BASE_URL)
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+            .create(AuthApiService::class.java)
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            <strong>Nota:</strong> Todos los servicios de API (catálogo, mensajes, solicitudes) 
+                            utilizan el mismo <code class="inline">okHttpClient</code> con inyección automática de tokens.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- API Service Definitions -->
+                <section class="content-section" id="api-definitions">
+                    <h2>Definiciones de Servicios API</h2>
+
+                    <h3>Auth API</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">network/AuthApiService.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.network
+
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.POST
+import okhttp3.ResponseBody
+
+data class RegisterUserRequest(
+    val nombre: String,
+    val email: String,
+    val rawPassword: String,
+    val tipoUsuario: String,
+    val documentoIdentidad: String
+)
+
+data class LoginUserRequest(
+    val email: String,
+    val rawPassword: String
+)
+
+interface AuthApiService {
+    @POST("/api/v1/auth/register")
+    suspend fun registerUser(@Body request: RegisterUserRequest): Response<ResponseBody>
+
+    @POST("/api/v1/auth/login")
+    suspend fun loginUser(@Body request: LoginUserRequest): Response<ResponseBody>
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Registro de Usuario -->
+                <section class="content-section" id="registro">
+                    <h2>Registro de Usuario</h2>
+
+                    <h3>Registration ViewModel</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/auth/RegisterViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.auth
+
+import android.util.Patterns
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.RegisterUserRequest
+import com.imirly.app.network.RetrofitClient
+import kotlinx.coroutines.launch
+
+class RegisterViewModel : ViewModel() {
+    var nombre = mutableStateOf("")
+    var email = mutableStateOf("")
+    var password = mutableStateOf("")
+    var confirmPassword = mutableStateOf("")
+    var mensaje = mutableStateOf("")
+    var isLoading = mutableStateOf(false)
+
+    fun registrarUsuario() {
+        // Validation
+        if (nombre.value.isBlank() || email.value.isBlank() || password.value.isBlank()) {
+            mensaje.value = "Todos los campos son obligatorios"
+            return
+        }
+
+        if (!Patterns.EMAIL_ADDRESS.matcher(email.value).matches()) {
+            mensaje.value = "Formato de e-mail inválido"
+            return
+        }
+
+        if (password.value != confirmPassword.value) {
+            mensaje.value = "Las contraseñas no coinciden"
+            return
+        }
+
+        if (password.value.length < 6) {
+            mensaje.value = "La contraseña debe tener al menos 6 caracteres"
+            return
+        }
+
+        isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val request = RegisterUserRequest(
+                    nombre = nombre.value,
+                    email = email.value,
+                    rawPassword = password.value,
+                    tipoUsuario = "CLIENTE",
+                    documentoIdentidad = "00000000A"
+                )
+
+                val response = RetrofitClient.apiService.registerUser(request)
+
+                when (response.code()) {
+                    201 -> mensaje.value = "¡Cuenta creada con éxito!"
+                    409 -> mensaje.value = "Este e-mail ya está registrado"
+                    400 -> mensaje.value = "Datos inválidos. Revisa el formulario"
+                    else -> mensaje.value = "Error del servidor: ${response.code()}"
+                }
+            } catch (e: Exception) {
+                mensaje.value = "Error de red: Comprueba tu conexión"
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Registration Screen</h3>
+                    <p>La UI recoge la información del usuario con componentes Material 3:</p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/auth/RegisterScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = viewModel()) {
+    val iMirlyPurple = Color(0xFF6C5CE7)
+    
+    Column(modifier = Modifier.fillMaxSize().padding(24.dp)) {
+        Text("Crear cuenta", fontSize = 28.sp, fontWeight = FontWeight.Bold)
+        
+        OutlinedTextField(
+            value = viewModel.nombre.value,
+            onValueChange = { viewModel.nombre.value = it },
+            label = { Text("Nombre completo") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        OutlinedTextField(
+            value = viewModel.email.value,
+            onValueChange = { viewModel.email.value = it },
+            label = { Text("Email") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            modifier = Modifier.fillMaxWidth()
+        )
+        
+        // Password fields...
+        
+        Button(
+            onClick = { viewModel.registrarUsuario() },
+            enabled = !viewModel.isLoading.value,
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text(if (viewModel.isLoading.value) "Creando cuenta..." else "Registrarse")
+        }
+        
+        if (viewModel.mensaje.value.isNotEmpty()) {
+            Text(
+                text = viewModel.mensaje.value,
+                color = if (viewModel.mensaje.value.contains("éxito")) Color.Green else Color.Red
+            )
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Login de Usuario -->
+                <section class="content-section" id="login">
+                    <h2>Login de Usuario</h2>
+
+                    <h3>Login ViewModel</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/auth/LoginViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">package com.imirly.app.ui.auth
+
+import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.imirly.app.network.LoginUserRequest
+import com.imirly.app.network.RetrofitClient
+import com.imirly.app.network.TokenManager
+import kotlinx.coroutines.launch
+
+class LoginViewModel : ViewModel() {
+    var email = mutableStateOf("")
+    var password = mutableStateOf("")
+    var mensaje = mutableStateOf("")
+    var isLoading = mutableStateOf(false)
+
+    fun iniciarSesion(onSuccess: () -> Unit) {
+        if (email.value.isEmpty() || password.value.isEmpty()) {
+            mensaje.value = "Introduce tus credenciales"
+            return
+        }
+        
+        isLoading.value = true
+        viewModelScope.launch {
+            try {
+                val request = LoginUserRequest(email.value, password.value)
+                val response = RetrofitClient.apiService.loginUser(request)
+                
+                if (response.isSuccessful) {
+                    // Extract JWT token from response
+                    val token = response.body()?.string()
+                    if (token != null) {
+                        TokenManager.jwtToken = token
+                        mensaje.value = "¡Sesión iniciada con éxito!"
+                        onSuccess()
+                    } else {
+                        mensaje.value = "Error: Token vacío"
+                    }
+                } else {
+                    mensaje.value = "Email o contraseña incorrectos"
+                }
+            } catch (e: Exception) {
+                mensaje.value = "Error de conexión con el servidor"
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Login Screen</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ui/auth/LoginScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = viewModel()) {
+    val iMirlyPurple = Color(0xFF6C5CE7)
+    
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(iMirlyPurple)
+            .padding(24.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(
+                "iMirly",
+                color = Color.White,
+                fontSize = 42.sp,
+                fontWeight = FontWeight.ExtraBold
+            )
+            
+            Spacer(modifier = Modifier.height(32.dp))
+            
+            Surface(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(28.dp),
+                color = Color.White
+            ) {
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Iniciar sesión", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    OutlinedTextField(
+                        value = viewModel.email.value,
+                        onValueChange = { viewModel.email.value = it },
+                        label = { Text("Email") },
+                        leadingIcon = { Icon(Icons.Default.Email, contentDescription = null) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    
+                    OutlinedTextField(
+                        value = viewModel.password.value,
+                        onValueChange = { viewModel.password.value = it },
+                        label = { Text("Contraseña") },
+                        leadingIcon = { Icon(Icons.Default.Lock, contentDescription = null) },
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    if (viewModel.mensaje.value.isNotEmpty()) {
+                        Text(
+                            text = viewModel.mensaje.value,
+                            color = if (viewModel.mensaje.value.contains("éxito")) 
+                                Color(0xFF2ECC71) else Color.Red,
+                            fontSize = 13.sp,
+                            fontWeight = FontWeight.Medium,
+                            modifier = Modifier.padding(top = 10.dp)
+                        )
+                    }
+                    
+                    Spacer(modifier = Modifier.height(24.dp))
+                    
+                    Button(
+                        onClick = {
+                            viewModel.iniciarSesion {
+                                navController.navigate("main") {
+                                    popUpTo("login") { inclusive = true }
+                                }
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth().height(50.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = iMirlyPurple)
+                    ) {
+                        Text(if (viewModel.isLoading.value) "Cargando..." else "Iniciar sesión")
+                    }
+                    
+                    Spacer(modifier = Modifier.height(16.dp))
+                    
+                    Text(
+                        "¿No tienes cuenta? Crear cuenta",
+                        color = iMirlyPurple,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.clickable { navController.navigate("register") }
+                    )
+                }
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Navegación después del Login -->
+                <section class="content-section" id="navegacion">
+                    <h2>Navegación después del Login</h2>
+                    <p>
+                        Después de un login exitoso, navega a la pantalla principal y limpia el back stack:
+                    </p>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Navegación</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">navController.navigate("main") {
+    popUpTo("login") { inclusive = true }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>
+                            Esto previene que los usuarios puedan presionar "atrás" y volver a la pantalla de login.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- Testing -->
+                <section class="content-section" id="testing">
+                    <h2>Probar Autenticación</h2>
+
+                    <ol class="steps-list">
+                        <li class="step-item">
+                            <h3>Registrar Nuevo Usuario</h3>
+                            <p>Lanza la app, toca "Crear Cuenta", completa el formulario con datos válidos y verifica el mensaje de éxito.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Login</h3>
+                            <p>Toca "¿Ya tienes cuenta? Iniciar sesión", introduce las credenciales registradas y verifica la navegación a la pantalla principal.</p>
+                        </li>
+                        <li class="step-item">
+                            <h3>Verificar Token</h3>
+                            <p>Revisa Logcat para el almacenamiento del token JWT:</p>
+                            <div class="code-block-wrapper" style="margin-top: var(--spacing-md);">
+                                <div class="code-block">
+                                    <pre><code class="language-kotlin">TokenManager: JWT saved: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="step-item">
+                            <h3>Probar Endpoints Protegidos</h3>
+                            <p>Navega a cualquier pantalla protegida (Perfil, Mensajes) y verifica que no hay errores 401/403.</p>
+                        </li>
+                    </ol>
+                </section>
+
+                <!-- Mejores Prácticas -->
+                <section class="content-section" id="seguridad">
+                    <h2>Mejores Prácticas de Seguridad</h2>
+                    <p>
+                        La implementación actual almacena tokens en memoria. Para apps en producción:
+                    </p>
+                    
+                    <ul class="feature-list">
+                        <li>Usa <code class="inline">EncryptedSharedPreferences</code> para almacenamiento persistente</li>
+                        <li>Implementa lógica de refresh de tokens</li>
+                        <li>Maneja la expiración de tokens gracefully</li>
+                        <li>Limpia tokens al hacer logout</li>
+                    </ul>
+
+                    <h3>Ejemplo de Almacenamiento Encriptado</h3>
+
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SecureTokenManager.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
+
+class SecureTokenManager(context: Context) {
+    private val masterKey = MasterKey.Builder(context)
+        .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+        .build()
+
+    private val sharedPreferences = EncryptedSharedPreferences.create(
+        context,
+        "secret_shared_prefs",
+        masterKey,
+        EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+        EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+    )
+
+    fun saveToken(token: String) {
+        sharedPreferences.edit().putString("jwt_token", token).apply()
+    }
+
+    fun getToken(): String? {
+        return sharedPreferences.getString("jwt_token", null)
+    }
+
+    fun clearToken() {
+        sharedPreferences.edit().remove("jwt_token").apply()
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="android-catalogo.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Catálogo de Servicios</h4>
+                                <p>Explora y busca servicios disponibles</p>
+                            </div>
+                        </a>
+
+                        <a href="android-chat.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Chat en Tiempo Real</h4>
+                                <p>Implementa el sistema de mensajería</p>
+                            </div>
+                        </a>
+
+                        <a href="android-instalacion.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                    <polyline points="7 10 12 15 17 10"></polyline>
+                                    <line x1="12" y1="15" x2="12" y2="3"></line>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Instalación</h4>
+                                <p>Revisa la guía de instalación</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="android-instalacion.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Instalación</span>
+                        </a>
+                        <a href="android-catalogo.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Catálogo de Servicios →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#overview" class="toc-link">Visión General</a>
+                    <a href="#arquitectura" class="toc-link">Arquitectura</a>
+                    <a href="#api-definitions" class="toc-link">Definiciones API</a>
+                    <a href="#registro" class="toc-link">Registro</a>
+                    <a href="#login" class="toc-link">Login</a>
+                    <a href="#navegacion" class="toc-link">Navegación</a>
+                    <a href="#testing" class="toc-link">Testing</a>
+                    <a href="#seguridad" class="toc-link">Seguridad</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="../js/menu-loader.js"></script>
+    
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>

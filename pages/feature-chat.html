@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensajería en Tiempo Real - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA MENSAJERÍA */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Badges */
+        .kotlin-badge {
+            display: inline-block;
+            background-color: rgba(127, 82, 255, 0.1);
+            color: #7f52ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .http-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* User flow steps */
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-step-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .flow-step-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .flow-step-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Message types table */
+        .message-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .message-type-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .message-type-card code {
+            background-color: var(--color-bg-hover);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--color-purple-light);
+        }
+
+        .message-type-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: var(--spacing-sm) 0 0 0;
+        }
+
+        /* Chat bubble examples */
+        .chat-preview {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .chat-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            margin-bottom: var(--spacing-md);
+            font-size: 0.875rem;
+        }
+
+        .chat-bubble.mine {
+            background-color: var(--color-purple);
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-bubble.other {
+            background-color: var(--color-bg-hover);
+            color: var(--color-text-primary);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-bubble.special {
+            background-color: rgba(245, 158, 11, 0.2);
+            border: 1px solid #f59e0b;
+            color: #f59e0b;
+            margin-left: auto;
+            border-bottom-right-radius: 4px;
+        }
+
+        .bubble-status {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 4px;
+            text-align: right;
+        }
+
+        /* Read receipts */
+        .read-receipts {
+            display: flex;
+            gap: var(--spacing-xl);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .receipt-example {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+        }
+
+        .checkmark {
+            color: #a0a0a0;
+            font-weight: bold;
+        }
+
+        .checkmark.double {
+            color: #10b981;
+        }
+
+        .checkmark.read {
+            color: #3b82f6;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+                        </path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Características</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Mensajería</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Mensajería en Tiempo Real</h1>
+                    <p class="page-description">
+                        Comunicación fluida entre clientes y proveedores con polling automático y confirmaciones de lectura
+                    </p>
+                </header>
+
+                <!-- Visión General -->
+                <section class="content-section" id="vision-general">
+                    <h2>Visión General</h2>
+                    <p>iMirly proporciona un sistema de chat en tiempo real que permite la comunicación directa entre clientes y proveedores de servicios. El sistema de mensajería realiza polling automático cada 3 segundos e incluye confirmaciones de lectura, tipos de mensajes y gestión de conversaciones.</p>
+                </section>
+
+                <!-- Flujo de Usuario -->
+                <section class="content-section" id="flujo-usuario">
+                    <h2>Flujo de Usuario</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">1</div>
+                            <h4>Acceder al Inbox</h4>
+                            <p>Los usuarios navegan a la pestaña Mensajes donde ven todas las solicitudes de contrato activas y conversaciones en curso.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">2</div>
+                            <h4>Abrir Conversación</h4>
+                            <p>Toca una tarjeta de contrato para abrir el chat con la otra parte (cliente o proveedor).</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">3</div>
+                            <h4>Enviar Mensajes</h4>
+                            <p>Escribe mensajes en el campo de entrada y toca enviar. Los mensajes aparecen instantáneamente con estado de entrega en tiempo real.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">4</div>
+                            <h4>Recibir Actualizaciones</h4>
+                            <p>El chat se actualiza automáticamente cada 3 segundos para obtener nuevos mensajes sin interacción del usuario.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Android -->
+                <section class="content-section" id="implementacion-android">
+                    <h2>Implementación Android</h2>
+
+                    <h3>Componente de Pantalla de Chat</h3>
+                    <p>La interfaz de chat está construida con Jetpack Compose e incluye polling automático:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun ChatScreen(
+    navController: NavController,
+    otroUsuarioId: String,
+    nombreContacto: String,
+    solicitudId: String,
+    soyElProveedor: Boolean,
+    viewModel: ChatViewModel = viewModel()
+) {
+    // Iniciar polling automático cuando carga la pantalla
+    DisposableEffect(otroUsuarioId) {
+        viewModel.startPolling(otroUsuarioId)
+        onDispose { viewModel.stopPolling() }
+    }
+    
+    Scaffold(
+        topBar = { /* Cabecera del chat con nombre del contacto */ },
+        bottomBar = { ChatInputBar(viewModel, otroUsuarioId, solicitudId, soyElProveedor) }
+    ) { paddingValues ->
+        LazyColumn(
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            reverseLayout = true
+        ) {
+            itemsIndexed(mensajesReversed) { index, mensaje ->
+                val isMine = mensaje.remitenteId != otroUsuarioId
+                ChatBubble(mensaje = mensaje, isMine = isMine)
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Polling Automático</h3>
+                    <p>Los mensajes se obtienen automáticamente usando corrutinas de Kotlin:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun startPolling(otroUsuarioId: String) {
+    pollingJob?.cancel()
+    pollingJob = viewModelScope.launch {
+        while (isActive) {
+            cargarConversacion(otroUsuarioId)
+            delay(3000) // Poll cada 3 segundos
+        }
+    }
+}
+
+fun stopPolling() {
+    pollingJob?.cancel()
+}
+
+private suspend fun cargarConversacion(otroUsuarioId: String) {
+    try {
+        val response = RetrofitClient.mensajeService.obtenerConversacion(otroUsuarioId)
+        if (response.isSuccessful) {
+            mensajes.value = response.body() ?: emptyList()
+        }
+    } catch (e: Exception) {
+        Log.e("ChatViewModel", "Error cargando conversación", e)
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Envío de Mensajes</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">ChatViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">fun enviarMensaje(receptorId: String) {
+    val texto = inputText.value.trim()
+    if (texto.isEmpty()) return
+    
+    // Limpiar input inmediatamente para feedback instantáneo
+    inputText.value = ""
+    
+    viewModelScope.launch {
+        try {
+            val request = EnviarMensajeRequest(receptorId, texto)
+            val response = RetrofitClient.mensajeService.enviarMensaje(request)
+            if (response.isSuccessful) {
+                cargarConversacion(receptorId) // Recargar para mostrar mensaje enviado
+            }
+        } catch (e: Exception) {
+            Log.e("ChatViewModel", "Error enviando mensaje", e)
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Implementación Backend -->
+                <section class="content-section" id="implementacion-backend">
+                    <h2>Implementación Backend</h2>
+
+                    <h3>Modelo de Dominio de Mensaje</h3>
+                    <p>Los mensajes son entidades tipadas vinculadas a solicitudes de contrato:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Mensaje.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@Setter
+public class Mensaje {
+    private UUID id;
+    private UUID remitenteId;
+    private UUID receptorId;
+    private UUID solicitudId; // Vincula a negociación de contrato
+    private String contenido;
+    private TipoMensaje tipo; // TEXTO, PROPUESTA_PRECIO, etc.
+    private LocalDateTime timestamp;
+    private boolean leido;
+    
+    public void marcarComoLeido() {
+        if (!this.leido) {
+            this.leido = true;
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Tipos de Mensaje</h3>
+                    <p>El sistema soporta múltiples tipos de mensajes para diferentes flujos de trabajo:</p>
+
+                    <div class="message-types-grid">
+                        <div class="message-type-card">
+                            <code>TEXTO</code>
+                            <p>Mensaje de texto simple</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>PROPUESTA_PRECIO</code>
+                            <p>Propuesta de presupuesto</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>PRESUPUESTO_ACEPTADO</code>
+                            <p>Presupuesto aceptado</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>PRESUPUESTO_RECHAZADO</code>
+                            <p>Presupuesto rechazado</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>PAGO_REALIZADO</code>
+                            <p>Confirmación de pago</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>TRABAJO_FINALIZADO</code>
+                            <p>Trabajo marcado como terminado</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>SERVICIO_COMPLETADO</code>
+                            <p>Servicio completado</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>SERVICIO_RECHAZADO</code>
+                            <p>Servicio rechazado</p>
+                        </div>
+                        <div class="message-type-card">
+                            <code>VALORACION</code>
+                            <p>Valoración post-servicio</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Endpoints REST API -->
+                <section class="content-section" id="endpoints-api">
+                    <h2>Endpoints REST API</h2>
+
+                    <h3>Enviar Mensaje</h3>
+                    <span class="http-badge">POST</span>
+                    <code class="inline">/api/v1/mensajes</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PostMapping
+public ResponseEntity<?> enviarMensaje(@RequestBody EnviarMensajeRequest request) {
+    String emailRemitente = SecurityContextHolder.getContext()
+        .getAuthentication().getPrincipal();
+    
+    UserEntity usuario = userRepository.findByEmail(emailRemitente)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+    EnviarMensajeCommand command = new EnviarMensajeCommand(
+        usuario.getId(),
+        request.getReceptorId(),
+        request.getSolicitudId(),
+        request.getContenido(),
+        request.getTipo() != null ? request.getTipo() : TipoMensaje.TEXTO
+    );
+    
+    Mensaje guardado = useCase.enviarMensaje(command);
+    return ResponseEntity.status(HttpStatus.CREATED).body(toResponse(guardado));
+}</code></pre>
+                    </div>
+
+                    <h3>Obtener Conversación</h3>
+                    <span class="http-badge">GET</span>
+                    <code class="inline">/api/v1/mensajes/conversacion/{otroUsuarioId}</code>
+                    <p>Marca automáticamente los mensajes como leídos al recuperarlos:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/conversacion/{otroUsuarioId}")
+public ResponseEntity<?> obtenerConversacion(@PathVariable UUID otroUsuarioId) {
+    String emailActual = SecurityContextHolder.getContext()
+        .getAuthentication().getPrincipal();
+    
+    UserEntity usuario = userRepository.findByEmail(emailActual)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+    List<MensajeResponse> conversacion = useCase
+        .obtenerConversacion(usuario.getId(), otroUsuarioId)
+        .stream()
+        .map(this::toResponse)
+        .collect(Collectors.toList());
+    
+    return ResponseEntity.ok(conversacion);
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p>El backend marca automáticamente los mensajes como leídos cuando un usuario recupera la conversación vía <code class="inline">repositoryPort.marcarMensajesComoLeidos(otroUsuarioId, usuarioActualId)</code>.</p>
+                    </div>
+
+                    <h3>Borrar Conversación</h3>
+                    <span class="http-badge">DELETE</span>
+                    <code class="inline">/api/v1/mensajes/conversacion/{otroUsuarioId}</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@DeleteMapping("/conversacion/{otroUsuarioId}")
+public ResponseEntity<?> borrarConversacion(@PathVariable UUID otroUsuarioId) {
+    String emailActual = SecurityContextHolder.getContext()
+        .getAuthentication().getPrincipal();
+    
+    UserEntity usuario = userRepository.findByEmail(emailActual)
+        .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+    
+    useCase.borrarConversacion(usuario.getId(), otroUsuarioId);
+    return ResponseEntity.noContent().build();
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Lógica de Negocio del Servicio -->
+                <section class="content-section" id="logica-negocio">
+                    <h2>Lógica de Negocio del Servicio</h2>
+                    <p>El servicio de mensajes maneja tipos de mensajes especiales y dispara cambios de estado:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">MensajeService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Service
+public class MensajeService implements MensajeUseCase {
+    
+    @Override
+    @Transactional
+    public Mensaje enviarMensaje(EnviarMensajeCommand command) {
+        if (command.getContenido() == null || command.getContenido().trim().isEmpty()) {
+            throw new IllegalArgumentException("El mensaje no puede estar vacío.");
+        }
+        
+        // Manejar tipos de mensajes especiales
+        if (command.getTipo() == TipoMensaje.PROPUESTA_PRECIO) {
+            actualizarSolicitudConPrecio(command);
+        } else if (command.getTipo() == TipoMensaje.TRABAJO_FINALIZADO) {
+            SolicitudContrato solicitud = solicitudRepositoryPort
+                .findById(command.getSolicitudId())
+                .orElseThrow();
+            solicitud.marcarComoTerminado();
+            solicitudRepositoryPort.save(solicitud);
+        } else if (command.getTipo() == TipoMensaje.SERVICIO_COMPLETADO) {
+            solicitudContratoUseCase.cambiarEstado(
+                new CambiarEstadoSolicitudCommand(
+                    command.getSolicitudId(), 
+                    EstadoSolicitud.COMPLETADO, 
+                    command.getRemitenteId()
+                )
+            );
+        }
+        
+        // Crear y guardar el mensaje
+        Mensaje nuevoMensaje = new Mensaje(
+            command.getRemitenteId(),
+            command.getReceptorId(),
+            command.getSolicitudId(),
+            command.getContenido(),
+            command.getTipo()
+        );
+        
+        return repositoryPort.save(nuevoMensaje);
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Características de la UI -->
+                <section class="content-section" id="caracteristicas-ui">
+                    <h2>Características de la UI</h2>
+
+                    <h3>Burbujas de Chat</h3>
+                    <p>Los mensajes se muestran con diferentes estilos según el remitente y tipo:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Mis mensajes:</strong> Fondo morado, alineados a la derecha</li>
+                        <li><strong>Mensajes del otro:</strong> Fondo blanco, alineados a la izquierda</li>
+                        <li><strong>Mensajes especiales:</strong> Fondo amarillo (propuestas de presupuesto, finalización de trabajo)</li>
+                    </ul>
+
+                    <div class="chat-preview">
+                        <div class="chat-bubble other">
+                            Hola, ¿puedes ayudarme con una reparación de fontanería?
+                        </div>
+                        <div class="chat-bubble mine">
+                            ¡Claro! ¿En qué puedo ayudarte?
+                            <div class="bubble-status">✓✓</div>
+                        </div>
+                        <div class="chat-bubble special">
+                            💰 Propuesta: 150€ por la reparación completa
+                            <div class="bubble-status">✓✓</div>
+                        </div>
+                    </div>
+
+                    <h3>Confirmaciones de Lectura</h3>
+                    <p>Los mensajes muestran estado de entrega y lectura:</p>
+
+                    <div class="read-receipts">
+                        <div class="receipt-example">
+                            <span class="checkmark">✓</span>
+                            <span>Entregado</span>
+                        </div>
+                        <div class="receipt-example">
+                            <span class="checkmark double">✓✓</span>
+                            <span>Leído</span>
+                        </div>
+                        <div class="receipt-example">
+                            <span class="checkmark read">✓✓</span>
+                            <span>Leído por destinatario</span>
+                        </div>
+                    </div>
+
+                    <h3>Actualizaciones en Tiempo Real</h3>
+                    <p>El mecanismo de polling asegura:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Nuevos mensajes aparecen dentro de 3 segundos</li>
+                        <li>Las confirmaciones de lectura se actualizan automáticamente</li>
+                        <li>No se necesita refresco manual</li>
+                        <li>Eficiente en batería (se detiene al salir de la pantalla)</li>
+                    </ul>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                            Optimización de Batería
+                        </div>
+                        <p>El polling se detiene automáticamente cuando el usuario navega fuera de la pantalla de chat, previniendo el consumo innecesario de batería y datos.</p>
+                    </div>
+                </section>
+
+                <!-- Integración con Otras Características -->
+                <section class="content-section" id="integracion">
+                    <h2>Integración con Otras Características</h2>
+                    <p>El sistema de mensajería está estrechamente integrado con:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Negociación de Presupuesto:</strong> Burbujas de mensajes especiales para propuestas de precio</li>
+                        <li><strong>Gestión de Tareas:</strong> Los cambios de estado disparan mensajes</li>
+                        <li><strong>Monedero Virtual:</strong> Las confirmaciones de pago aparecen en el chat</li>
+                        <li><strong>Sistema de Valoraciones:</strong> Las valoraciones post-servicio se envían como mensajes</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>Consulta la página de <a href="feature-budget.html" style="color: var(--color-purple);">Negociación de Presupuesto</a> para más detalles sobre tipos de mensajes especiales.</p>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="feature-budget.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Negociación de Presupuesto</h4>
+                                <p>Aprende sobre propuestas de precio y aceptación</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-wallet.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Monedero Virtual</h4>
+                                <p>Descubre el sistema de pagos integrado</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-ratings.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Sistema de Valoraciones</h4>
+                                <p>Valoraciones post-servicio en el chat</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="backend-security.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Seguridad Backend</span>
+                        </a>
+                        <a href="feature-budget.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Negociación de Presupuesto →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#vision-general" class="toc-link">Visión General</a>
+                    <a href="#flujo-usuario" class="toc-link">Flujo de Usuario</a>
+                    <a href="#implementacion-android" class="toc-link">Implementación Android</a>
+                    <a href="#implementacion-backend" class="toc-link">Implementación Backend</a>
+                    <a href="#endpoints-api" class="toc-link">Endpoints API</a>
+                    <a href="#logica-negocio" class="toc-link">Lógica de Negocio</a>
+                    <a href="#caracteristicas-ui" class="toc-link">Características UI</a>
+                    <a href="#integracion" class="toc-link">Integración</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>

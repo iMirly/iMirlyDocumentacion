@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iMirly - Plataforma de Marketplace de Servicios</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="index.html" class="logo">
+                <span class="logo-text">iMirly - Documentación</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <!-- <a href="pages/introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>-->
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda - CARGADO DINÁMICAMENTE -->
+        <div id="sidebar-container">
+            <!-- El menú se carga aquí desde menulateral.html -->
+        </div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <header class="page-header">
+                    <h1>iMirly - Plataforma de Marketplace de Servicios</h1>
+                    <p class="page-description">
+                        Conecta proveedores de servicios con clientes mediante chat en tiempo real, presupuestos inteligentes, pagos seguros y valoraciones mutuas
+                    </p>
+                </header>
+
+                <!-- Hero Card -->
+                <section class="hero-card">
+                    <h2 id="bienvenido-a-imirly">Bienvenido a iMirly</h2>
+                    <p class="hero-description">
+                        Una plataforma moderna de marketplace de servicios que conecta proveedores con clientes a través de comunicación en tiempo real, negociación inteligente de presupuestos y procesamiento seguro de pagos.
+                    </p>
+                    <div class="hero-actions">
+                        <a href="pages/introduccion.html" class="btn btn-primary">Comenzar</a>
+                        <a href="#stack-tecnologico" class="btn btn-secondary">Ver Arquitectura</a>
+                    </div>
+                </section>
+
+                <!-- Características Principales -->
+                <section class="content-section">
+                    <h2 id="caracteristicas-principales">Características Principales</h2>
+                    <p class="section-description">
+                        iMirly proporciona un ecosistema completo para operaciones de marketplace de servicios con funcionalidad de extremo a extremo.
+                    </p>
+                    
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            </div>
+                            <h3>Chat en Tiempo Real</h3>
+                            <p>Mensajería dinámica con burbujas de presupuesto integradas directamente en las conversaciones</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                                    <line x1="8" y1="21" x2="16" y2="21"></line>
+                                    <line x1="12" y1="17" x2="12" y2="21"></line>
+                                </svg>
+                            </div>
+                            <h3>Presupuestos Inteligentes</h3>
+                            <p>Sistema inteligente de negociación de presupuestos con ofertas, rechazos y aprobaciones</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+                                    <line x1="1" y1="10" x2="23" y2="10"></line>
+                                </svg>
+                            </div>
+                            <h3>Billetera Virtual</h3>
+                            <p>Retención segura de fondos con gestión automática de comisiones y flujos de pago</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 11l3 3L22 4"></path>
+                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                                </svg>
+                            </div>
+                            <h3>Gestión de Tareas</h3>
+                            <p>Seguimiento dinámico de tareas con estados de completado por el proveedor y aprobación por el cliente</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <h3>Sistema de Valoraciones</h3>
+                            <p>Reseñas bidireccionales de 5 estrellas que alimentan un algoritmo de confianza</p>
+                        </div>
+
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <h3>Autenticación Segura</h3>
+                            <p>Autenticación basada en JWT con Spring Security y encriptación BCrypt</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Componentes de la Plataforma -->
+                <section class="content-section">
+                    <h2 id="componentes-de-la-plataforma">Componentes de la Plataforma</h2>
+                    <p class="section-description">
+                        iMirly está construido como una plataforma full-stack con cliente Android nativo y API backend robusta.
+                    </p>
+                    
+                    <div class="components-grid">
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                                    <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                                </svg>
+                                <h3>App Android</h3>
+                            </div>
+                            <p>Aplicación Android nativa construida con Kotlin y Jetpack Compose</p>
+                        </div>
+
+                        <div class="component-card">
+                            <div class="component-header">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                                </svg>
+                                <h3>API Backend</h3>
+                            </div>
+                            <p>API REST Spring Boot con arquitectura hexagonal y PostgreSQL</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Enlaces Rápidos -->
+                <section class="content-section">
+                    <h2 id="enlaces-rapidos">Enlaces Rápidos</h2>
+                    <div class="quick-links-grid">
+                        <a href="pages/introduccion.html" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="quick-link-content">
+                                <h4>Primeros Pasos</h4>
+                                <p>Configura tu entorno de desarrollo y ejecuta la plataforma localmente</p>
+                            </div>
+                        </a>
+
+                        <a href="#" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            </div>
+                            <div class="quick-link-content">
+                                <h4>Referencia API</h4>
+                                <p>Explora la documentación completa de la API REST</p>
+                            </div>
+                        </a>
+
+                        <a href="#stack-tecnologico" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                    <polyline points="2 17 12 22 22 17"></polyline>
+                                    <polyline points="2 12 12 17 22 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="quick-link-content">
+                                <h4>Guía de Arquitectura</h4>
+                                <p>Comprende la arquitectura hexagonal y el diseño del sistema</p>
+                            </div>
+                        </a>
+
+                        <a href="#caracteristicas-principales" class="quick-link-card">
+                            <div class="quick-link-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                                    <path d="M2 17l10 5 10-5"></path>
+                                    <path d="M2 12l10 5 10-5"></path>
+                                </svg>
+                            </div>
+                            <div class="quick-link-content">
+                                <h4>Funcionalidades</h4>
+                                <p>Sumérgete en las capacidades y flujos de trabajo de la plataforma</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Stack Tecnológico -->
+                <section class="content-section">
+                    <h2 id="stack-tecnologico">Stack Tecnológico</h2>
+                    
+                    <div class="tech-stack">
+                        <div class="tech-category">
+                            <h3 id="frontend-android">Frontend Android</h3>
+                            <ul class="tech-list">
+                                <li><strong>Lenguaje:</strong> Kotlin con UI 100% declarativa</li>
+                                <li><strong>Framework UI:</strong> Jetpack Compose</li>
+                                <li><strong>Redes:</strong> Retrofit + OkHttp con interceptores JWT</li>
+                                <li><strong>Gestión de Estado:</strong> ViewModels y Coroutines</li>
+                                <li><strong>Navegación:</strong> Compose Navigation</li>
+                            </ul>
+                        </div>
+
+                        <div class="tech-category">
+                            <h3 id="backend-api">Backend API</h3>
+                            <ul class="tech-list">
+                                <li><strong>Framework:</strong> Java 21 + Spring Boot 4</li>
+                                <li><strong>Arquitectura:</strong> Arquitectura Hexagonal / Limpia</li>
+                                <li><strong>Base de Datos:</strong> PostgreSQL con Spring Data JPA</li>
+                                <li><strong>Seguridad:</strong> Spring Security con tokens JWT</li>
+                                <li><strong>Estilo API:</strong> RESTful con métodos HTTP convencionales</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Código Abierto -->
+                <section class="content-section">
+                    <h2 id="codigo-abierto">Código Abierto</h2>
+                    <p>iMirly es un proyecto de código abierto desarrollado con prácticas modernas y patrones de arquitectura escalables.</p>
+                    
+                    <a href="https://github.com/iMirly/iMirly" class="github-cta" target="_blank">
+                        <div class="github-cta-content">
+                            <h4>Ver en GitHub</h4>
+                            <p>Explora el código fuente, contribuye y sigue el progreso del desarrollo</p>
+                        </div>
+                        <svg class="github-icon" width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                    </a>
+                </section>
+
+                <footer class="page-footer">
+                    <p>Documentación de iMirly</p>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho (Table of Contents) -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav" id="toc-nav">
+                    <!-- Se genera automáticamente con JavaScript -->
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- CARGA EL MENÚ DINÁMICAMENTE -->
+    <script src="js/menu-loader.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>

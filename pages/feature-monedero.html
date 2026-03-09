@@ -1,0 +1,1754 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monedero Virtual - Documentación iMirly</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+
+    <style>
+        /* ESTILOS ESPECÍFICOS PARA MONEDERO */
+
+        pre[class*="language-"] {
+            background: #0d0d1a !important;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            margin: var(--spacing-md) 0;
+            padding: var(--spacing-lg);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        code[class*="language-"] {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            text-shadow: none !important;
+        }
+
+        .code-block-wrapper {
+            background-color: #0d0d1a;
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: var(--spacing-lg) 0;
+        }
+
+        .code-block-header {
+            background-color: var(--color-bg-hover);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-bottom: 1px solid var(--color-border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-block-filename {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+        }
+
+        .code-block-copy {
+            background: none;
+            border: none;
+            color: var(--color-text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 150ms ease;
+        }
+
+        .code-block-copy:hover {
+            color: var(--color-text-primary);
+            background-color: var(--color-bg-tertiary);
+        }
+
+        /* Badges */
+        .kotlin-badge {
+            display: inline-block;
+            background-color: rgba(127, 82, 255, 0.1);
+            color: #7f52ff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .java-badge {
+            display: inline-block;
+            background-color: rgba(83, 130, 161, 0.1);
+            color: #5382a1;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .http-badge {
+            display: inline-block;
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        /* Info boxes */
+        .info-box {
+            background-color: rgba(120, 100, 215, 0.1);
+            border-left: 3px solid var(--color-purple);
+            padding: var(--spacing-md) var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: var(--color-text-secondary);
+            font-size: 0.9375rem;
+        }
+
+        .warning-box {
+            background-color: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .warning-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #f59e0b;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .warning-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        .success-box {
+            background-color: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .success-box-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9375rem;
+        }
+
+        .success-box p {
+            color: var(--color-text-secondary);
+            font-size: 0.875rem;
+            margin: 0;
+        }
+
+        /* User flow steps */
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .flow-step-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            position: relative;
+        }
+
+        .flow-step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            background-color: var(--color-purple);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .flow-step-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-top: var(--spacing-sm);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .flow-step-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Transaction types grid */
+        .transaction-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .transaction-type-card {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .transaction-type-card code {
+            background-color: var(--color-bg-hover);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875rem;
+            color: var(--color-purple-light);
+        }
+
+        .transaction-type-card p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: var(--spacing-sm) 0 0 0;
+        }
+
+        /* Wallet preview */
+        .wallet-preview {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .wallet-header {
+            background: linear-gradient(135deg, #6C5CE7 0%, #a29bfe 100%);
+            border-radius: 16px;
+            padding: var(--spacing-xl);
+            color: white;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .wallet-balance-label {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .wallet-balance {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .wallet-actions {
+            display: flex;
+            gap: var(--spacing-md);
+        }
+
+        .wallet-btn {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .wallet-btn:hover {
+            opacity: 0.9;
+        }
+
+        .wallet-btn-primary {
+            background-color: white;
+            color: #6C5CE7;
+        }
+
+        .wallet-btn-secondary {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .wallet-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .stat-card {
+            background-color: var(--color-bg-hover);
+            border-radius: 12px;
+            padding: var(--spacing-md);
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .stat-icon.pendiente {
+            background-color: rgba(255, 184, 0, 0.1);
+            color: #FFB800;
+        }
+
+        .stat-icon.mes {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        /* Transaction list item */
+        .transaction-list-preview {
+            background-color: var(--color-bg-hover);
+            border-radius: 8px;
+            padding: var(--spacing-md);
+        }
+
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-sm) 0;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .transaction-info h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0;
+        }
+
+        .transaction-info p {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            margin: 4px 0 0 0;
+        }
+
+        .transaction-amount {
+            text-align: right;
+        }
+
+        .transaction-amount .amount {
+            font-weight: 700;
+            font-size: 0.9375rem;
+        }
+
+        .amount.positive {
+            color: #2ECC71;
+        }
+
+        .amount.negative {
+            color: #e74c3c;
+        }
+
+        .transaction-status {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.625rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+
+        .status-completado {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+
+        .status-pendiente {
+            background-color: rgba(255, 184, 0, 0.1);
+            color: #FFB800;
+        }
+
+        /* Escrow flow diagram */
+        .escrow-flow {
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-xl);
+            margin: var(--spacing-xl) 0;
+        }
+
+        .escrow-step {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md) 0;
+            position: relative;
+        }
+
+        .escrow-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 60px;
+            width: 2px;
+            height: 30px;
+            background-color: var(--color-border);
+        }
+
+        .escrow-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .escrow-icon.cliente {
+            background-color: rgba(108, 92, 231, 0.1);
+            color: #6C5CE7;
+        }
+
+        .escrow-icon.escrow {
+            background-color: rgba(255, 184, 0, 0.1);
+            color: #FFB800;
+        }
+
+        .escrow-icon.proveedor {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #2ECC71;
+        }
+
+        .escrow-content h4 {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin: 0 0 4px 0;
+        }
+
+        .escrow-content p {
+            font-size: 0.8125rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Next steps */
+        .next-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .next-step-card {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            background-color: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: var(--spacing-lg);
+            text-decoration: none;
+            color: inherit;
+            transition: all 250ms ease;
+        }
+
+        .next-step-card:hover {
+            border-color: var(--color-purple);
+            background-color: var(--color-bg-hover);
+        }
+
+        .next-step-icon {
+            width: 40px;
+            height: 40px;
+            background-color: var(--color-bg-hover);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-purple);
+            flex-shrink: 0;
+        }
+
+        .next-step-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--color-text-primary);
+        }
+
+        .next-step-content p {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin: 0;
+        }
+
+        /* Código en línea */
+        code.inline {
+            background-color: var(--color-bg-hover);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.875em;
+            color: var(--color-purple-light);
+        }
+
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .pagination-link {
+            display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            color: inherit;
+            padding: var(--spacing-md);
+            border-radius: 8px;
+            transition: all 200ms ease;
+        }
+
+        .pagination-link:hover {
+            background-color: var(--color-bg-hover);
+        }
+
+        .pagination-link.prev {
+            align-items: flex-start;
+        }
+
+        .pagination-link.next {
+            align-items: flex-end;
+            text-align: right;
+        }
+
+        .pagination-label {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin-bottom: 4px;
+        }
+
+        .pagination-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--color-purple);
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: var(--spacing-xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-border);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--spacing-md);
+        }
+
+        .github-link-footer {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 200ms ease;
+        }
+
+        .github-link-footer:hover {
+            color: var(--color-text-primary);
+        }
+
+        .footer-text {
+            font-size: 0.875rem;
+            color: var(--color-text-muted);
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Barra Superior -->
+    <header class="top-bar">
+        <div class="top-bar-left">
+            <a href="../index.html" class="logo">
+                <span class="logo-text">iMirly</span>
+            </a>
+        </div>
+        <div class="top-bar-right">
+            <nav class="top-nav">
+                <a href="introduccion.html" class="top-nav-link">Documentación</a>
+                <a href="#" class="top-nav-link">Referencia API</a>
+                <a href="https://github.com/iMirly/iMirly" class="top-nav-link github-link" target="_blank">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                    iMirly/iMirly
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="layout">
+        <!-- Sidebar Izquierda -->
+        <div id="sidebar-container"></div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                <!-- Migas de pan -->
+                <div class="breadcrumb">
+                    <span class="breadcrumb-item">Características</span>
+                    <span class="breadcrumb-separator">/</span>
+                    <span class="breadcrumb-item active">Monedero Virtual</span>
+                </div>
+
+                <header class="page-header">
+                    <h1>Monedero Virtual</h1>
+                    <p class="page-description">
+                        Sistema de depósito seguro con gestión de saldo, historial de transacciones y seguimiento de ganancias pendientes
+                    </p>
+                </header>
+
+                <!-- Descripción General -->
+                <section class="content-section" id="descripcion-general">
+                    <h2>Descripción General</h2>
+                    <p>La billetera virtual iMirly ofrece un sistema de depósito seguro para gestionar los pagos entre clientes y proveedores de servicios. El dinero se guarda de forma segura durante la prestación del servicio y se libera solo tras la aprobación del trabajo, protegiendo así a ambas partes.</p>
+                </section>
+
+                <!-- Flujo de Usuario -->
+                <section class="content-section" id="flujo-usuario">
+                    <h2>Flujo de Usuario</h2>
+
+                    <div class="flow-steps">
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">1</div>
+                            <h4>Añadir Fondos</h4>
+                            <p>Los clientes añaden dinero al saldo de su billetera para pagar los servicios (actualmente en incrementos de 10€).</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">2</div>
+                            <h4>Pagar por Servicios</h4>
+                            <p>Al aceptar un presupuesto, los fondos se deducen del saldo del cliente y se mantienen en depósito en garantía.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">3</div>
+                            <h4>Finalización del Trabajo</h4>
+                            <p>Los proveedores completan el trabajo mientras el dinero se guarda de forma segura. Las ganancias se muestran como "Pendientes" en su billetera.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">4</div>
+                            <h4>Liberar Fondos</h4>
+                            <p>Cuando el cliente aprueba el trabajo, los fondos se liberan del depósito en garantía al saldo disponible del proveedor.</p>
+                        </div>
+
+                        <div class="flow-step-card">
+                            <div class="flow-step-number">5</div>
+                            <h4>Retirar</h4>
+                            <p>Los proveedores pueden retirar el saldo disponible a su cuenta bancaria.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Implementación Android -->
+                <section class="content-section" id="implementacion-android">
+                    <h2>Implementación Android</h2>
+
+                    <h3>Interfaz de Usuario de la Pantalla de la Billetera</h3>
+                    <p>La pantalla de la billetera muestra el saldo, las ganancias pendientes y el historial de transacciones:</p>
+
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SaldoScreen.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun SaldoScreen(navController: NavController, viewModel: SaldoViewModel = viewModel()) {
+    val iMirlyPurple = Color(0xFF6C5CE7)
+    
+    LazyColumn(modifier = Modifier.fillMaxSize()) {
+        // Purple header section with main balance
+        item {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(iMirlyPurple)
+                    .padding(bottom = 32.dp)
+            ) {
+                Column {
+                    // Balance card
+                    Surface(
+                        modifier = Modifier.fillMaxWidth().padding(horizontal = 24.dp),
+                        color = Color.White.copy(alpha = 0.15f),
+                        shape = RoundedCornerShape(24.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(24.dp)) {
+                            Row(verticalAlignment = Alignment.CenterVertically) {
+                                Icon(Icons.Default.AccountBalanceWallet, 
+                                     contentDescription = null, 
+                                     tint = Color.White)
+                                Spacer(modifier = Modifier.width(8.dp))
+                                Text("Saldo disponible", color = Color.White)
+                            }
+                            
+                            Text(
+                                String.format("%.2f€", viewModel.saldo.value),
+                                color = Color.White,
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.ExtraBold
+                            )
+                            
+                            // Action buttons
+                            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                                Button(
+                                    onClick = { 
+                                        if (viewModel.saldo.value >= 10.0) {
+                                            viewModel.retirarSaldo()
+                                        }
+                                    },
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = Color.White
+                                    ),
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Icon(Icons.Default.ArrowDownward)
+                                    Text("Retirar")
+                                }
+                                
+                                OutlinedButton(
+                                    onClick = { viewModel.ingresarSaldo() },
+                                    colors = ButtonDefaults.outlinedButtonColors(
+                                        contentColor = Color.White
+                                    ),
+                                    modifier = Modifier.weight(1f)
+                                ) {
+                                    Icon(Icons.Default.Add)
+                                    Text("Ingresar")
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Pending and monthly earnings cards
+        item {
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                // Pending earnings card
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color.White,
+                    shadowElevation = 2.dp
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Box(
+                            modifier = Modifier.size(32.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFFFF7E6)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Outlined.AccessTime, 
+                                 tint = Color(0xFFFFB800))
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("Pendiente", color = Color.Gray, fontSize = 12.sp)
+                        Text(
+                            String.format("%.2f€", viewModel.pendiente.value),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+                
+                // This month earnings card
+                Surface(
+                    modifier = Modifier.weight(1f),
+                    shape = RoundedCornerShape(16.dp),
+                    color = Color.White,
+                    shadowElevation = 2.dp
+                ) {
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Box(
+                            modifier = Modifier.size(32.dp)
+                                .clip(CircleShape)
+                                .background(Color(0xFFE6F9F0)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(Icons.Outlined.TrendingUp, 
+                                 tint = Color(0xFF2ECC71))
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Text("Este mes", color = Color.Gray, fontSize = 12.sp)
+                        Text(
+                            String.format("%.2f€", viewModel.esteMes.value),
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                }
+            }
+        }
+        
+        // Transaction history
+        item {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = Color.White,
+                shadowElevation = 2.dp
+            ) {
+                Column(modifier = Modifier.padding(20.dp)) {
+                    Text("Transacciones recientes", 
+                         fontSize = 16.sp, 
+                         fontWeight = FontWeight.Bold)
+                    
+                    viewModel.transacciones.value.forEach { tr ->
+                        TransactionListItem(
+                            title = tr.titulo,
+                            subtitle = tr.subTitulo,
+                            amount = tr.cantidadFormateada,
+                            status = tr.estado,
+                            time = tr.tiempo
+                        )
+                    }
+                }
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Modelo de Vista de Billetera</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SaldoViewModel.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">class SaldoViewModel : ViewModel() {
+    var saldo = mutableStateOf(0.0)
+    var pendiente = mutableStateOf(0.0)
+    var esteMes = mutableStateOf(0.0)
+    var transacciones = mutableStateOf<List<TransaccionDTO>>(emptyList())
+    var isLoading = mutableStateOf(true)
+    
+    init {
+        cargarDatos()
+    }
+    
+    fun cargarDatos() {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.userService.getWallet()
+                if (response.isSuccessful) {
+                    val data = response.body()
+                    saldo.value = data?.saldo ?: 0.0
+                    pendiente.value = data?.pendiente ?: 0.0
+                    esteMes.value = data?.esteMes ?: 0.0
+                    transacciones.value = data?.transacciones ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.e("SaldoViewModel", "Error loading wallet", e)
+            } finally {
+                isLoading.value = false
+            }
+        }
+    }
+    
+    fun ingresarSaldo() {
+        viewModelScope.launch {
+            try {
+                RetrofitClient.userService.ingresarSaldo()
+                cargarDatos() // Reload to show new balance
+            } catch (e: Exception) {
+                Log.e("SaldoViewModel", "Error adding funds", e)
+            }
+        }
+    }
+    
+    fun retirarSaldo() {
+        viewModelScope.launch {
+            try {
+                RetrofitClient.userService.retirarSaldo()
+                cargarDatos() // Reload to show new balance
+            } catch (e: Exception) {
+                Log.e("SaldoViewModel", "Error withdrawing funds", e)
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Implementación Backend -->
+                <section class="content-section" id="implementacion-backend">
+                    <h2>Implementación Backend</h2>
+
+                    <h3>Modelo de Equilibrio de Usuarios</h3>
+                    <p>Los usuarios tienen un saldo virtual registrado en su perfil:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Getter
+@Setter
+public class User {
+    private UUID id;
+    private String nombre;
+    private String email;
+    private Double saldo; // Virtual wallet balance
+    
+    public void restarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException(
+                "La cantidad a restar debe ser mayor que cero."
+            );
+        }
+        if (this.saldo == null) this.saldo = 0.0;
+        this.saldo -= cantidad;
+    }
+    
+    public void sumarSaldo(Double cantidad) {
+        if (cantidad == null || cantidad <= 0) {
+            throw new IllegalArgumentException(
+                "La cantidad a sumar debe ser mayor que cero."
+            );
+        }
+        if (this.saldo == null) this.saldo = 0.0;
+        this.saldo += cantidad;
+    }
+}</code></pre>
+                    </div>
+
+                    <h3>Entidad de Transacción</h3>
+                    <p>Todas las operaciones financieras quedan registradas:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">TransaccionEntity.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Entity
+@Table(name = "transacciones")
+@Getter
+@Setter
+public class TransaccionEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
+    @Column(name = "usuario_id", nullable = false)
+    private UUID usuarioId;
+    
+    @Column(nullable = false)
+    private Double cantidad;
+    
+    @Column(nullable = false)
+    private String tipo; // "INGRESO", "RETIRO", "SERVICIO_COBRADO", "SERVICIO_PAGADO"
+    
+    @Column(nullable = false)
+    private String descripcion;
+    
+    @Column(nullable = false)
+    private LocalDateTime fecha;
+}</code></pre>
+                    </div>
+
+                    <h3>Tipos de Transacciones</h3>
+                    <div class="transaction-types-grid">
+                        <div class="transaction-type-card">
+                            <code>INGRESO</code>
+                            <p>El cliente agrega fondos a la billetera</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <code>RETIRO</code>
+                            <p>Usuario retira fondos al banco</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <code>SERVICIO_PAGADO</code>
+                            <p>Cliente paga por el servicio (débito)</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <code>SERVICIO_COBRADO</code>
+                            <p>Proveedor recibe pago (crédito)</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Endpoints API -->
+                <section class="content-section" id="endpoints-api">
+                    <h2>Puntos Finales de la API de Wallet</h2>
+
+                    <h3>Obtener Datos de la Billetera</h3>
+                    <span class="http-badge">GET</span>
+                    <code class="inline">/api/v1/users/wallet</code>
+                    <p>Devuelve información completa de la billetera, incluido el saldo, las ganancias pendientes y el historial de transacciones:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">WalletController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@GetMapping("/wallet")
+public ResponseEntity<?> getWallet() {
+    try {
+        String tokenEmail = SecurityContextHolder.getContext()
+            .getAuthentication().getName();
+        User user = getUserUseCase.getUserByEmail(tokenEmail);
+        
+        // Calculate pending earnings from contracts in PAGADO state
+        List<SolicitudContrato> solicitudes = 
+            solicitudContratoUseCase.getSolicitudesPorProveedor(user.getId());
+        
+        Double pendiente = solicitudes.stream()
+            .filter(s -> s.getEstado() == EstadoSolicitud.PAGADO ||
+                        s.getEstado() == EstadoSolicitud.EN_CURSO ||
+                        s.getEstado() == EstadoSolicitud.REVISION_PENDIENTE)
+            .mapToDouble(SolicitudContrato::getPrecioAcordado)
+            .sum();
+        
+        // Get transaction history
+        List<TransaccionEntity> transacciones = transaccionRepository
+            .findByUsuarioIdOrderByFechaDesc(user.getId());
+        
+        // Calculate this month's earnings
+        Double esteMes = transacciones.stream()
+            .filter(t -> t.getFecha().getMonth() == LocalDateTime.now().getMonth() &&
+                        t.getFecha().getYear() == LocalDateTime.now().getYear())
+            .filter(t -> t.getTipo().equals("INGRESO") || 
+                        t.getTipo().equals("SERVICIO_COBRADO"))
+            .mapToDouble(TransaccionEntity::getCantidad)
+            .sum();
+        
+        // Format recent transactions (last 10)
+        List<TransaccionDTO> recientes = transacciones.stream()
+            .limit(10)
+            .map(t -> {
+                String amt = t.getTipo().equals("RETIRO") || 
+                            t.getTipo().equals("SERVICIO_PAGADO")
+                    ? "-" + String.format("%.2f€", t.getCantidad())
+                    : "+" + String.format("%.2f€", t.getCantidad());
+                return new TransaccionDTO(
+                    t.getDescripcion(),
+                    t.getTipo(),
+                    amt,
+                    "Completado",
+                    t.getFecha().toLocalDate().toString()
+                );
+            })
+            .collect(Collectors.toList());
+        
+        SaldoResponse resp = new SaldoResponse(
+            user.getSaldo(), 
+            pendiente, 
+            esteMes, 
+            recientes
+        );
+        return ResponseEntity.ok(resp);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="info-box">
+                        <p><strong>Cálculo de Ganancias Pendientes:</strong> El backend suma todos los precios de los contratos donde el usuario es el proveedor y el contrato se encuentra en estado PAGADO, EN_CURSO o REVISIÓN_PENDIENTE. Esto representa el dinero retenido en depósito.</p>
+                    </div>
+
+                    <h3>Añadir Fondos</h3>
+                    <span class="http-badge">POST</span>
+                    <code class="inline">/api/v1/users/saldo/ingresar</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">WalletController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PostMapping("/saldo/ingresar")
+public ResponseEntity<?> ingresarSaldo() {
+    try {
+        String tokenEmail = SecurityContextHolder.getContext()
+            .getAuthentication().getName();
+        User user = getUserUseCase.getUserByEmail(tokenEmail);
+        
+        user.sumarSaldo(10.0); // TODO: Integrate with real payment gateway
+        userRepository.save(user);
+        
+        TransaccionEntity tr = new TransaccionEntity(
+            null, user.getId(), 10.0, "INGRESO", 
+            "Ingreso de saldo", LocalDateTime.now()
+        );
+        transaccionRepository.save(tr);
+        
+        return ResponseEntity.ok(
+            "{\"message\": \"Saldo ingresado correctamente\"}"
+        );
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="warning-box">
+                        <div class="warning-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Nota de Implementación
+                        </div>
+                        <p>Actualmente, se añaden incrementos de 10€. La implementación en producción debería integrarse con Stripe, PayPal o pasarelas de pago locales para importes variables.</p>
+                    </div>
+
+                    <h3>Retirar Fondos</h3>
+                    <span class="http-badge">POST</span>
+                    <code class="inline">/api/v1/users/saldo/retirar</code>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">WalletController.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@PostMapping("/saldo/retirar")
+public ResponseEntity<?> retirarSaldo() {
+    try {
+        String tokenEmail = SecurityContextHolder.getContext()
+            .getAuthentication().getName();
+        User user = getUserUseCase.getUserByEmail(tokenEmail);
+        
+        user.restarSaldo(10.0); // TODO: Integrate with bank transfer API
+        userRepository.save(user);
+        
+        TransaccionEntity tr = new TransaccionEntity(
+            null, user.getId(), 10.0, "RETIRO", 
+            "Retirada a cuenta bancaria", LocalDateTime.now()
+        );
+        transaccionRepository.save(tr);
+        
+        return ResponseEntity.ok(
+            "{\"message\": \"Saldo retirado correctamente\"}"
+        );
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
+    }
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Flujo de Pago con Depósito -->
+                <section class="content-section" id="flujo-pago">
+                    <h2>Flujo de Pago con Depósito en Garantía</h2>
+
+                    <div class="escrow-flow">
+                        <div class="escrow-step">
+                            <div class="escrow-icon cliente">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="escrow-content">
+                                <h4>1. Cliente Acepta Presupuesto</h4>
+                                <p>El cliente tiene saldo suficiente y acepta el presupuesto del proveedor</p>
+                            </div>
+                        </div>
+
+                        <div class="escrow-step">
+                            <div class="escrow-icon escrow">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                </svg>
+                            </div>
+                            <div class="escrow-content">
+                                <h4>2. Fondos Retenidos en Escrow</h4>
+                                <p>El dinero se deduce del cliente y se mantiene seguro en depósito durante el servicio</p>
+                            </div>
+                        </div>
+
+                        <div class="escrow-step">
+                            <div class="escrow-icon proveedor">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                            </div>
+                            <div class="escrow-content">
+                                <h4>3. Trabajo Completado y Aprobado</h4>
+                                <p>El proveedor finaliza el trabajo y el cliente aprueba la entrega</p>
+                            </div>
+                        </div>
+
+                        <div class="escrow-step">
+                            <div class="escrow-icon proveedor">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="escrow-content">
+                                <h4>4. Liberación de Fondos</h4>
+                                <p>El dinero se transfiere al saldo disponible del proveedor para retiro</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>Cuando un Cliente Acepta un Presupuesto</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">@Transactional
+public SolicitudContrato pagarSolicitud(UUID solicitudId, UUID clienteId) {
+    SolicitudContrato solicitud = repositoryPort.findById(solicitudId)
+        .orElseThrow();
+    
+    User cliente = userRepository.findById(clienteId)
+        .orElseThrow();
+    
+    // 1. Deduct from client balance
+    cliente.restarSaldo(solicitud.getPrecioAcordado());
+    userRepository.save(cliente);
+    
+    // 2. Log transaction
+    TransaccionEntity tr = new TransaccionEntity(
+        null, cliente.getId(), 
+        solicitud.getPrecioAcordado(), 
+        "SERVICIO_PAGADO",
+        "Pago de presupuesto en iMirly", 
+        LocalDateTime.now()
+    );
+    transaccionRepository.save(tr);
+    
+    // 3. Move contract to PAGADO (escrow) state
+    solicitud.pagarPresupuesto();
+    return repositoryPort.save(solicitud);
+}</code></pre>
+                    </div>
+
+                    <h3>Cuando el Trabajo Está Aprobado y Finalizado</h3>
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">SolicitudContratoService.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public SolicitudContrato cambiarEstado(CambiarEstadoSolicitudCommand command) {
+    SolicitudContrato solicitud = repositoryPort.findById(command.getSolicitudId())
+        .orElseThrow();
+    
+    solicitud.setEstado(command.getNuevoEstado());
+    
+    // Release escrow to provider when completed
+    if (command.getNuevoEstado() == EstadoSolicitud.COMPLETADO) {
+        User proveedor = userRepository.findById(solicitud.getProveedorId())
+            .orElseThrow();
+        
+        // Add to provider balance
+        proveedor.sumarSaldo(solicitud.getPrecioAcordado());
+        userRepository.save(proveedor);
+        
+        // Log transaction
+        TransaccionEntity tr = new TransaccionEntity(
+            null, proveedor.getId(), 
+            solicitud.getPrecioAcordado(), 
+            "SERVICIO_COBRADO",
+            "Cobro por trabajo en iMirly", 
+            LocalDateTime.now()
+        );
+        transaccionRepository.save(tr);
+    }
+    
+    return repositoryPort.save(solicitud);
+}</code></pre>
+                    </div>
+                </section>
+
+                <!-- Visualización del Historial -->
+                <section class="content-section" id="historial-transacciones">
+                    <h2>Visualización del Historial de Transacciones</h2>
+
+                    <h3>Elemento de la Lista de Transacciones</h3>
+                    <span class="kotlin-badge">Kotlin</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">TransactionListItem.kt</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-kotlin">@Composable
+fun TransactionListItem(
+    title: String, 
+    subtitle: String, 
+    amount: String, 
+    status: String, 
+    time: String
+) {
+    val isPendiente = status.contains("Pendiente", ignoreCase = true)
+    val isRetiro = amount.startsWith("-") || title.contains("Retiro", ignoreCase = true)
+    
+    val statusColor = if (isPendiente) Color(0xFFFFB800) else Color(0xFF2ECC71)
+    val statusBgColor = if (isPendiente) Color(0xFFFFF7E6) else Color(0xFFE6F9F0)
+    val amountColor = if (isRetiro) Color.Red else statusColor
+    
+    Row(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, fontWeight = FontWeight.SemiBold)
+            Text(subtitle, color = Color.Gray, fontSize = 12.sp)
+            Text(time, color = Color.LightGray, fontSize = 11.sp)
+        }
+        
+        Column(horizontalAlignment = Alignment.End) {
+            Text(amount, fontWeight = FontWeight.Bold, color = amountColor)
+            Surface(
+                shape = RoundedCornerShape(12.dp),
+                color = statusBgColor
+            ) {
+                Text(
+                    status, 
+                    color = statusColor, 
+                    fontSize = 9.sp,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp)
+                )
+            }
+        }
+    }
+}</code></pre>
+                    </div>
+
+                    <div class="wallet-preview">
+                        <div class="wallet-header">
+                            <div class="wallet-balance-label">Saldo disponible</div>
+                            <div class="wallet-balance">245.50€</div>
+                            <div class="wallet-actions">
+                                <button class="wallet-btn wallet-btn-primary">Retirar</button>
+                                <button class="wallet-btn wallet-btn-secondary">Ingresar</button>
+                            </div>
+                        </div>
+
+                        <div class="wallet-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon pendiente">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="stat-label">Pendiente</div>
+                                <div class="stat-value">150.00€</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-icon mes">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                        <polyline points="17 6 23 6 23 12"></polyline>
+                                    </svg>
+                                </div>
+                                <div class="stat-label">Este mes</div>
+                                <div class="stat-value">320.00€</div>
+                            </div>
+                        </div>
+
+                        <div class="transaction-list-preview">
+                            <h4 style="margin-top: 0; margin-bottom: var(--spacing-md); color: var(--color-text-primary);">Transacciones recientes</h4>
+                            
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <h4>Cobro por trabajo en iMirly</h4>
+                                    <p>SERVICIO_COBRADO • 2024-03-06</p>
+                                </div>
+                                <div class="transaction-amount">
+                                    <div class="amount positive">+150.00€</div>
+                                    <span class="transaction-status status-completado">Completado</span>
+                                </div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <h4>Pago de presupuesto en iMirly</h4>
+                                    <p>SERVICIO_PAGADO • 2024-03-05</p>
+                                </div>
+                                <div class="transaction-amount">
+                                    <div class="amount negative">-75.00€</div>
+                                    <span class="transaction-status status-completado">Completado</span>
+                                </div>
+                            </div>
+
+                            <div class="transaction-item">
+                                <div class="transaction-info">
+                                    <h4>Ingreso de saldo</h4>
+                                    <p>INGRESO • 2024-03-01</p>
+                                </div>
+                                <div class="transaction-amount">
+                                    <div class="amount positive">+10.00€</div>
+                                    <span class="transaction-status status-completado">Completado</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Características de Seguridad -->
+                <section class="content-section" id="seguridad">
+                    <h2>Características de Seguridad</h2>
+
+                    <h3>Validación de Saldo</h3>
+                    <p>Previene sobregiros y saldos negativos:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">User.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">public void restarSaldo(Double cantidad) {
+    if (cantidad == null || cantidad <= 0) {
+        throw new IllegalArgumentException(
+            "La cantidad a restar debe ser mayor que cero."
+        );
+    }
+    if (this.saldo == null) this.saldo = 0.0;
+    if (this.saldo < cantidad) {
+        throw new IllegalStateException("Saldo insuficiente");
+    }
+    this.saldo -= cantidad;
+}</code></pre>
+                    </div>
+
+                    <h3>Atomicidad de las Transacciones</h3>
+                    <p>Todas las operaciones de billetera utilizan <code class="inline">@Transactional</code> para garantizar la atomicidad:</p>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li>Actualizaciones de saldo Y registros de transacciones, o ninguno</li>
+                        <li>Previene inconsistencias en los datos</li>
+                        <li>Revertir cualquier error</li>
+                    </ul>
+
+                    <div class="success-box">
+                        <div class="success-box-header">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            Protección Garantizada
+                        </div>
+                        <p>El sistema de depósito en garantía protege tanto al cliente (asegurando que el trabajo se complete antes de pagar) como al proveedor (garantizando que el dinero está disponible antes de comenzar).</p>
+                    </div>
+
+                    <h3>Autorización</h3>
+                    <p>Los usuarios sólo pueden acceder a su propia billetera:</p>
+
+                    <span class="java-badge">Java</span>
+                    <div class="code-block-wrapper">
+                        <div class="code-block-header">
+                            <span class="code-block-filename">Security.java</span>
+                            <button class="code-block-copy" onclick="copyCode(this)" title="Copiar">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <pre><code class="language-java">String tokenEmail = SecurityContextHolder.getContext()
+    .getAuthentication().getName();
+User user = getUserUseCase.getUserByEmail(tokenEmail);</code></pre>
+                    </div>
+
+                    <h3>Características Adicionales de Seguridad</h3>
+                    <div class="transaction-types-grid">
+                        <div class="transaction-type-card">
+                            <strong>Protección de Depósito</strong>
+                            <p>El dinero se mantiene seguro durante la prestación del servicio</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <strong>Registro de Transacciones</strong>
+                            <p>Cada operación se registra con marca de tiempo para auditoría</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <strong>Seguimiento del Saldo</strong>
+                            <p>Actualizaciones en tiempo real con fondos disponibles y pendientes separados</p>
+                        </div>
+                        <div class="transaction-type-card">
+                            <strong>Informes Mensuales</strong>
+                            <p>Cálculo automático de ganancias mensuales para proveedores</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Puntos de Integración -->
+                <section class="content-section" id="integracion">
+                    <h2>Puntos de Integración</h2>
+                    <ul style="color: var(--color-text-secondary); margin-bottom: var(--spacing-md); padding-left: var(--spacing-lg);">
+                        <li><strong>Negociación de Presupuesto:</strong> El pago se deduce de la billetera al aceptar presupuestos</li>
+                        <li><strong>Gestión de Tareas:</strong> Fondos liberados cuando se aprueba el trabajo</li>
+                        <li><strong>Historial de Transacciones:</strong> Todas las operaciones registradas y mostradas</li>
+                        <li><strong>Perfil de Usuario:</strong> Saldo mostrado en la descripción general del perfil</li>
+                    </ul>
+
+                    <div class="info-box">
+                        <p>Consulta <a href="feature-tasks.html" style="color: var(--color-purple);">Gestión de Tareas</a> para saber cómo se liberan los fondos de depósito en garantía una vez finalizado el trabajo.</p>
+                    </div>
+                </section>
+
+                <!-- Próximos Pasos -->
+                <section class="content-section" id="proximos-pasos">
+                    <h2>Próximos Pasos</h2>
+
+                    <div class="next-steps-grid">
+                        <a href="feature-budget.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Negociación de Presupuesto</h4>
+                                <p>Aprende sobre propuestas de precio y aceptación</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-tasks.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 20h9"></path>
+                                    <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Gestión de Tareas</h4>
+                                <p>Descubre cómo se liberan los fondos del escrow</p>
+                            </div>
+                        </a>
+
+                        <a href="feature-profile.html" class="next-step-card">
+                            <div class="next-step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div class="next-step-content">
+                                <h4>Perfil de Usuario</h4>
+                                <p>Visualización del saldo en el perfil</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Paginación -->
+                <section class="content-section">
+                    <div class="pagination">
+                        <a href="feature-budget.html" class="pagination-link prev">
+                            <span class="pagination-label">Anterior</span>
+                            <span class="pagination-title">← Negociación de Presupuesto</span>
+                        </a>
+                        <a href="feature-tasks.html" class="pagination-link next">
+                            <span class="pagination-label">Siguiente</span>
+                            <span class="pagination-title">Gestión de Tareas →</span>
+                        </a>
+                    </div>
+                </section>
+
+                <footer class="page-footer">
+                    <div class="footer-content">
+                        <a href="https://github.com/iMirly/iMirly" class="github-link-footer" target="_blank">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                            </svg>
+                            iMirly en GitHub
+                        </a>
+                        <p class="footer-text">Documentación de iMirly</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+
+        <!-- Índice Derecho -->
+        <aside class="sidebar-right">
+            <div class="toc-container">
+                <h4 class="toc-title">En esta página</h4>
+                <nav class="toc-nav">
+                    <a href="#descripcion-general" class="toc-link">Descripción General</a>
+                    <a href="#flujo-usuario" class="toc-link">Flujo de Usuario</a>
+                    <a href="#implementacion-android" class="toc-link">Implementación Android</a>
+                    <a href="#implementacion-backend" class="toc-link">Implementación Backend</a>
+                    <a href="#endpoints-api" class="toc-link">Endpoints API</a>
+                    <a href="#flujo-pago" class="toc-link">Flujo de Pago Escrow</a>
+                    <a href="#historial-transacciones" class="toc-link">Historial de Transacciones</a>
+                    <a href="#seguridad" class="toc-link">Características de Seguridad</a>
+                    <a href="#integracion" class="toc-link">Integración</a>
+                    <a href="#proximos-pasos" class="toc-link">Próximos Pasos</a>
+                </nav>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Prism.js para resaltado de sintaxis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-kotlin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
+
+    <script src="../js/menu-loader.js"></script>
+
+    <script>
+        // Función para copiar código
+        function copyCode(button) {
+            const codeBlock = button.closest('.code-block-wrapper').querySelector('code');
+            const text = codeBlock.innerText;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const originalHTML = button.innerHTML;
+                button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+                button.style.color = '#10b981';
+
+                setTimeout(() => {
+                    button.innerHTML = originalHTML;
+                    button.style.color = '';
+                }, 2000);
+            });
+        }
+
+        // Cargar sidebar
+        fetch('../components/sidebar.html')
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('sidebar-container').innerHTML = html;
+            });
+    </script>
+</body>
+
+</html>
