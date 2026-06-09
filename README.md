@@ -128,5 +128,5 @@ iMirlyDocumentacion/
 
 <div align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=0:6c5ce7,100:3f51b5&height=100&section=footer" width="100%"/>
-  <sub>© 2025 iMirly — Proyecto académico DAM · Granada, España</sub>
+  <sub>© 2026 iMirly — Proyecto académico DAM · Granada, España</sub>
 </div>
